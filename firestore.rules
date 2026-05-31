@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+
+    // A user can read any profile (to show family members) but only edit their own.
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Families: members can read; creation is open to signed-in users; updates are
+    // limited to current or incoming members (so joining via invite code works).
+    match /families/{familyId} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow update: if signedIn() &&
+        (request.auth.uid in resource.data.memberIds ||
+         request.auth.uid in request.resource.data.memberIds);
+
+      // Posts: only members of the family may read or write.
+      match /posts/{postId} {
+        allow read, create, update, delete: if signedIn() &&
+          request.auth.uid in
+            get(/databases/$(database)/documents/families/$(familyId)).data.memberIds;
+      }
+    }
+  }
+}

@@ -1,0 +1,183 @@
+package com.familynest.app.ui.detail
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import coil.compose.AsyncImage
+import com.familynest.app.data.model.AppUser
+import com.familynest.app.data.model.PostStatus
+import com.familynest.app.ui.components.Avatar
+import com.familynest.app.ui.components.TypeChip
+import com.familynest.app.ui.components.shortDate
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PostDetailScreen(
+    user: AppUser,
+    postId: String,
+    onBack: () -> Unit,
+) {
+    val viewModel: PostDetailViewModel = viewModel(
+        factory = viewModelFactory { initializer { PostDetailViewModel(user.familyId, postId) } }
+    )
+    val post by viewModel.post.collectAsStateWithLifecycle()
+    val myUid = user.uid
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(post?.typeEnum?.label ?: "") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    if (post?.authorId == myUid) {
+                        IconButton(onClick = { viewModel.delete(onBack) }) {
+                            Icon(Icons.Rounded.Delete, contentDescription = "Delete")
+                        }
+                    }
+                },
+            )
+        },
+    ) { padding ->
+        val current = post
+        if (current == null) {
+            Spacer(Modifier.padding(padding))
+            return@Scaffold
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Avatar(current.authorPhotoUrl, current.authorName)
+                Spacer(Modifier.padding(6.dp))
+                Column {
+                    Text(current.authorName, style = MaterialTheme.typography.titleMedium)
+                    Text(shortDate(current.createdAt), style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+
+            TypeChip(current.typeEnum)
+            Text(current.title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            if (current.description.isNotBlank()) {
+                Text(current.description, style = MaterialTheme.typography.bodyLarge)
+            }
+            if (current.imageUrl.isNotBlank()) {
+                AsyncImage(
+                    model = current.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(4f / 3f)
+                        .clip(RoundedCornerShape(16.dp)),
+                )
+            }
+
+            // Task-manager controls for actionable posts.
+            if (current.typeEnum.isActionable) {
+                current.dueDate?.let {
+                    Text("🎯 Target: ${shortDate(it)}", style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Text("Status", style = MaterialTheme.typography.titleMedium)
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(PostStatus.entries) { status ->
+                        FilterChip(
+                            selected = current.statusEnum == status,
+                            onClick = { viewModel.setStatus(status) },
+                            label = { Text(status.label) },
+                        )
+                    }
+                }
+
+                if (current.tasks.isNotEmpty()) {
+                    Text(
+                        "Checklist · ${current.completedTaskCount}/${current.tasks.size}",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    current.tasks.forEach { task ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(
+                                checked = task.done,
+                                onCheckedChange = { viewModel.toggleTask(task.id) },
+                            )
+                            Text(
+                                task.text,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = if (task.done) MaterialTheme.colorScheme.onSurfaceVariant
+                                else MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Cheers / likes
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val liked = current.likedBy.contains(myUid)
+                IconButton(onClick = { viewModel.toggleLike() }) {
+                    Icon(
+                        if (liked) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                        contentDescription = "Cheer",
+                        tint = if (liked) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Text(
+                    when (current.likedBy.size) {
+                        0 -> "Be the first to cheer this on"
+                        1 -> "1 cheer"
+                        else -> "${current.likedBy.size} cheers"
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+            Spacer(Modifier.height(24.dp))
+        }
+    }
+}
