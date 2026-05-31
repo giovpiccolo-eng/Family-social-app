@@ -15,5 +15,6 @@ local.properties
 #  commit a Firebase config, but never commit signing keystores or service accounts.)
 *.jks
 *.keystore
+keystore.properties
 google-services-real.json
 service-account*.json
