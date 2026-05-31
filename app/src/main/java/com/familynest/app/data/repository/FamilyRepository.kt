@@ -5,6 +5,7 @@ import com.familynest.app.data.model.Family
 import com.familynest.app.data.model.MemberRole
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -27,8 +28,11 @@ class FamilyRepository(
             memberIds = listOf(uid),
         )
         ref.set(family).await()
-        db.collection(AuthRepository.USERS).document(uid).update(
-            mapOf("familyId" to ref.id, "role" to MemberRole.PARENT.name)
+        // Use set+merge so the profile is created if sign-in hadn't written it yet
+        // (e.g. on the very first launch before security rules were in place).
+        db.collection(AuthRepository.USERS).document(uid).set(
+            mapOf("uid" to uid, "familyId" to ref.id, "role" to MemberRole.PARENT.name),
+            SetOptions.merge(),
         ).await()
         ref.id
     }
@@ -43,8 +47,9 @@ class FamilyRepository(
             .await()
         val doc = match.documents.firstOrNull() ?: error("No family found for that code")
         doc.reference.update("memberIds", FieldValue.arrayUnion(uid)).await()
-        db.collection(AuthRepository.USERS).document(uid).update(
-            mapOf("familyId" to doc.id, "role" to MemberRole.CHILD.name)
+        db.collection(AuthRepository.USERS).document(uid).set(
+            mapOf("uid" to uid, "familyId" to doc.id, "role" to MemberRole.CHILD.name),
+            SetOptions.merge(),
         ).await()
         doc.id
     }
