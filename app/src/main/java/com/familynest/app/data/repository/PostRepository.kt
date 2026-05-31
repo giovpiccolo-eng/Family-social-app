@@ -1,6 +1,7 @@
 package com.familynest.app.data.repository
 
 import android.net.Uri
+import com.familynest.app.data.model.Comment
 import com.familynest.app.data.model.Post
 import com.familynest.app.data.model.PostStatus
 import com.familynest.app.data.model.TaskItem
@@ -71,7 +72,15 @@ class PostRepository(
     suspend fun updateTasks(familyId: String, postId: String, tasks: List<TaskItem>): Result<Unit> =
         runCatching {
             postsRef(familyId).document(postId)
-                .update("tasks", tasks.map { mapOf("id" to it.id, "text" to it.text, "done" to it.done) })
+                .update("tasks", tasks.map {
+                    mapOf(
+                        "id" to it.id,
+                        "text" to it.text,
+                        "done" to it.done,
+                        "assigneeId" to it.assigneeId,
+                        "assigneeName" to it.assigneeName,
+                    )
+                })
                 .await()
         }
 
@@ -79,7 +88,28 @@ class PostRepository(
         postsRef(familyId).document(postId).delete().await()
     }
 
+    // --- Comments ---
+
+    private fun commentsRef(familyId: String, postId: String) =
+        postsRef(familyId).document(postId).collection(COMMENTS)
+
+    fun commentsFlow(familyId: String, postId: String): Flow<List<Comment>> = callbackFlow {
+        val reg = commentsRef(familyId, postId)
+            .orderBy("createdAt", Query.Direction.ASCENDING)
+            .addSnapshotListener { snap, _ ->
+                trySend(snap?.documents?.mapNotNull { it.toObject(Comment::class.java) } ?: emptyList())
+            }
+        awaitClose { reg.remove() }
+    }
+
+    suspend fun addComment(familyId: String, postId: String, comment: Comment): Result<Unit> =
+        runCatching {
+            val ref = commentsRef(familyId, postId).document()
+            ref.set(comment.copy(id = ref.id)).await()
+        }
+
     companion object {
         const val POSTS = "posts"
+        const val COMMENTS = "comments"
     }
 }
