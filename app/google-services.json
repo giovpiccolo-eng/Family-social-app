@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "familynest-placeholder",
-    "storage_bucket": "familynest-placeholder.appspot.com"
+    "project_number": "369628001367",
+    "project_id": "familynest-1e2aa",
+    "storage_bucket": "familynest-1e2aa.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "mobilesdk_app_id": "1:369628001367:android:8ec7f69c3f72748fc81f12",
         "android_client_info": {
           "package_name": "com.familynest.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "000000000000-placeholderwebclientid.apps.googleusercontent.com",
+          "client_id": "369628001367-mclcid48j9ijfmks68ptla619g9hldhc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.familynest.app",
+            "certificate_hash": "e845bbff1ac2426a9510d69f4e0bae87bcb7d4b3"
+          }
+        },
+        {
+          "client_id": "369628001367-esc3rftai8iqtnj46bhfsjceanfknqv6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyPLACEHOLDER0PLACEHOLDER0PLACEHOLDER000"
+          "current_key": "AIzaSyCn57B9FZzlRc0rENnJyQn7KZxI_2-AjYk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "000000000000-placeholderwebclientid.apps.googleusercontent.com",
+              "client_id": "369628001367-esc3rftai8iqtnj46bhfsjceanfknqv6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
