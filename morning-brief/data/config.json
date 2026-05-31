@@ -1,0 +1,20 @@
+{
+  "interests": [
+    "AI",
+    "education",
+    "schools",
+    "neuroscience",
+    "astrophysics",
+    "geopolitics",
+    "leadership",
+    "finance",
+    "history",
+    "literature"
+  ],
+  "numStories": 10,
+  "wordCount": 3000,
+  "timezone": "Europe/Rome",
+  "sendHour": 7,
+  "recipient": "giovpiccolo@gmail.com",
+  "readerName": "Giovanni"
+}

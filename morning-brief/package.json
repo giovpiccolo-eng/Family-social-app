@@ -1,0 +1,30 @@
+{
+  "name": "morning-brief",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A personal morning news learning brief: scans the news each day and emails a ~3000-word learning essay tailored to your interests.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "brief": "tsx scripts/run-brief.ts",
+    "brief:force": "FORCE=1 tsx scripts/run-brief.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.65.0",
+    "marked": "^14.1.4",
+    "next": "^14.2.15",
+    "nodemailer": "^6.9.16",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.11",
+    "@types/nodemailer": "^6.4.16",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}

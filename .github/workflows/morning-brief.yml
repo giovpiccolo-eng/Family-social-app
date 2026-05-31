@@ -1,0 +1,47 @@
+name: Morning Brief
+
+# Sends the daily learning brief. GitHub cron runs in UTC and does not follow
+# DST, so we fire at both 05:00 and 06:00 UTC — that covers 07:00 Europe/Rome
+# in both CET (winter, UTC+1) and CEST (summer, UTC+2). The job itself has a
+# send-time guard that only proceeds when the local hour matches sendHour,
+# so exactly one of the two runs actually sends.
+on:
+  schedule:
+    - cron: "0 5 * * *"
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Bypass the send-time guard and send now"
+        type: boolean
+        default: true
+
+defaults:
+  run:
+    working-directory: morning-brief
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: morning-brief/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run morning brief
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIEF_MODEL: ${{ vars.BRIEF_MODEL }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          BRIEF_TO: ${{ secrets.BRIEF_TO }}
+          # Manual runs default to forcing; scheduled runs respect the guard.
+          FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.force == true && '1' || '0' }}
+        run: npm run brief
