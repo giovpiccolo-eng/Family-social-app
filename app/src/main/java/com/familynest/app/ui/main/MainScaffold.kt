@@ -3,6 +3,7 @@ package com.familynest.app.ui.main
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Checklist
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.People
@@ -22,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.familynest.app.data.model.AppUser
+import com.familynest.app.ui.calendar.CalendarScreen
 import com.familynest.app.ui.create.CreatePostScreen
 import com.familynest.app.ui.detail.PostDetailScreen
 import com.familynest.app.ui.family.FamilyScreen
@@ -30,13 +32,14 @@ import com.familynest.app.ui.projects.ProjectsScreen
 private sealed class Tab(val route: String, val label: String, val icon: ImageVector) {
     data object Feed : Tab("feed", "Feed", Icons.Rounded.Home)
     data object Projects : Tab("projects", "Plans", Icons.Rounded.Checklist)
+    data object Calendar : Tab("calendar", "Calendar", Icons.Rounded.CalendarMonth)
     data object Family : Tab("family", "Family", Icons.Rounded.People)
 }
 
 @Composable
 fun MainScaffold(user: AppUser) {
     val navController = rememberNavController()
-    val tabs = listOf(Tab.Feed, Tab.Projects, Tab.Family)
+    val tabs = listOf(Tab.Feed, Tab.Projects, Tab.Calendar, Tab.Family)
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination
@@ -87,6 +90,12 @@ fun MainScaffold(user: AppUser) {
             }
             composable(Tab.Projects.route) {
                 ProjectsScreen(
+                    user = user,
+                    onOpenPost = { navController.navigate("detail/$it") },
+                )
+            }
+            composable(Tab.Calendar.route) {
+                CalendarScreen(
                     user = user,
                     onOpenPost = { navController.navigate("detail/$it") },
                 )

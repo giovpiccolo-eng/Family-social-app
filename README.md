@@ -22,6 +22,12 @@ through together.
     status (Dreaming → Planned → In progress → Done), an optional target date, and a checklist
   - 🖼️ **Photo** — shared images/memories
 - **Plans view** — a task-manager board of every actionable item grouped by status.
+- **Calendar view** — every dated item (events, plans, project deadlines) on a
+  chronological agenda grouped by month, with past items dimmed.
+- **Comments** — a conversation thread on every post.
+- **Assign checklist steps** — give any step to a specific family member.
+- **Push notifications** — everyone gets pinged when something new is shared (via a
+  Cloud Function — see *Push notifications* below).
 - **Cheers** — lightweight likes to encourage each other.
 - **Family view** — members, roles, and a shareable invite code.
 
@@ -89,6 +95,28 @@ Install the new APK and sign in. 🎉
 
 ---
 
+## 🔔 Push notifications (Cloud Function)
+
+When someone creates a post, every *other* family member's devices get a push. The
+app already registers each device's FCM token on the user's profile; the sending
+happens in a Cloud Function in [`functions/`](functions/index.js).
+
+To enable it:
+```bash
+npm install -g firebase-tools
+firebase login
+firebase use --add            # pick your Firebase project
+cd functions && npm install && cd ..
+firebase deploy --only functions
+```
+> Cloud Functions require the Firebase **Blaze (pay-as-you-go)** plan, which has a
+> generous free tier — a single family will almost certainly stay within it.
+>
+> `firebase deploy` also publishes the Firestore/Storage rules below (they're wired
+> up in [`firebase.json`](firebase.json)). Run `firebase deploy` to push everything.
+
+On Android 13+ the app asks for notification permission the first time you sign in.
+
 ## 🔒 Suggested Firestore security rules
 
 Start in test mode, then tighten to "only members of your own family can read/write":
@@ -115,8 +143,15 @@ service cloud.firestore {
          request.auth.uid in request.resource.data.memberIds);
 
       match /posts/{postId} {
-        allow read, create, update, delete: if signedIn() &&
-          request.auth.uid in get(/databases/$(database)/documents/families/$(familyId)).data.memberIds;
+        function isMember() {
+          return request.auth.uid in
+            get(/databases/$(database)/documents/families/$(familyId)).data.memberIds;
+        }
+        allow read, create, update, delete: if signedIn() && isMember();
+
+        match /comments/{commentId} {
+          allow read, create, update, delete: if signedIn() && isMember();
+        }
       }
     }
   }
@@ -145,19 +180,24 @@ app/src/main/java/com/familynest/app/
 ├── MainActivity.kt           # Single activity, hosts Compose
 ├── di/Graph.kt               # Tiny manual DI (no kapt/KSP)
 ├── data/
-│   ├── model/Models.kt       # AppUser, Family, Post, TaskItem + enums
+│   ├── model/Models.kt       # AppUser, Family, Post, TaskItem, Comment + enums
 │   └── repository/           # AuthRepository, FamilyRepository, PostRepository
+├── notifications/            # FCM service + notification channel/helper
 └── ui/
     ├── theme/                # Material 3 theme (twilight + gold on cream)
     ├── SessionViewModel.kt   # Decides: SignedOut / NeedsFamily / Ready
-    ├── FamilyNestApp.kt      # Root routing composable
+    ├── FamilyNestApp.kt      # Root routing + push-token registration
     ├── auth/                 # Login (Google Sign-In)
     ├── family/               # Create/join family + Family (members) screen
     ├── main/                 # MainScaffold (bottom nav) + Feed
     ├── create/               # Create-post flow
     ├── projects/             # Task-manager "Plans" board
-    ├── detail/               # Post detail (status, checklist, cheers)
+    ├── calendar/             # Chronological calendar/agenda of dated items
+    ├── detail/               # Post detail (status, checklist, assignees, comments, cheers)
     └── components/           # PostCard, Avatar, chips, helpers
+
+functions/                    # Cloud Function: push on new post
+firestore.rules · storage.rules · firebase.json
 ```
 
 **Data model in Firestore:**
@@ -179,7 +219,7 @@ app/src/main/java/com/familynest/app/
 | Images | Coil |
 
 ## Roadmap ideas
-- Comments / threaded discussion on posts
-- Push notifications when something new is shared
-- Assigning checklist steps to specific family members
-- A shared family calendar view of events
+- Threaded replies on comments
+- Deep-link notification taps straight to the relevant post
+- Reminders ahead of an event's target date
+- Per-member activity / "what's mine to do" view

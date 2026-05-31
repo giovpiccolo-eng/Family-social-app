@@ -42,6 +42,18 @@ data class TaskItem(
     val id: String = "",
     val text: String = "",
     val done: Boolean = false,
+    val assigneeId: String = "",
+    val assigneeName: String = "",
+)
+
+/** A comment on a post (mirrors `families/{id}/posts/{id}/comments/{id}`). */
+data class Comment(
+    val id: String = "",
+    val authorId: String = "",
+    val authorName: String = "",
+    val authorPhotoUrl: String = "",
+    val text: String = "",
+    val createdAt: Long = System.currentTimeMillis(),
 )
 
 /** A family member's profile (mirrors a Firestore `users/{uid}` document). */
@@ -52,6 +64,7 @@ data class AppUser(
     val photoUrl: String = "",
     val familyId: String = "",
     val role: String = MemberRole.CHILD.name,
+    val fcmTokens: List<String> = emptyList(),
 ) {
     val roleEnum: MemberRole
         get() = runCatching { MemberRole.valueOf(role) }.getOrDefault(MemberRole.CHILD)

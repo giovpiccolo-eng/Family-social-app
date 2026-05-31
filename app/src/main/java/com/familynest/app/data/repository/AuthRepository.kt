@@ -4,6 +4,7 @@ import com.familynest.app.data.model.AppUser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -62,6 +63,14 @@ class AuthRepository(
                 )
             ).await()
         }
+    }
+
+    /** Stores this device's FCM token on the user's profile so pushes can reach it. */
+    suspend fun saveFcmToken(token: String): Result<Unit> = runCatching {
+        val uid = currentUid ?: return@runCatching
+        db.collection(USERS).document(uid)
+            .update("fcmTokens", FieldValue.arrayUnion(token))
+            .await()
     }
 
     fun signOut() = auth.signOut()

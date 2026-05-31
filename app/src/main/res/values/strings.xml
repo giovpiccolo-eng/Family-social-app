@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FamilyNest</string>
+    <string name="default_notification_channel_id">family_updates</string>
 </resources>
