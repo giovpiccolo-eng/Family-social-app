@@ -14,4 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ScholarQuest"
-include ':app'
+include(":app")
