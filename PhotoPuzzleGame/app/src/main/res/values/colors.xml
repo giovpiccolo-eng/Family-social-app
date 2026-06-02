@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_warm">#F5EFE6</color>
+    <color name="text_primary">#2C2416</color>
+    <color name="text_secondary">#7A6A55</color>
+    <color name="accent">#8B4513</color>
+    <color name="hint_btn">#A0714F</color>
+    <color name="progress_track">#DDD0BB</color>
+</resources>
