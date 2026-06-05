@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Dispensa</string>
+
+    <!-- Topics list -->
+    <string name="topics_title">I miei argomenti</string>
+    <string name="topics_empty">Nessun argomento. Tocca + per iniziare.</string>
+    <string name="new_topic">Nuovo argomento</string>
+    <string name="topic_title_hint">Titolo dell\'argomento (es. Le derivate)</string>
+    <string name="topic_subject_hint">Materia (es. Matematica, Storia)</string>
+    <string name="create">Crea</string>
+    <string name="cancel">Annulla</string>
+    <string name="delete">Elimina</string>
+    <string name="confirm_delete_topic">Eliminare questo argomento e tutti i suoi materiali?</string>
+
+    <!-- Topic detail -->
+    <string name="photos_section">Foto del materiale</string>
+    <string name="dispense_section">Dispense generate</string>
+    <string name="add_photo">Aggiungi foto</string>
+    <string name="take_photo">Scatta foto</string>
+    <string name="from_gallery">Dalla galleria</string>
+    <string name="generate_dispensa">Genera dispensa</string>
+    <string name="generating">Sto creando la dispensa…</string>
+    <string name="generating_hint">Claude sta analizzando le foto. Tienilo aperto.</string>
+    <string name="optional_notes_hint">Note opzionali (cosa vuoi approfondire?)</string>
+    <string name="no_photos_yet">Aggiungi delle foto del materiale prima di generare la dispensa.</string>
+
+    <!-- Settings -->
+    <string name="settings">Impostazioni</string>
+    <string name="api_key_label">Chiave API OpenRouter</string>
+    <string name="api_key_hint">sk-or-…</string>
+    <string name="api_key_help">Crea un account gratuito su openrouter.ai e incolla qui la tua API key.</string>
+    <string name="model_label">Modello AI</string>
+    <string name="save">Salva</string>
+    <string name="settings_saved">Impostazioni salvate.</string>
+    <string name="missing_api_key">Imposta prima la tua API key OpenRouter nelle Impostazioni.</string>
+
+    <!-- Dispensa viewer -->
+    <string name="save_pdf">Salva PDF</string>
+    <string name="share">Condividi</string>
+    <string name="retry">Riprova</string>
+
+    <!-- Errors -->
+    <string name="error_generic">Qualcosa è andato storto. Riprova.</string>
+    <string name="error_no_internet">Connessione assente. Verifica la rete e riprova.</string>
+    <string name="error_camera_permission">Per scattare foto serve il permesso fotocamera.</string>
+</resources>

@@ -25,12 +25,22 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+      - name: Build FamilyNest debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
 
-      - name: Upload debug APK
+      - name: Build Dispensa debug APK
+        run: ./gradlew :dispensa:assembleDebug --no-daemon --stacktrace
+
+      - name: Upload FamilyNest APK
         uses: actions/upload-artifact@v4
         with:
           name: FamilyNest-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Upload Dispensa APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dispensa-debug-apk
+          path: dispensa/build/outputs/apk/debug/dispensa-debug.apk
           if-no-files-found: error

@@ -1,3 +1,71 @@
+# 👨‍👩‍👦 Two apps in one repo
+
+This repository ships **two** independent Android apps:
+
+1. **🪺 FamilyNest** — a private family social/task-board app (see below).
+2. **📚 Dispensa** — a study helper for an Italian high-school student with ADHD
+   and high cognitive potential. Take photos of book pages or notes, and Claude
+   (via the OpenRouter free tier) turns them into a print-ready PDF dispensa
+   with mindmap, summary, key points, definitions, infographic and self-check
+   questions — all in Italian. See [`dispensa/`](dispensa/) for sources and
+   [Dispensa quickstart](#-dispensa-quickstart) below.
+
+Each app is its own Gradle module and produces its own APK:
+
+| App        | Module        | APK path                                                  |
+|------------|--------------|------------------------------------------------------------|
+| FamilyNest | `:app`       | `app/build/outputs/apk/debug/app-debug.apk`               |
+| Dispensa   | `:dispensa`  | `dispensa/build/outputs/apk/debug/dispensa-debug.apk`     |
+
+The GitHub Actions workflow (`Android CI`) builds both on every push and
+uploads them as artefacts `FamilyNest-debug-apk` and `Dispensa-debug-apk`.
+
+---
+
+## 📚 Dispensa quickstart
+
+**Cosa fa.** Crei un *argomento* (es. "Le derivate"), scatti con la fotocamera
+le foto delle pagine del libro / dei tuoi appunti / di schemi, premi
+**Genera dispensa** e in pochi secondi l'app produce una pagina HTML
+ADHD-friendly che puoi consultare e salvare in PDF. Tutto in italiano,
+ottimizzato per il terzo anno di liceo scientifico.
+
+**Struttura di ogni dispensa generata:**
+
+1. Riassunto breve (5-7 righe)
+2. Mappa concettuale (Mermaid mindmap)
+3. Punti chiave (massimo 8)
+4. Definizioni e formule (in box evidenziati)
+5. Infografica / schema (HTML+CSS, niente immagini esterne)
+6. Domande di autoverifica (con risposta nascosta)
+
+### Come si configura
+
+1. **Installa l'APK**: prendi `Dispensa-debug-apk` da GitHub Actions oppure
+   esegui `./gradlew :dispensa:assembleDebug` e copia l'APK sul telefono.
+2. **Crea un account gratuito su [openrouter.ai](https://openrouter.ai)** e
+   genera una API key (è gratuita per i modelli `:free`).
+3. **Nell'app**: in alto a destra, icona ⚙️ → incolla la API key. Il modello
+   di default è `google/gemini-2.0-flash-exp:free` (modello vision gratuito).
+   Se OpenRouter cambia quali modelli sono `:free`, puoi modificarlo qui.
+4. **Crea un argomento, scatta le foto, premi "Genera dispensa".**
+   La dispensa si apre automaticamente — usa l'icona PDF in alto per salvare
+   o stampare con il sistema Android.
+
+### Note tecniche
+
+- Il prompt fisso italiano per Claude/AI è in
+  [`dispensa/.../DispensaPrompt.kt`](dispensa/src/main/java/com/dispensa/app/data/ai/DispensaPrompt.kt) —
+  modificalo lì se vuoi cambiare struttura, stile o materie.
+- I dati restano sul dispositivo: argomenti, foto e dispense in
+  `/data/data/com.dispensa.app/files/`. Nessun cloud, nessun account.
+- L'HTML generato è auto-contenuto (Mermaid caricato via CDN); la stampa
+  PDF passa per il `PrintManager` Android (media size A4).
+- La fotocamera usa `ActivityResultContracts.TakePicture` + `FileProvider`,
+  così niente CameraX/permessi complicati.
+
+---
+
 # 🪺 FamilyNest
 
 A private, aspirational social space for one family — parents and kids — to share

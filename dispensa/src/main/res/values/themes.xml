@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.Dispensa" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#1F2A44</item>
+        <item name="android:windowBackground">#FDFCF7</item>
+    </style>
+</resources>

@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Open book + lightning bolt: study + ADHD-friendly energy -->
+    <path
+        android:pathData="M30,40 L52,36 L52,80 L30,84 Z"
+        android:fillColor="#FDFCF7"
+        android:strokeColor="#FDFCF7"
+        android:strokeWidth="1"/>
+    <path
+        android:pathData="M78,40 L56,36 L56,80 L78,84 Z"
+        android:fillColor="#FDFCF7"
+        android:strokeColor="#FDFCF7"
+        android:strokeWidth="1"/>
+    <path
+        android:pathData="M54,38 L54,82"
+        android:strokeColor="#1F2A44"
+        android:strokeWidth="2"/>
+    <path
+        android:pathData="M60,46 L48,64 L56,64 L52,76 L66,58 L58,58 Z"
+        android:fillColor="#F5C518"/>
+</vector>
