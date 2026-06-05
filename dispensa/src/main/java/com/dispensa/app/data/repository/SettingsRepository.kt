@@ -27,9 +27,13 @@ class SettingsRepository(private val context: Context) {
 
     companion object {
         /**
-         * Free vision-capable model on OpenRouter as of 2026. User can change
-         * this in Settings if OpenRouter rotates which models are free.
+         * Free vision-capable model on OpenRouter. The :free tier rotates which
+         * models are available; if this one stops working with a 404, change it
+         * from the Settings screen. Other current free vision options to try:
+         *   - google/gemma-4-26b-a4b-it:free
+         *   - moonshotai/kimi-k2.6:free
+         *   - nvidia/nemotron-nano-12b-v2-vl:free
          */
-        const val DEFAULT_MODEL = "google/gemini-2.0-flash-exp:free"
+        const val DEFAULT_MODEL = "google/gemma-4-31b-it:free"
     }
 }

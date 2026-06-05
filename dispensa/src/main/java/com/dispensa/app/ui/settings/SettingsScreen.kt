@@ -98,7 +98,16 @@ fun SettingsScreen(onBack: () -> Unit) {
                 label = { Text(stringResource(R.string.model_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
-                supportingText = { Text("es. google/gemini-2.0-flash-exp:free", style = MaterialTheme.typography.bodyMedium) },
+                supportingText = {
+                    Text(
+                        "Modelli vision gratuiti su OpenRouter (provane uno se l'altro dà 404):\n" +
+                            "• google/gemma-4-31b-it:free\n" +
+                            "• google/gemma-4-26b-a4b-it:free\n" +
+                            "• moonshotai/kimi-k2.6:free\n" +
+                            "• nvidia/nemotron-nano-12b-v2-vl:free",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                },
             )
             Spacer(Modifier.height(8.dp))
             Button(
