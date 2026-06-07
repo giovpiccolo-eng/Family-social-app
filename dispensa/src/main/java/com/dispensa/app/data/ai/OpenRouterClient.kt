@@ -50,7 +50,7 @@ class OpenRouterClient(
         runCatching {
             val key = apiKeyProvider().trim()
             require(key.isNotEmpty()) { "MISSING_API_KEY" }
-            val model = modelProvider().trim().ifEmpty { "google/gemini-2.0-flash-exp:free" }
+            val model = modelProvider().trim().ifEmpty { "google/gemma-4-31b-it:free" }
 
             val userContent = buildJsonArray {
                 add(buildJsonObject {
@@ -89,7 +89,7 @@ class OpenRouterClient(
                 .post(body.toRequestBody("application/json".toMediaType()))
                 .build()
 
-            client.newCall(request).execute().use { resp ->
+            executeWithRateLimitRetry(request).use { resp ->
                 val text = resp.body?.string().orEmpty()
                 if (!resp.isSuccessful) {
                     throw RuntimeException("HTTP ${resp.code}: ${text.take(500)}")
@@ -112,6 +112,24 @@ class OpenRouterClient(
         }
     }
 
+    /**
+     * On 429 (rate limit) honour the Retry-After header (or back off ~6s then
+     * ~15s) and retry up to twice. Anything else returns immediately so the
+     * caller can decide.
+     */
+    private suspend fun executeWithRateLimitRetry(request: Request): okhttp3.Response {
+        var attempt = 0
+        while (true) {
+            val resp = client.newCall(request).execute()
+            if (resp.code != 429 || attempt >= 2) return resp
+            val waitSec = resp.header("Retry-After")?.toLongOrNull()
+                ?: if (attempt == 0) 6L else 15L
+            resp.close()
+            kotlinx.coroutines.delay(waitSec.coerceIn(1, 30) * 1000)
+            attempt++
+        }
+    }
+
     /** Drop markdown fences if the model accidentally adds them. */
     private fun cleanHtml(raw: String): String {
         var s = raw.trim()
@@ -123,7 +141,7 @@ class OpenRouterClient(
         return s.substring(i).trim()
     }
 
-    private fun encodePhotoAsDataUrl(file: File, maxEdge: Int = 1280, quality: Int = 78): String? {
+    private fun encodePhotoAsDataUrl(file: File, maxEdge: Int = 1024, quality: Int = 70): String? {
         if (!file.exists()) return null
         val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeFile(file.absolutePath, opts)

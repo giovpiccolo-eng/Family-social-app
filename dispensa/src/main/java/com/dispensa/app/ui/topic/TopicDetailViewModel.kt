@@ -167,10 +167,16 @@ class TopicDetailViewModel(
         return when {
             msg.contains("MISSING_API_KEY") -> "Imposta prima la tua API key OpenRouter nelle Impostazioni."
             msg.contains("401") -> "Chiave API non valida. Verifica nelle Impostazioni."
-            msg.contains("429") -> "Limite di richieste raggiunto. Riprova fra qualche minuto."
+            msg.contains("429") -> buildString {
+                append("Limite di richieste OpenRouter raggiunto.\n\n")
+                append("Cosa puoi fare:\n")
+                append("• Aspetta qualche minuto e riprova (limite di burst: 20 richieste/min).\n")
+                append("• Se generi spesso: il tier gratuito è 50 dispense/giorno; sale a 1000/giorno se aggiungi 10$ di credito una volta sola su openrouter.ai.\n")
+                append("• Prova un altro modello vision gratuito dalle Impostazioni (gemma-4-26b, kimi-k2.6, nemotron-nano).")
+            }
             msg.contains("UnknownHost", true) || msg.contains("timeout", true) ->
                 "Problema di rete. Verifica la connessione."
-            else -> "Errore: ${msg.take(180)}"
+            else -> "Errore: ${msg.take(220)}"
         }
     }
 
