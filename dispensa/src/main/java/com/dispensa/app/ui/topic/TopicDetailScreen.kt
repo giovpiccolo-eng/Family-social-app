@@ -119,9 +119,9 @@ fun TopicDetailScreen(
     }
 
     val pickPhotoLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-    ) { uri: Uri? ->
-        if (uri != null) {
+        contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = 20),
+    ) { uris: List<Uri> ->
+        uris.forEach { uri ->
             val target = vm.newPhotoFile()
             ctx.contentResolver.openInputStream(uri)?.use { input ->
                 target.outputStream().use { input.copyTo(it) }
