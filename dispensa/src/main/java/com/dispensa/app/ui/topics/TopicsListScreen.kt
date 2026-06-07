@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -56,6 +57,7 @@ import java.util.Locale
 fun TopicsListScreen(
     onOpenTopic: (String) -> Unit,
     onOpenSettings: () -> Unit,
+    onOpenPomodoro: () -> Unit,
 ) {
     val app = LocalContext.current.applicationContext as DispensaApp
     val vm: TopicsListViewModel = viewModel(factory = TopicsListViewModel.factory(app))
@@ -69,6 +71,9 @@ fun TopicsListScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.topics_title), fontWeight = FontWeight.SemiBold) },
                 actions = {
+                    IconButton(onClick = onOpenPomodoro) {
+                        Icon(Icons.Filled.Timer, contentDescription = stringResource(R.string.pomodoro))
+                    }
                     IconButton(onClick = onOpenSettings) {
                         Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.settings))
                     }

@@ -48,4 +48,40 @@
     <string name="error_generic">Qualcosa è andato storto. Riprova.</string>
     <string name="error_no_internet">Connessione assente. Verifica la rete e riprova.</string>
     <string name="error_camera_permission">Per scattare foto serve il permesso fotocamera.</string>
+
+    <!-- TTS / Audio -->
+    <string name="play_audio">Ascolta</string>
+    <string name="pause_audio">Pausa</string>
+    <string name="stop_audio">Stop</string>
+    <string name="tts_not_ready">Audio non disponibile su questo dispositivo.</string>
+
+    <!-- Quiz -->
+    <string name="quiz">Quiz</string>
+    <string name="show_answer">Mostra risposta</string>
+    <string name="hide_answer">Nascondi risposta</string>
+    <string name="next_question">Avanti</string>
+    <string name="prev_question">Indietro</string>
+    <string name="restart_quiz">Ricomincia</string>
+    <string name="quiz_empty">Nessuna domanda trovata in questa dispensa.</string>
+    <string name="quiz_progress">Domanda %1$d di %2$d</string>
+    <string name="quiz_done">Hai visto tutte le domande. Pronto per la verifica.</string>
+
+    <!-- Pomodoro -->
+    <string name="pomodoro">Studio guidato</string>
+    <string name="start">Avvia</string>
+    <string name="pause">Pausa</string>
+    <string name="resume">Riprendi</string>
+    <string name="stop">Stop</string>
+    <string name="focus_phase">Studio</string>
+    <string name="break_phase">Pausa</string>
+    <string name="choose_focus_minutes">Quanto vuoi studiare di fila?</string>
+    <string name="minutes">min</string>
+    <string name="pomodoro_focus_done">Tempo di studio terminato. Fai una pausa.</string>
+    <string name="pomodoro_break_done">Pausa finita. Pronto a ripartire?</string>
+    <string name="pomodoro_channel_name">Studio guidato</string>
+    <string name="pomodoro_channel_desc">Avvisi al termine di studio e pausa</string>
+
+    <!-- Document scanner -->
+    <string name="scan_document">Scansiona</string>
+    <string name="scan_failed">Scansione non riuscita.</string>
 </resources>

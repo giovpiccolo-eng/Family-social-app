@@ -14,7 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.PictureAsPdf
+import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +43,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
 import com.dispensa.app.DispensaApp
 import com.dispensa.app.R
+import com.dispensa.app.data.audio.TtsController
 import com.dispensa.app.data.model.DispensaStatus
 import java.io.File
 
@@ -48,6 +53,7 @@ fun DispensaViewerScreen(
     topicId: String,
     dispensaId: String,
     onBack: () -> Unit,
+    onOpenQuiz: () -> Unit,
 ) {
     val ctx = LocalContext.current
     val app = ctx.applicationContext as DispensaApp
@@ -68,6 +74,10 @@ fun DispensaViewerScreen(
     var webViewRef by remember { mutableStateOf<WebView?>(null) }
     var loaded by remember { mutableStateOf(false) }
 
+    val tts = remember { TtsController(ctx) }
+    val ttsState by tts.state.collectAsState()
+    DisposableEffect(Unit) { onDispose { tts.shutdown() } }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -78,6 +88,25 @@ fun DispensaViewerScreen(
                     }
                 },
                 actions = {
+                    IconButton(
+                        onClick = {
+                            file?.let { f ->
+                                if (ttsState == TtsController.State.Playing) tts.stop()
+                                else tts.speakDispensa(f.readText())
+                            }
+                        },
+                        enabled = file != null && ttsState != TtsController.State.Loading && ttsState != TtsController.State.Error,
+                    ) {
+                        val icon = if (ttsState == TtsController.State.Playing) Icons.Filled.Stop else Icons.Filled.VolumeUp
+                        val desc = if (ttsState == TtsController.State.Playing)
+                            stringResource(R.string.stop_audio)
+                        else stringResource(R.string.play_audio)
+                        Icon(icon, contentDescription = desc)
+                    }
+                    IconButton(
+                        onClick = onOpenQuiz,
+                        enabled = file != null && loaded,
+                    ) { Icon(Icons.Filled.Quiz, contentDescription = stringResource(R.string.quiz)) }
                     IconButton(
                         onClick = { file?.let { shareHtmlFile(ctx, it, safeTitle) } },
                         enabled = file != null && loaded,

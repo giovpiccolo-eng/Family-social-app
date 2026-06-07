@@ -34,6 +34,8 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.PictureAsPdf
+import androidx.compose.material.icons.filled.DocumentScanner
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -88,8 +90,10 @@ fun TopicDetailScreen(
     topicId: String,
     onBack: () -> Unit,
     onOpenDispensa: (String) -> Unit,
+    onOpenPomodoro: (String) -> Unit,
 ) {
     val ctx = LocalContext.current
+    val activity = remember(ctx) { ctx as android.app.Activity }
     val app = ctx.applicationContext as DispensaApp
     val vm: TopicDetailViewModel = viewModel(factory = TopicDetailViewModel.factory(app, topicId))
     val state by vm.state.collectAsState()
@@ -137,6 +141,41 @@ fun TopicDetailScreen(
         if (uri != null) vm.importPdf(ctx.contentResolver, uri, ctx.cacheDir)
     }
 
+    val docScannerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+    ) { result ->
+        if (result.resultCode != android.app.Activity.RESULT_OK) return@rememberLauncherForActivityResult
+        val scanResult = com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
+            .fromActivityResultIntent(result.data)
+        scanResult?.pages?.forEach { page ->
+            val source = page.imageUri
+            val target = vm.newPhotoFile()
+            runCatching {
+                ctx.contentResolver.openInputStream(source)?.use { input ->
+                    target.outputStream().use { input.copyTo(it) }
+                }
+            }
+            if (target.exists() && target.length() > 0) vm.onPhotoTaken(target)
+        }
+    }
+
+    fun startDocumentScan() {
+        val options = com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.Builder()
+            .setGalleryImportAllowed(false)
+            .setPageLimit(25)
+            .setResultFormats(com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG)
+            .setScannerMode(com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.SCANNER_MODE_FULL)
+            .build()
+        com.google.mlkit.vision.documentscanner.GmsDocumentScanning
+            .getClient(options)
+            .getStartScanIntent(activity)
+            .addOnSuccessListener { intentSender ->
+                docScannerLauncher.launch(
+                    androidx.activity.result.IntentSenderRequest.Builder(intentSender).build()
+                )
+            }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -162,10 +201,16 @@ fun TopicDetailScreen(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 },
+                actions = {
+                    IconButton(onClick = { onOpenPomodoro(topic?.title.orEmpty()) }) {
+                        Icon(Icons.Filled.Timer, contentDescription = stringResource(R.string.pomodoro))
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
             )
         },
@@ -189,6 +234,13 @@ fun TopicDetailScreen(
             SectionHeader(stringResource(R.string.photos_section))
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SourceButton(
+                    icon = Icons.Filled.DocumentScanner,
+                    label = stringResource(R.string.scan_document),
+                    modifier = Modifier.weight(1f),
+                    enabled = !state.importingPdf,
+                    onClick = { startDocumentScan() },
+                )
                 SourceButton(
                     icon = Icons.Filled.CameraAlt,
                     label = stringResource(R.string.take_photo),

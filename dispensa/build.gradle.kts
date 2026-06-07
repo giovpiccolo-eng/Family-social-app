@@ -64,4 +64,6 @@ dependencies {
 
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.jsoup)
+    implementation(libs.mlkit.doc.scanner)
 }
