@@ -18,6 +18,11 @@
     <string name="add_photo">Aggiungi foto</string>
     <string name="take_photo">Scatta foto</string>
     <string name="from_gallery">Dalla galleria</string>
+    <string name="from_pdf">Da PDF</string>
+    <string name="importing_pdf">Importazione PDF…</string>
+    <string name="pdf_imported">Importate %1$d pagine dal PDF.</string>
+    <string name="pdf_too_many_pages">PDF con troppe pagine: importate solo le prime %1$d.</string>
+    <string name="pdf_open_failed">Impossibile aprire il PDF.</string>
     <string name="generate_dispensa">Genera dispensa</string>
     <string name="generating">Sto creando la dispensa…</string>
     <string name="generating_hint">Claude sta analizzando le foto. Tienilo aperto.</string>

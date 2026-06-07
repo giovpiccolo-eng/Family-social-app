@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -130,6 +131,12 @@ fun TopicDetailScreen(
         }
     }
 
+    val pickPdfLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+    ) { uri: Uri? ->
+        if (uri != null) vm.importPdf(ctx.contentResolver, uri, ctx.cacheDir)
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -181,8 +188,12 @@ fun TopicDetailScreen(
             // Photos section header + action buttons
             SectionHeader(stringResource(R.string.photos_section))
 
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Button(
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SourceButton(
+                    icon = Icons.Filled.CameraAlt,
+                    label = stringResource(R.string.take_photo),
+                    modifier = Modifier.weight(1f),
+                    enabled = !state.importingPdf,
                     onClick = {
                         val granted = ContextCompat.checkSelfPermission(
                             ctx, Manifest.permission.CAMERA
@@ -197,13 +208,12 @@ fun TopicDetailScreen(
                             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                         }
                     },
+                )
+                SourceButton(
+                    icon = Icons.Filled.Image,
+                    label = stringResource(R.string.from_gallery),
                     modifier = Modifier.weight(1f),
-                ) {
-                    Icon(Icons.Filled.CameraAlt, contentDescription = null)
-                    Spacer(Modifier.size(8.dp))
-                    Text(stringResource(R.string.take_photo))
-                }
-                Button(
+                    enabled = !state.importingPdf,
                     onClick = {
                         pickPhotoLauncher.launch(
                             androidx.activity.result.PickVisualMediaRequest(
@@ -211,11 +221,25 @@ fun TopicDetailScreen(
                             )
                         )
                     },
+                )
+                SourceButton(
+                    icon = Icons.Filled.PictureAsPdf,
+                    label = stringResource(R.string.from_pdf),
                     modifier = Modifier.weight(1f),
-                ) {
-                    Icon(Icons.Filled.Image, contentDescription = null)
-                    Spacer(Modifier.size(8.dp))
-                    Text(stringResource(R.string.from_gallery))
+                    enabled = !state.importingPdf,
+                    onClick = { pickPdfLauncher.launch(arrayOf("application/pdf")) },
+                )
+            }
+
+            if (state.importingPdf) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
+                    Spacer(Modifier.size(10.dp))
+                    Text(
+                        stringResource(R.string.importing_pdf),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.outline,
+                    )
                 }
             }
 
@@ -310,6 +334,16 @@ fun TopicDetailScreen(
         )
     }
 
+    state.infoMessage?.let { msg ->
+        AlertDialog(
+            onDismissRequest = { vm.clearInfo() },
+            text = { Text(msg) },
+            confirmButton = {
+                TextButton(onClick = { vm.clearInfo() }) { Text("OK") }
+            },
+        )
+    }
+
     state.generationError?.let { err ->
         AlertDialog(
             onDismissRequest = { vm.clearError() },
@@ -320,6 +354,28 @@ fun TopicDetailScreen(
                 TextButton(onClick = { vm.clearError() }) { Text("OK") }
             },
         )
+    }
+}
+
+@Composable
+private fun SourceButton(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = modifier,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 12.dp),
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(icon, contentDescription = null)
+            Spacer(Modifier.size(4.dp))
+            Text(label, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
+        }
     }
 }
 

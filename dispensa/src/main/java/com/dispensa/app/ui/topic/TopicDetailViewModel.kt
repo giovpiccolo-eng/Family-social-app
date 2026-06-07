@@ -1,5 +1,12 @@
 package com.dispensa.app.ui.topic
 
+import android.content.ContentResolver
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.pdf.PdfRenderer
+import android.net.Uri
+import android.os.ParcelFileDescriptor
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,17 +17,25 @@ import com.dispensa.app.data.ai.OpenRouterClient
 import com.dispensa.app.data.model.Photo
 import com.dispensa.app.data.model.Topic
 import com.dispensa.app.data.repository.TopicRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.UUID
+
+private const val MAX_PDF_PAGES = 25
+private const val PDF_RENDER_TARGET_WIDTH = 1600
 
 data class TopicDetailUi(
     val topic: Topic? = null,
     val generating: Boolean = false,
+    val importingPdf: Boolean = false,
+    val infoMessage: String? = null,
     val generationError: String? = null,
 )
 
@@ -83,6 +98,68 @@ class TopicDetailViewModel(
 
     fun clearError() {
         local.value = local.value.copy(generationError = null)
+    }
+
+    fun clearInfo() {
+        local.value = local.value.copy(infoMessage = null)
+    }
+
+    /**
+     * Render each page of the picked PDF as a JPEG and add it to the topic as
+     * a regular photo. The generation flow then treats them like any other
+     * source image.
+     */
+    fun importPdf(contentResolver: ContentResolver, uri: Uri, cacheDir: File) {
+        viewModelScope.launch {
+            local.value = local.value.copy(importingPdf = true, generationError = null, infoMessage = null)
+            val result = runCatching {
+                withContext(Dispatchers.IO) {
+                    val tempPdf = File(cacheDir, "import_${UUID.randomUUID()}.pdf")
+                    contentResolver.openInputStream(uri)?.use { input ->
+                        tempPdf.outputStream().use { input.copyTo(it) }
+                    } ?: throw IllegalStateException("Cannot open PDF stream")
+
+                    val pfd = ParcelFileDescriptor.open(tempPdf, ParcelFileDescriptor.MODE_READ_ONLY)
+                    val totalPages: Int
+                    val rendered: Int
+                    PdfRenderer(pfd).use { renderer ->
+                        totalPages = renderer.pageCount
+                        rendered = minOf(totalPages, MAX_PDF_PAGES)
+                        for (i in 0 until rendered) {
+                            renderer.openPage(i).use { page ->
+                                val ratio = PDF_RENDER_TARGET_WIDTH.toFloat() / page.width
+                                val targetW = PDF_RENDER_TARGET_WIDTH
+                                val targetH = (page.height * ratio).toInt().coerceAtLeast(1)
+                                val bmp = Bitmap.createBitmap(targetW, targetH, Bitmap.Config.ARGB_8888)
+                                Canvas(bmp).drawColor(Color.WHITE)
+                                page.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                                val outFile = repo.newPhotoFile(topicId)
+                                outFile.outputStream().use {
+                                    bmp.compress(Bitmap.CompressFormat.JPEG, 80, it)
+                                }
+                                bmp.recycle()
+                                repo.addPhoto(topicId, outFile)
+                            }
+                        }
+                    }
+                    pfd.close()
+                    tempPdf.delete()
+                    rendered to totalPages
+                }
+            }
+            result.onSuccess { (imported, total) ->
+                val msg = if (total > imported)
+                    "PDF con troppe pagine: importate solo le prime $imported."
+                else
+                    "Importate $imported pagine dal PDF."
+                local.value = local.value.copy(importingPdf = false, infoMessage = msg)
+            }.onFailure {
+                local.value = local.value.copy(
+                    importingPdf = false,
+                    generationError = "Impossibile aprire il PDF: ${it.message?.take(120) ?: ""}",
+                )
+            }
+        }
     }
 
     private fun friendly(msg: String?): String {
