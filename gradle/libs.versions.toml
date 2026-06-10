@@ -36,7 +36,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
-pdfbox-android = { group = "com.tom_roush", name = "pdfbox-android", version.ref = "pdfboxAndroid" }
+pdfbox-android = { group = "com.github.TomRoush", name = "PdfBox-Android", version.ref = "pdfboxAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
