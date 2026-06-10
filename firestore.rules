@@ -1,30 +1,97 @@
 rules_version = '2';
+
+// Multi-tenant rules. Every document is partitioned by schoolId.
+// Auth custom claims carry { schoolId, role } so rules avoid cross-doc reads.
 service cloud.firestore {
-  match /databases/{database}/documents {
+  match /databases/{db}/documents {
 
-    function signedIn() { return request.auth != null; }
-
-    // A user can read any profile (to show family members) but only edit their own.
-    match /users/{uid} {
-      allow read: if signedIn();
-      allow write: if signedIn() && request.auth.uid == uid;
+    function signedIn() {
+      return request.auth != null;
     }
 
-    // Families: members can read; creation is open to signed-in users; updates are
-    // limited to current or incoming members (so joining via invite code works).
-    match /families/{familyId} {
-      allow read: if signedIn();
-      allow create: if signedIn();
-      allow update: if signedIn() &&
-        (request.auth.uid in resource.data.memberIds ||
-         request.auth.uid in request.resource.data.memberIds);
+    function claims() {
+      return request.auth.token;
+    }
 
-      // Posts: only members of the family may read or write.
-      match /posts/{postId} {
-        allow read, create, update, delete: if signedIn() &&
-          request.auth.uid in
-            get(/databases/$(database)/documents/families/$(familyId)).data.memberIds;
-      }
+    function inSchool(schoolId) {
+      return signedIn() && claims().schoolId == schoolId;
+    }
+
+    function hasRole(role) {
+      return signedIn() && claims().role == role;
+    }
+
+    function isAdmin() { return hasRole('admin'); }
+    function isPrincipal() { return hasRole('principal') || isAdmin(); }
+
+    // schools/{schoolId} — admins manage their own school doc.
+    match /schools/{schoolId} {
+      allow read: if inSchool(schoolId);
+      allow create: if signedIn() && request.resource.data.ownerUid == request.auth.uid;
+      allow update, delete: if inSchool(schoolId) && isAdmin();
+    }
+
+    // users/{uid} — user can read/update own profile; admins can read in-school users.
+    match /users/{uid} {
+      allow read: if signedIn() && (
+        request.auth.uid == uid ||
+        (isAdmin() && resource.data.schoolId == claims().schoolId)
+      );
+      allow create: if signedIn() && request.auth.uid == uid;
+      allow update: if signedIn() && request.auth.uid == uid;
+      allow delete: if false;
+    }
+
+    // teachers/{teacherId}
+    match /teachers/{teacherId} {
+      allow read: if signedIn() && inSchool(resource.data.schoolId);
+      allow create: if isPrincipal() && inSchool(request.resource.data.schoolId);
+      allow update, delete: if isPrincipal() && inSchool(resource.data.schoolId);
+    }
+
+    // observations/{observationId}
+    match /observations/{observationId} {
+      allow read: if signedIn() && inSchool(resource.data.schoolId);
+      allow create: if isPrincipal() && inSchool(request.resource.data.schoolId)
+        && request.resource.data.observerId == request.auth.uid;
+      allow update: if isPrincipal() && inSchool(resource.data.schoolId);
+      allow delete: if isAdmin() && inSchool(resource.data.schoolId);
+    }
+
+    // evidence/{evidenceId} — denormalised mappings for dashboard queries.
+    match /evidence/{evidenceId} {
+      allow read: if signedIn() && inSchool(resource.data.schoolId);
+      // Writes only via server (admin SDK bypasses rules).
+      allow write: if false;
+    }
+
+    // classes/{classId} — SIS roster. CHILD_PROTECTION flag must never reach AI;
+    // enforced in server code (sanitiseRosterForAI), but visible to in-school staff here.
+    match /classes/{classId} {
+      allow read: if signedIn() && inSchool(resource.data.schoolId);
+      allow create, update: if isAdmin() && inSchool(request.resource.data.schoolId);
+      allow delete: if isAdmin() && inSchool(resource.data.schoolId);
+    }
+
+    // invites/{token} — school invites, readable only by addressee email or admin.
+    match /invites/{token} {
+      allow read: if signedIn() && (
+        resource.data.email == request.auth.token.email ||
+        (isAdmin() && resource.data.schoolId == claims().schoolId)
+      );
+      allow create: if isAdmin() && inSchool(request.resource.data.schoolId);
+      allow update, delete: if isAdmin() && inSchool(resource.data.schoolId);
+    }
+
+    // audit log — append-only via server.
+    match /audit/{entryId} {
+      allow read: if isAdmin() && inSchool(resource.data.schoolId);
+      allow write: if false;
+    }
+
+    // Default deny.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

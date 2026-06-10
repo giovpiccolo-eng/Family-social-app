@@ -1,185 +1,103 @@
-# 🪺 FamilyNest
+# Observer.AI
 
-A private, aspirational social space for one family — parents and kids — to share
-**ideas, events, plans, images, and ongoing projects**. It blends a warm, closed
-social feed with a light task-manager: events, plans, and projects carry a status,
-a target date, and a checklist, so the family can dream things up *and* follow
-through together.
+Web-based AI platform for automated teacher evaluation using the Danielson
+Framework for Teaching (2022 edition).
 
-> Built with **Kotlin + Jetpack Compose (Material 3)**, **MVVM**, and **Firebase**
-> (Auth · Cloud Firestore · Storage). Google Sign-In, real-time sync across phones.
+> Compresses the teacher observation cycle for international schools from 3–5
+> hours to under 30 minutes by integrating lesson audio, principal notes,
+> Google Classroom, and SIS data into an evidence-anchored Danielson
+> evaluation.
 
----
+## Status
 
-## ✨ What it does
+**Sprint 1 — Foundation.** Scaffold, auth, multi-tenant data model, security
+rules, and visual system are in place. See the build plan below for what
+comes next.
 
-- **Google sign-in** — everyone signs in with their Google account.
-- **Create or join a family** — a parent creates the "nest" and gets a 6-character
-  invite code; kids join with that code.
-- **Shared feed** — five kinds of posts:
-  - 💡 **Idea** — aspirational, free-form thoughts (the heart of the app)
-  - 📅 **Event** · 🗺️ **Plan** · 🛠️ **Project** — these are *actionable*: they have a
-    status (Dreaming → Planned → In progress → Done), an optional target date, and a checklist
-  - 🖼️ **Photo** — shared images/memories
-- **Plans view** — a task-manager board of every actionable item grouped by status.
-- **Cheers** — lightweight likes to encourage each other.
-- **Family view** — members, roles, and a shareable invite code.
+## Stack
 
----
+- **Next.js 14** (App Router) · TypeScript · Tailwind · shadcn-style UI
+  primitives
+- **Firebase**: Auth · Firestore · Storage. Multi-tenant via `schoolId`
+  custom claims.
+- **Anthropic** `claude-sonnet-4-5` for analysis (server-side only). Two-pass
+  architecture per the build brief.
+- **OpenAI Whisper** for server-side transcription.
+- **Vercel** for hosting; env vars carry all secrets.
 
-## 📲 Get the APK
+## Repo layout
 
-There are three ways to get an installable APK:
+```
+app/
+  (auth)/        login + invite acceptance
+  (app)/         authenticated shell (dashboard, teachers, observations)
+  api/           server routes (invite accept, health, future AI pipeline)
+components/      Topbar, Screen, BrandMark, shadcn UI primitives
+lib/
+  firebase/      client + admin SDK glue, AuthProvider
+  danielson.ts   Framework constants (22 components, 4 domains, ratings)
+  utils.ts       cn helper, timestamp formatter
+types/           Data model — mirrors brief §3 exactly
+firestore.rules  Multi-tenant rules (per-school read/write isolation)
+storage.rules    Audio, photos, SIS roster paths
+```
 
-1. **GitHub Actions (easiest):** every push to the default / feature branch runs the
-   `Android CI` workflow and uploads a **`FamilyNest-debug-apk`** artifact. Open the run
-   under the repo's **Actions** tab and download it.
-2. **Build locally:** `./gradlew assembleDebug` → `app/build/outputs/apk/debug/app-debug.apk`.
-3. **Release build:** `./gradlew assembleRelease` (signed with the debug key for now).
+## Running locally
 
-Then copy the APK to an Android phone and open it. You'll need to allow
-"Install unknown apps" for your file manager/browser the first time.
-
-> ⚠️ **The APK builds and installs, but sign-in and sync won't work until you connect
-> your own Firebase project** (next section). This repo ships with a *placeholder*
-> `app/google-services.json` so the project compiles out of the box.
-
----
-
-## 🔥 Connect Firebase (one-time, ~10 minutes)
-
-To make Google login and cross-device sync actually work, create a free Firebase
-project and drop your config into the app.
-
-### 1. Create the project
-1. Go to <https://console.firebase.google.com> → **Add project**.
-2. Name it (e.g. *FamilyNest*). Analytics is optional.
-
-### 2. Register the Android app
-1. In the project, click the **Android** icon → **Add app**.
-2. **Package name:** `com.familynest.app` (must match exactly).
-3. **Add a SHA-1 fingerprint** (required for Google Sign-In). Get it with:
-   ```bash
-   # Debug keystore (used by assembleDebug and assembleRelease in this repo):
-   keytool -list -v \
-     -keystore ~/.android/debug.keystore \
-     -alias androiddebugkey -storepass android -keypass android | grep SHA1
-   ```
-   Paste the SHA-1 into the Firebase app settings. (Add the SHA-256 too if you like.)
-4. **Download `google-services.json`** and replace the placeholder at
-   **`app/google-services.json`** in this repo with it.
-
-### 3. Turn on the services
-In the Firebase console:
-- **Build → Authentication → Sign-in method →** enable **Google**.
-- **Build → Firestore Database →** create a database (start in *test mode* while
-  developing, then lock down with rules — see below).
-- **Build → Storage →** enable it (for shared photos).
-
-### 4. Rebuild
 ```bash
-./gradlew assembleDebug
-```
-Install the new APK and sign in. 🎉
-
-> If you build APKs via **GitHub Actions** and want sign-in to work there too, make
-> sure the real `google-services.json` is committed (a Firebase config is safe to
-> commit) and that the **SHA-1 of the keystore used by CI** is registered in Firebase.
-> The default CI build uses the standard Android debug keystore.
-
----
-
-## 🔒 Suggested Firestore security rules
-
-Start in test mode, then tighten to "only members of your own family can read/write":
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    function signedIn() { return request.auth != null; }
-
-    // A user can read/write their own profile.
-    match /users/{uid} {
-      allow read: if signedIn();
-      allow write: if signedIn() && request.auth.uid == uid;
-    }
-
-    // Only members of a family can read it; only members can touch its posts.
-    match /families/{familyId} {
-      allow read: if signedIn();
-      allow create: if signedIn();
-      allow update: if signedIn() &&
-        (request.auth.uid in resource.data.memberIds ||
-         request.auth.uid in request.resource.data.memberIds);
-
-      match /posts/{postId} {
-        allow read, create, update, delete: if signedIn() &&
-          request.auth.uid in get(/databases/$(database)/documents/families/$(familyId)).data.memberIds;
-      }
-    }
-  }
-}
+cp .env.example .env.local   # fill in Firebase + provider credentials
+npm install
+npm run dev                  # http://localhost:3000
 ```
 
-Matching Storage rules (members-only is harder there; a simple signed-in rule):
-```
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /families/{familyId}/{allPaths=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
+Use the Firebase emulators while iterating:
+
+```bash
+npx firebase emulators:start
 ```
 
----
+## Data model
 
-## 🏗️ Project structure
+All types live in [`types/index.ts`](types/index.ts) and match brief §3.
+Critical shapes — `ObservationAnalysis`, `Mapping`, `CorrelatedMoment` — are
+the contract between the AI pipeline (Sprint 3) and the UI (Sprint 4).
 
-```
-app/src/main/java/com/familynest/app/
-├── FamilyNestApp.kt          # Application — initialises the DI Graph
-├── MainActivity.kt           # Single activity, hosts Compose
-├── di/Graph.kt               # Tiny manual DI (no kapt/KSP)
-├── data/
-│   ├── model/Models.kt       # AppUser, Family, Post, TaskItem + enums
-│   └── repository/           # AuthRepository, FamilyRepository, PostRepository
-└── ui/
-    ├── theme/                # Material 3 theme (twilight + gold on cream)
-    ├── SessionViewModel.kt   # Decides: SignedOut / NeedsFamily / Ready
-    ├── FamilyNestApp.kt      # Root routing composable
-    ├── auth/                 # Login (Google Sign-In)
-    ├── family/               # Create/join family + Family (members) screen
-    ├── main/                 # MainScaffold (bottom nav) + Feed
-    ├── create/               # Create-post flow
-    ├── projects/             # Task-manager "Plans" board
-    ├── detail/               # Post detail (status, checklist, cheers)
-    └── components/           # PostCard, Avatar, chips, helpers
-```
+## Security & privacy
 
-**Data model in Firestore:**
-- `users/{uid}` → profile + `familyId` + `role`
-- `families/{familyId}` → name, ownerId, `inviteCode`, `memberIds[]`
-- `families/{familyId}/posts/{postId}` → the shared items
+- **Multi-tenancy.** Every document carries `schoolId`. Firestore rules deny
+  cross-tenant reads/writes. Custom claims (`schoolId`, `role`) are set by
+  the server on invite acceptance.
+- **CHILD_PROTECTION flag.** Per brief §6.2, this student flag must never
+  appear in AI prompts. The `sanitiseRosterForAI` function (Sprint 5) will
+  enforce this on every payload built for Claude.
+- **API keys.** Anthropic and OpenAI credentials are server-only. Client
+  uploads audio and photos directly to Firebase Storage via signed URLs.
 
----
+## Build plan
 
-## 🛠️ Tech / versions
+| Sprint | Focus | Status |
+|--------|-------|--------|
+| 1 | Foundation: Next.js, Firebase, auth, visual tokens, layout | ✅ this commit |
+| 2 | Teachers CRUD + live recording (MediaRecorder, notes, photos) | ⏳ |
+| 3 | AI pipeline: Whisper + two-pass Claude analysis | ⏳ |
+| 4 | Summary, evidence bank, report drafting, bias filter | ⏳ |
+| 5 | Google Classroom OAuth + SIS adapter (CSV + stub) | ⏳ |
+| 6 | Dashboard, settings, audit log, Sentry, consent flow | ⏳ |
+| 7 | Pilot prep (optional) | ⏳ |
 
-| | |
-|---|---|
-| Language | Kotlin 2.0.21 |
-| UI | Jetpack Compose + Material 3 |
-| Build | Android Gradle Plugin 8.7.3, Gradle 8.14.3 |
-| Min / target SDK | 26 / 34 |
-| Backend | Firebase Auth, Cloud Firestore, Storage |
-| Images | Coil |
+The build order is non-negotiable per the brief — each sprint unlocks the
+next sprint's dependencies.
 
-## Roadmap ideas
-- Comments / threaded discussion on posts
-- Push notifications when something new is shared
-- Assigning checklist steps to specific family members
-- A shared family calendar view of events
+## Open questions for product owner
+
+Pulled from brief §10.1 — answers needed before Sprints 4–6 close:
+
+- Per-school custom Danielson rubric weightings?
+- Should teachers see their own reports automatically, or only after
+  principal sign-off?
+- How are disputes / appeals handled in the data model (add a `disputed`
+  status)?
+- Multi-language lessons — Whisper supports many languages; reports in
+  English only?
+- Pricing tier feature gating — which features are pilot vs standard vs
+  enterprise?

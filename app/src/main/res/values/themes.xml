@@ -1,7 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base theme used before Compose takes over. Compose drives the real Material3 theme. -->
-    <style name="Theme.FamilyNest" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/seed</item>
-        <item name="android:windowBackground">@color/app_background</item>
-    </style>
-</resources>
