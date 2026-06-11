@@ -1,21 +1,22 @@
+"use client";
+
+import { useState } from "react";
 import { Screen, ScreenHeader } from "@/components/screen";
-import { Card, CardContent } from "@/components/ui/card";
+import { TeacherList } from "@/components/teachers/teacher-list";
+import { AddTeacherDialog } from "@/components/teachers/add-teacher-dialog";
 
 export default function TeachersPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+
   return (
     <Screen>
       <ScreenHeader
-        eyebrow="Sprint 2"
+        eyebrow="Roster"
         title="Teachers"
-        description="Roster view, add/edit/archive, and the recording entry point land in Sprint 2."
+        description="Select a teacher to begin a new observation, or add a teacher to your roster."
+        actions={<AddTeacherDialog onCreated={() => setRefreshKey((k) => k + 1)} />}
       />
-      <Card>
-        <CardContent className="py-12 text-center">
-          <p className="font-mono text-xs uppercase tracking-widest text-ink-faint">
-            Not yet implemented
-          </p>
-        </CardContent>
-      </Card>
+      <TeacherList refreshKey={refreshKey} />
     </Screen>
   );
 }
