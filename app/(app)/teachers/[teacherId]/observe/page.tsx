@@ -102,12 +102,20 @@ export default function ObservePage({
         audioPath,
         photoPaths,
       });
-      // Sprint 3 will flip status to 'transcribing' and kick off the pipeline;
-      // for Sprint 2 we leave the observation in 'recorded'.
       await setObservationStatus(observationId, "recorded");
 
+      // Kick off the server-side pipeline (Whisper + two-pass Claude). The
+      // processing screen subscribes to Firestore for live status updates.
+      const idToken = await user.getIdToken();
+      fetch(`/api/observations/${observationId}/process`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${idToken}` },
+      }).catch(() => {
+        // Errors surface via the observation.status="error" path.
+      });
+
       setUploadStep("done");
-      router.push(`/teachers/${teacher.id}?obs=${observationId}`);
+      router.push(`/observations/${observationId}`);
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : "Upload failed");
       setUploadStep("error");

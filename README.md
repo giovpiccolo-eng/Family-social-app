@@ -10,10 +10,10 @@ Framework for Teaching (2022 edition).
 
 ## Status
 
-**Sprint 2 — Teachers + recording.** Roster CRUD, three-column recording
-screen (MediaRecorder + mic level meter + timestamped notes + photo capture),
-and direct-to-Storage uploads are in place. Sprint 3 (Whisper + Claude
-analysis pipeline) is next.
+**Sprint 3 — AI pipeline.** Whisper transcription, two-pass Claude analysis
+(narrative + mappings), tolerant JSON parser, evidence denormalisation, and
+the live processing screen are in place. Sprint 4 (summary / evidence bank /
+report drafting / bias filter UI) is next.
 
 ## Stack
 
@@ -79,8 +79,8 @@ the contract between the AI pipeline (Sprint 3) and the UI (Sprint 4).
 | Sprint | Focus | Status |
 |--------|-------|--------|
 | 1 | Foundation: Next.js, Firebase, auth, visual tokens, layout | ✅ |
-| 2 | Teachers CRUD + live recording (MediaRecorder, notes, photos) | ✅ this commit |
-| 3 | AI pipeline: Whisper + two-pass Claude analysis | ⏳ |
+| 2 | Teachers CRUD + live recording (MediaRecorder, notes, photos) | ✅ |
+| 3 | AI pipeline: Whisper + two-pass Claude analysis | ✅ this commit |
 | 4 | Summary, evidence bank, report drafting, bias filter | ⏳ |
 | 5 | Google Classroom OAuth + SIS adapter (CSV + stub) | ⏳ |
 | 6 | Dashboard, settings, audit log, Sentry, consent flow | ⏳ |
