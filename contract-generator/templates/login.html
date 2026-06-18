@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accedi · Contract Generator</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      font-family: Inter, -apple-system, "Segoe UI", Arial, sans-serif;
+      color: #1F2530; background: #F7F8FA;
+    }
+    main {
+      min-height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      max-width: 440px; width: 100%;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 12px 30px rgba(26,58,92,0.12);
+      padding: 40px 36px;
+      text-align: center;
+    }
+    .logo {
+      width: 60px; height: 60px;
+      background: #1A3A5C; color: #fff;
+      border-radius: 14px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 700;
+      margin-bottom: 20px;
+    }
+    h1 { color: #1A3A5C; font-size: 22px; margin: 0 0 6px 0; }
+    .sub { color: #4A5260; font-size: 14px; margin: 0 0 28px 0; }
+    .gbtn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 12px 22px;
+      border: 1px solid #DCDFE5;
+      border-radius: 6px;
+      background: #fff;
+      color: #1F2530;
+      font-weight: 600; font-size: 15px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .gbtn:hover { border-color: #2E6BA8; box-shadow: 0 0 0 3px rgba(46,107,168,0.15); }
+    .gbtn svg { width: 20px; height: 20px; }
+    .footnote {
+      margin-top: 26px;
+      font-size: 12px; color: #97A0AE;
+    }
+    .err {
+      background: #FDECEC; border-left: 4px solid #E26060;
+      color: #8B2020;
+      padding: 12px 14px; border-radius: 4px;
+      font-size: 13px; text-align: left;
+      margin-bottom: 22px;
+    }
+    .domain-tag {
+      display: inline-block;
+      background: #E8F1F9; color: #1A3A5C;
+      font-size: 12px; font-weight: 600;
+      padding: 3px 10px; border-radius: 99px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="card">
+      <div class="logo">IE</div>
+      <h1>Contract Generator</h1>
+      <p class="sub">Accedi con il tuo account Google aziendale.</p>
+
+      {% if error %}
+      <div class="err">
+        <strong>Accesso negato.</strong><br>
+        L'indirizzo <code>{{ email }}</code> non appartiene al dominio autorizzato
+        {% if domain %}<code>{{ domain }}</code>{% endif %}.
+      </div>
+      {% endif %}
+
+      <a class="gbtn" href="{{ url_for('auth.login') }}">
+        <svg viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Accedi con Google
+      </a>
+
+      {% if config_summary.allowed_domain and config_summary.allowed_domain != "(any)" %}
+        <div class="domain-tag">Riservato a @{{ config_summary.allowed_domain }}</div>
+      {% endif %}
+
+      <div class="footnote">
+        Ingenium Education Group · CCNL ANINSEI 2024-2027
+        {% if config_summary.mode == "dev" %}
+          <br><span style="color:#E26060">⚙ Modalità sviluppo (no auth)</span>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+</body>
+</html>

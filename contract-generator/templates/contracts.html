@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I miei contratti · Contract Generator</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: Inter, -apple-system, "Segoe UI", Arial, sans-serif;
+      color: #1F2530; background: #F7F8FA; font-size: 15px;
+    }
+    main { max-width: 1080px; margin: 28px auto; padding: 0 20px; }
+    .card {
+      background: #fff; border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(26,58,92,0.08);
+      padding: 24px 28px;
+    }
+    h1 { color: #1A3A5C; font-size: 22px; margin: 0 0 18px 0; }
+
+    .filter-bar {
+      display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap;
+    }
+    .filter-bar input {
+      flex: 1; min-width: 220px;
+      padding: 9px 11px; font: inherit;
+      border: 1px solid #DCDFE5; border-radius: 6px;
+    }
+    .filter-bar input:focus {
+      outline: none; border-color: #2E6BA8;
+      box-shadow: 0 0 0 3px rgba(46,107,168,0.15);
+    }
+
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #ECEEF2;
+    }
+    th {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+      color: #4A5260; font-weight: 600;
+      background: #F7F8FA;
+    }
+    tr:hover td { background: #F7F8FA; }
+    td.name { font-weight: 600; color: #1A3A5C; }
+    td.badge {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .badge-det { color: #8B5A00; }
+    .badge-ind { color: #1A6B3A; }
+    .actions a {
+      color: #2E6BA8; text-decoration: none; font-weight: 500;
+      margin-right: 12px; font-size: 13px;
+    }
+    .actions a:hover { text-decoration: underline; }
+    .empty {
+      text-align: center; padding: 48px 12px;
+      color: #97A0AE; font-size: 14px;
+    }
+    .empty a { color: #2E6BA8; font-weight: 600; text-decoration: none; }
+    .empty a:hover { text-decoration: underline; }
+    .small { color: #97A0AE; font-size: 12px; }
+  </style>
+</head>
+<body>
+  {% include "_appbar.html" %}
+
+  <main>
+    <div class="card">
+      <h1>Contratti generati</h1>
+
+      {% if records %}
+      <div class="filter-bar">
+        <input id="filter" type="text" placeholder="Cerca per nome, mansione, livello..." autofocus>
+      </div>
+
+      <table id="contracts">
+        <thead>
+          <tr>
+            <th>Dipendente</th>
+            <th>Sede</th>
+            <th>Liv.</th>
+            <th>Tipo</th>
+            <th>Durata</th>
+            <th>Decorrenza</th>
+            <th>Creato il</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in records %}
+          <tr>
+            <td class="name">
+              {{ r.nome }}
+              <div class="small">{{ r.mansione }}</div>
+            </td>
+            <td>{{ r.sede }}</td>
+            <td>{{ r.livello }}</td>
+            <td>{{ "FT" if r.tipo_contratto == "tempo_pieno" else "PT" }}</td>
+            <td class="badge {{ 'badge-det' if r.durata == 'determinato' else 'badge-ind' }}">
+              {{ r.durata }}
+            </td>
+            <td>
+              {% if r.data_inizio %}
+                {{ r.data_inizio[8:10] }}/{{ r.data_inizio[5:7] }}/{{ r.data_inizio[0:4] }}
+              {% endif %}
+              {% if r.data_fine %}
+                <div class="small">→ {{ r.data_fine[8:10] }}/{{ r.data_fine[5:7] }}/{{ r.data_fine[0:4] }}</div>
+              {% endif %}
+            </td>
+            <td>
+              {% if r.created_at %}
+                <div class="small">{{ r.created_at[0:10] }}</div>
+              {% endif %}
+            </td>
+            <td class="actions">
+              <a href="{{ url_for('contracts_detail', doc_id=r.id) }}">Apri</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="empty">
+          Nessun contratto generato finora.<br>
+          <a href="{{ url_for('index') }}">Crea il primo contratto →</a>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <script>
+  const filter = document.getElementById("filter");
+  if (filter) {
+    filter.addEventListener("input", () => {
+      const q = filter.value.toLowerCase().trim();
+      document.querySelectorAll("#contracts tbody tr").forEach(tr => {
+        tr.style.display = tr.textContent.toLowerCase().includes(q) ? "" : "none";
+      });
+    });
+  }
+  </script>
+</body>
+</html>

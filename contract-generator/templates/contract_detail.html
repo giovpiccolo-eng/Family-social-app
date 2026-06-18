@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ record.nome }} · Contract Generator</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: Inter, -apple-system, "Segoe UI", Arial, sans-serif;
+      color: #1F2530; background: #F7F8FA; font-size: 15px;
+    }
+    main { max-width: 760px; margin: 28px auto; padding: 0 20px; }
+    .card {
+      background: #fff; border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(26,58,92,0.08);
+      padding: 28px 32px;
+    }
+    h1 { color: #1A3A5C; font-size: 24px; margin: 0; }
+    .meta { color: #4A5260; font-size: 13px; margin-top: 4px; }
+    .kv {
+      display: grid; grid-template-columns: minmax(160px, 30%) 1fr;
+      gap: 6px 16px;
+      margin: 22px 0;
+      font-size: 14px;
+    }
+    .kv dt { color: #4A5260; }
+    .kv dd { margin: 0; font-weight: 500; }
+    .downloads { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+    .downloads a {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 6px;
+      font-weight: 600; font-size: 14px; text-decoration: none;
+    }
+    .primary { background: #2E6BA8; color: #fff; border: 1px solid #2E6BA8; }
+    .primary:hover { background: #1A3A5C; border-color: #1A3A5C; }
+    .secondary { background: #fff; color: #1A3A5C; border: 1px solid #DCDFE5; }
+    .secondary:hover { border-color: #1A3A5C; }
+    .back { display: inline-block; margin-top: 24px; color: #2E6BA8; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  {% include "_appbar.html" %}
+
+  <main>
+    <div class="card">
+      <h1>{{ record.nome }}</h1>
+      <div class="meta">
+        {{ record.mansione }} · {{ record.sede }} · Livello {{ record.livello }}
+      </div>
+
+      <dl class="kv">
+        <dt>Tipo orario</dt><dd>{{ "Tempo pieno" if record.tipo_contratto == "tempo_pieno" else "Part-time" }}</dd>
+        <dt>Durata</dt><dd>{{ record.durata|capitalize }}</dd>
+        {% if record.data_inizio %}
+          <dt>Decorrenza</dt><dd>{{ record.data_inizio[8:10] }}/{{ record.data_inizio[5:7] }}/{{ record.data_inizio[0:4] }}</dd>
+        {% endif %}
+        {% if record.data_fine %}
+          <dt>Scadenza</dt><dd>{{ record.data_fine[8:10] }}/{{ record.data_fine[5:7] }}/{{ record.data_fine[0:4] }}</dd>
+        {% endif %}
+        <dt>Creato il</dt><dd>{{ record.created_at[0:19].replace("T", " ") }}</dd>
+        <dt>Creato da</dt><dd>{{ record.created_by_name or record.created_by }}</dd>
+      </dl>
+
+      <div class="downloads">
+        {% if docx_url %}
+          <a class="primary" href="{{ docx_url }}" download>↓ Scarica DOCX</a>
+        {% endif %}
+        {% if pdf_url %}
+          <a class="secondary" href="{{ pdf_url }}" download>↓ Scarica PDF</a>
+        {% endif %}
+      </div>
+
+      <a class="back" href="{{ url_for('contracts_list') }}">← Tutti i contratti</a>
+    </div>
+  </main>
+</body>
+</html>

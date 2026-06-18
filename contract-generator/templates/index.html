@@ -38,25 +38,6 @@
       line-height: 1.5;
     }
 
-    /* Top bar */
-    header.appbar {
-      background: var(--navy);
-      color: #fff;
-      padding: 18px 28px;
-      box-shadow: var(--shadow);
-    }
-    .appbar h1 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-    }
-    .appbar .sub {
-      font-size: 12px;
-      opacity: 0.82;
-      margin-top: 2px;
-    }
-
     /* Layout */
     main {
       max-width: 880px;
@@ -318,10 +299,7 @@
 </head>
 
 <body>
-  <header class="appbar">
-    <h1>Ingenium Education Group · Contract Generator</h1>
-    <div class="sub">CCNL ANINSEI 2024–2027 · Acorn International School &amp; St Francis International School</div>
-  </header>
+  {% include "_appbar.html" %}
 
   <main>
     <div class="card">
@@ -1308,18 +1286,13 @@
       });
       if (!res.ok) throw new Error(`Errore server (${res.status})`);
       const data = await res.json();
-      if (data.docx_url || data.pdf_url) {
+      if (data.id) {
+        window.location.href = `/contracts/${data.id}`;
+      } else if (data.docx_url || data.pdf_url) {
         const qs = new URLSearchParams({
           nome: payload.nome,
           docx: data.docx_url || "",
           pdf: data.pdf_url || "",
-          ral: String(ral(
-            parseFloat(payload.tabellare), parseFloat(payload.afac),
-            payload.prolungamento ? parseFloat(payload.prolungamento.importo_annuale) : 0,
-            parseFloat(payload.indennita_funzione) * MENSILITA,
-            payload.doposcuola ? parseFloat(payload.doposcuola.compenso) : 0,
-            payload.camp ? parseFloat(payload.camp.compenso) : 0,
-          )),
         });
         window.location.href = `/result?${qs.toString()}`;
       }

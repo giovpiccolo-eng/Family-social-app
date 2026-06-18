@@ -771,14 +771,21 @@ def build_contract(payload: dict, output_dir: Path | None = None) -> Path:
 def convert_to_pdf(docx_path: Path, output_dir: Path | None = None) -> Path:
     """
     Convert a DOCX file to PDF using LibreOffice headless.
-    Returns the path to the generated PDF.
+    Returns the path to the generated PDF. Raises RuntimeError if soffice
+    completes without producing the expected output file.
     """
     docx_path = Path(docx_path)
     output_dir = Path(output_dir) if output_dir else docx_path.parent
     output_dir.mkdir(parents=True, exist_ok=True)
-    subprocess.run(
+    result = subprocess.run(
         ["soffice", "--headless", "--convert-to", "pdf",
          "--outdir", str(output_dir), str(docx_path)],
-        check=True, capture_output=True,
+        check=False, capture_output=True, text=True,
     )
-    return output_dir / (docx_path.stem + ".pdf")
+    pdf_path = output_dir / (docx_path.stem + ".pdf")
+    if result.returncode != 0 or not pdf_path.is_file():
+        raise RuntimeError(
+            f"soffice failed (rc={result.returncode}): "
+            f"{(result.stderr or result.stdout or '').strip()[:200]}"
+        )
+    return pdf_path

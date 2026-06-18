@@ -1,6 +1,10 @@
-# Generated files
+# Generated files / local DB
 output/*
 !output/.gitkeep
+_local_contracts.json
+
+# Secrets
+.env
 
 # Python
 __pycache__/

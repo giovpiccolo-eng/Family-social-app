@@ -24,12 +24,6 @@
       color: var(--text); background: var(--grey-50);
       font-size: 15px; line-height: 1.5;
     }
-    header.appbar {
-      background: var(--navy); color: #fff;
-      padding: 18px 28px; box-shadow: var(--shadow);
-    }
-    .appbar h1 { margin: 0; font-size: 18px; font-weight: 600; }
-    .appbar .sub { font-size: 12px; opacity: 0.82; margin-top: 2px; }
     main { max-width: 720px; margin: 28px auto; padding: 0 20px; }
     .card {
       background: #fff; border-radius: var(--radius);
@@ -87,10 +81,7 @@
   </style>
 </head>
 <body>
-  <header class="appbar">
-    <h1>Ingenium Education Group · Contract Generator</h1>
-    <div class="sub">Contratto pronto per il download</div>
-  </header>
+  {% include "_appbar.html" %}
 
   <main>
     <div class="card">
