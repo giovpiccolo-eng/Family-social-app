@@ -393,7 +393,7 @@ STATIC_BLOCKS = {
         "quindi invariata la RAL concordata. In caso di divieto di assorbimento di "
         "aumenti retributivi previsto dal CCNL, il patto relativo all'AFAC si "
         "intenderà automaticamente revocato dalla data di decorrenza degli aumenti. "
-        "Tuttavia, al fine di preservare il rapporto con {il_la} lavorator{e_ice}, "
+        "Tuttavia, al fine di preservare il rapporto con {il_la} lavorat{ore_rice}, "
         "contestualmente alla revoca e con la medesima decorrenza, la società "
         "riconoscerà automaticamente un nuovo acconto su futuri aumenti contrattuali, "
         "il cui importo sarà ricalcolato in modo tale da garantire il mantenimento "
@@ -431,7 +431,7 @@ STATIC_BLOCKS = {
     "disciplina_heading": "Disciplina del rapporto e comportamento in servizio:",
 
     "disciplina_paragraph": (
-        "Il/La lavorator{e_ice}, in virtù del presente contratto, si obbliga al "
+        "Il/La lavorat{ore_rice}, in virtù del presente contratto, si obbliga al "
         "rispetto del codice di disciplina e delle prescrizioni in materia di "
         "diligenza, fedeltà e riservatezza nonché delle policy aziendali in materia "
         "di privacy. In ottemperanza a quanto previsto dal D.lgs. n. 152/1997, come "
@@ -440,9 +440,9 @@ STATIC_BLOCKS = {
         "informazioni relative al rapporto di lavoro."
     ),
 
-    # Chiusura lettera
+    # Chiusura lettera — pronome enclitico lo/la (Pregandolo / Pregandola)
     "chiusura": (
-        "Pregand{o_a}la di restituirci copia della presente proposta di assunzione, "
+        "Pregando{lo_la} di restituirci copia della presente proposta di assunzione, "
         "firmata per accettazione, porgiamo distinti saluti."
     ),
 
@@ -469,17 +469,15 @@ INFLESSIONI = {
     "M": {
         "saluto":     "Egr. Sig.",
         "nato_a":     "Nato il",
-        "il_la":      "il",
-        "e_ice":      "e",   # lavoratore  -> lavorator + "e"
-        "o_a":        "o",   # Pregando    -> Pregand   + "o"
-        "il_la_word": "il",  # "il/la docente"
+        "il_la_word": "il",     # "il docente"
+        "ore_rice":   "ore",    # lavorat + "ore"   -> lavoratore
+        "lo_la":      "lo",     # Pregando + "lo"   -> Pregandolo
     },
     "F": {
         "saluto":     "Gent.ma Sig.ra",
         "nato_a":     "Nata il",
-        "il_la":      "la",
-        "e_ice":      "ice", # lavoratrice -> lavorator + "ice"
-        "o_a":        "a",   # Pregandola  -> Pregand   + "a"
-        "il_la_word": "la",  # "la docente"
+        "il_la_word": "la",     # "la docente"
+        "ore_rice":   "rice",   # lavorat + "rice"  -> lavoratrice
+        "lo_la":      "la",     # Pregando + "la"   -> Pregandola
     },
 }
