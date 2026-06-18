@@ -444,13 +444,33 @@ def _add_orario(doc, payload: dict) -> None:
         _add_para(doc, text)
 
 
+def _retribution_amounts(payload: dict) -> tuple[Decimal, Decimal, Decimal]:
+    """Apply part-time proportioning per brief §3 Step 6 and §4.2.
+
+    Tabellare and AFAC are submitted as FULL-TIME values; the backend
+    proportions both by ore_settimanali / ORE_BASE[livello] when part-time.
+    Indennità di funzione is a flat allowance — not proportioned.
+    """
+    tabellare = _d(payload["tabellare"])
+    afac = _d(payload.get("afac", 0))
+    indennita = _d(payload.get("indennita_funzione", 0))
+
+    is_pt = payload["tipo_contratto"] != "tempo_pieno"
+    if is_pt:
+        livello = payload["livello"]
+        ore_base = ORE_BASE.get(livello)
+        ore = int(payload["ore_settimanali"])
+        if ore_base:
+            tabellare = proportion_parttime(tabellare, ore, ore_base)
+            afac = proportion_parttime(afac, ore, ore_base)
+    return tabellare, afac, indennita
+
+
 def _add_retribuzione(doc, payload: dict) -> Decimal:
     """§7.1 #11 — intro + 2-column retribution table. Returns totale mensile."""
     _add_header(doc, STATIC_BLOCKS["header_retribuzione"])
 
-    tabellare = _d(payload["tabellare"])
-    afac = _d(payload.get("afac", 0))
-    indennita = _d(payload.get("indennita_funzione", 0))
+    tabellare, afac, indennita = _retribution_amounts(payload)
     totale_mensile = tabellare + afac + indennita
 
     _add_para(doc, STATIC_BLOCKS["retribuzione_intro"].format(
@@ -530,17 +550,18 @@ def _add_school_camp(doc, payload: dict) -> None:
 
 
 def _add_afac_clause(doc, payload: dict) -> None:
-    """§7.1 #14 — assorbimento futuri aumenti."""
+    """§7.1 #14 — assorbimento futuri aumenti. Uses the PT-proportioned AFAC."""
     sesso = payload["sesso"]
+    _, afac_effective, _ = _retribution_amounts(payload)
     tpl = _inflect(STATIC_BLOCKS["afac_assorbimento"], sesso)
-    text = tpl.format(afac_pt=format_currency_it(_d(payload["afac"])))
+    text = tpl.format(afac_pt=format_currency_it(afac_effective))
     _add_para(doc, text)
 
 
 def _add_ral_summary(doc, payload: dict, ral: Decimal) -> None:
     """§7.1 #15 — RAL summary sentence."""
     voci = []
-    if payload.get("prolungamento", {}).get("attivo"):
+    if (payload.get("prolungamento") or {}).get("attivo"):
         voci.append("prolungamento orario")
     if _d(payload.get("indennita_funzione", 0)) > 0:
         voci.append("indennità di funzione (rinnovabile annualmente)")
@@ -681,12 +702,21 @@ def build_contract(payload: dict, output_dir: Path | None = None) -> Path:
     _set_margins(doc, _MARGIN)
     _set_default_font(doc)
 
-    # Pre-compute RAL so it can appear in §15 / RAL summary
-    tabellare = _d(payload["tabellare"])
-    afac = _d(payload.get("afac", 0))
+    # Pre-compute RAL so it can appear in §15 / RAL summary.
+    # tabellare and afac here are already proportioned to PT if applicable.
+    tabellare, afac, indennita = _retribution_amounts(payload)
     prol_block = payload.get("prolungamento") or {}
-    prol_annuale = _d(prol_block.get("importo_annuale", 0)) if prol_block.get("attivo") else Decimal("0")
-    indennita_ann = _d(payload.get("indennita_funzione", 0)) * MENSILITA_ANNUE
+    if prol_block.get("attivo"):
+        # If a precomputed yearly amount was sent, use it; otherwise derive
+        # mensile from tabellare (post-proportioning) × 13.
+        if prol_block.get("importo_annuale"):
+            prol_annuale = _d(prol_block["importo_annuale"])
+        else:
+            prol_mensile = calc_prolungamento_mensile(tabellare, int(prol_block["ore"]))
+            prol_annuale = prol_mensile * MENSILITA_ANNUE
+    else:
+        prol_annuale = Decimal("0")
+    indennita_ann = indennita * MENSILITA_ANNUE
     dopo = _d(payload["doposcuola"]["compenso"]) if payload.get("doposcuola") else Decimal("0")
     camp = _d(payload["camp"]["compenso"]) if payload.get("camp") else Decimal("0")
     ral = calc_ral(tabellare, afac, prol_annuale, indennita_ann, dopo, camp)

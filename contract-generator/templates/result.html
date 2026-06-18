@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contratto generato · Ingenium Education Group</title>
+  <style>
+    :root {
+      --navy:        #1A3A5C;
+      --blue:        #2E6BA8;
+      --blue-soft:   #E8F1F9;
+      --grey-50:     #F7F8FA;
+      --grey-100:    #ECEEF2;
+      --grey-200:    #DCDFE5;
+      --grey-700:    #4A5260;
+      --text:        #1F2530;
+      --radius:      6px;
+      --shadow:      0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(26,58,92,0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: Inter, -apple-system, "Segoe UI", Arial, sans-serif;
+      color: var(--text); background: var(--grey-50);
+      font-size: 15px; line-height: 1.5;
+    }
+    header.appbar {
+      background: var(--navy); color: #fff;
+      padding: 18px 28px; box-shadow: var(--shadow);
+    }
+    .appbar h1 { margin: 0; font-size: 18px; font-weight: 600; }
+    .appbar .sub { font-size: 12px; opacity: 0.82; margin-top: 2px; }
+    main { max-width: 720px; margin: 28px auto; padding: 0 20px; }
+    .card {
+      background: #fff; border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 32px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--blue-soft); color: var(--navy);
+      font-size: 12px; font-weight: 600;
+      padding: 4px 12px; border-radius: 99px;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    h1.name { margin: 0; color: var(--navy); font-size: 26px; font-weight: 700; }
+    .ral {
+      margin: 24px auto 28px auto;
+      padding: 18px 24px;
+      background: var(--navy); color: #fff;
+      border-radius: var(--radius);
+      display: inline-block;
+    }
+    .ral .label { font-size: 12px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; }
+    .ral .val { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    .downloads { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .downloads a {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: var(--radius);
+      font-weight: 600; font-size: 15px; text-decoration: none;
+      transition: all 0.12s;
+    }
+    .downloads a.primary {
+      background: var(--blue); color: #fff;
+      border: 1px solid var(--blue);
+    }
+    .downloads a.primary:hover { background: var(--navy); border-color: var(--navy); }
+    .downloads a.secondary {
+      background: #fff; color: var(--navy);
+      border: 1px solid var(--grey-200);
+    }
+    .downloads a.secondary:hover { border-color: var(--navy); }
+    .downloads a.disabled { background: var(--grey-100); color: var(--grey-700); border-color: var(--grey-200); cursor: not-allowed; }
+
+    .restart {
+      margin-top: 32px; padding-top: 22px;
+      border-top: 1px solid var(--grey-100);
+    }
+    .restart a {
+      color: var(--blue); font-weight: 500; text-decoration: none;
+    }
+    .restart a:hover { text-decoration: underline; }
+
+    .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <header class="appbar">
+    <h1>Ingenium Education Group · Contract Generator</h1>
+    <div class="sub">Contratto pronto per il download</div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="badge">Contratto generato</div>
+      <h1 class="name">{{ nome or "—" }}</h1>
+
+      {% if ral %}
+      <div class="ral">
+        <div class="label">Retribuzione annua lorda</div>
+        <div class="val">€ {{ "{:,.2f}".format(ral|float).replace(',', 'X').replace('.', ',').replace('X', '.') }}</div>
+      </div>
+      {% endif %}
+
+      <div class="downloads">
+        {% if docx %}
+          <a class="primary" href="{{ docx }}" download>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Scarica DOCX
+          </a>
+        {% else %}
+          <a class="disabled">DOCX non disponibile</a>
+        {% endif %}
+
+        {% if pdf %}
+          <a class="secondary" href="{{ pdf }}" download>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Scarica PDF
+          </a>
+        {% else %}
+          <a class="disabled" title="LibreOffice non disponibile o conversione fallita">PDF non disponibile</a>
+        {% endif %}
+      </div>
+
+      <div class="restart">
+        <a href="/">← Genera nuovo contratto</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

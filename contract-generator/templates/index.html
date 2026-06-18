@@ -1127,16 +1127,16 @@
     const isPT = selectedRadio("tipo_contratto") === "part_time";
     const year = yearOf(inizioISO) || new Date().getFullYear();
     const tabFT = tabellareForYear(lv, year);
-    const tab = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    // Send FT values; backend proportions canonically per brief §3 Step 6.
     const afacFT = parseEUR(elAfac.value);
-    const afac = (isPT && oreBase) ? roundCents(afacFT * ore / oreBase) : afacFT;
     const indennita = (selectedRadio("indennita_attiva") === "si") ? parseEUR(elIndennita.value) : 0;
 
-    // prolungamento
+    // Prolungamento — formula uses the PT-proportioned tabellare locally
+    const tabForProl = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
     let prol = null;
     if (selectedRadio("prolungamento_attivo") === "si") {
       const oreProl = parseInt(document.getElementById("ore_prolungamento").value, 10) || 0;
-      const mensile = prolungamentoMensile(tab, oreProl);
+      const mensile = prolungamentoMensile(tabForProl, oreProl);
       prol = { attivo: true, ore: oreProl,
                importo_mensile: mensile.toFixed(2),
                importo_annuale: roundCents(mensile * MENSILITA).toFixed(2) };
@@ -1193,8 +1193,9 @@
       data_inizio: inizioISO,
       data_fine: elFine.value || null,
       ore_settimanali: ore,
-      tabellare: tab.toFixed(2),
-      afac: afac.toFixed(2),
+      // FT values — backend proportions for PT (brief §3 Step 6, §4.2)
+      tabellare: tabFT.toFixed(2),
+      afac: afacFT.toFixed(2),
       indennita_funzione: indennita.toFixed(2),
       prolungamento: prol,
       doposcuola: dopo,
@@ -1226,13 +1227,22 @@
       ["Ore settimanali", String(p.ore_settimanali)],
       ["Anno scolastico", annoScolastico(p.data_inizio)],
     ]});
+    // Show PT-proportioned amounts in the summary (matching the contract).
+    const isPT = p.tipo_contratto !== "tempo_pieno";
+    const oreBase = ORE_BASE[p.livello];
+    const tabFT = parseFloat(p.tabellare);
+    const afacFT = parseFloat(p.afac);
+    const tab  = (isPT && oreBase) ? tabellarePT(tabFT, p.ore_settimanali, oreBase) : tabFT;
+    const afac = (isPT && oreBase) ? roundCents(afacFT * p.ore_settimanali / oreBase) : afacFT;
+    const indennita = parseFloat(p.indennita_funzione);
+
     const retKV = [
-      ["Tabellare", `€ ${fmtEUR(parseFloat(p.tabellare))}`],
-      ["AFAC",      `€ ${fmtEUR(parseFloat(p.afac))}`],
+      ["Tabellare", `€ ${fmtEUR(tab)}` + (isPT ? ` (FT € ${fmtEUR(tabFT)})` : "")],
+      ["AFAC",      `€ ${fmtEUR(afac)}` + (isPT ? ` (FT € ${fmtEUR(afacFT)})` : "")],
     ];
-    if (parseFloat(p.indennita_funzione) > 0)
-      retKV.push(["Indennità funzione", `€ ${fmtEUR(parseFloat(p.indennita_funzione))}`]);
-    const totaleMensile = roundCents(parseFloat(p.tabellare) + parseFloat(p.afac) + parseFloat(p.indennita_funzione));
+    if (indennita > 0)
+      retKV.push(["Indennità funzione", `€ ${fmtEUR(indennita)}`]);
+    const totaleMensile = roundCents(tab + afac + indennita);
     retKV.push(["Totale mensile", `€ ${fmtEUR(totaleMensile)}`]);
     sez.push({ h: "Retribuzione mensile", kv: retKV });
 
@@ -1272,12 +1282,12 @@
         <dl class="kv">${s.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
       </div>`).join("");
 
-    // RAL
+    // RAL — built from the PT-proportioned tab/afac (matches the contract).
     const prolAnn   = p.prolungamento ? parseFloat(p.prolungamento.importo_annuale) : 0;
-    const indennAnn = parseFloat(p.indennita_funzione) * MENSILITA;
+    const indennAnn = indennita * MENSILITA;
     const dopo      = p.doposcuola ? parseFloat(p.doposcuola.compenso) : 0;
     const camp      = p.camp ? parseFloat(p.camp.compenso) : 0;
-    const ralVal    = ral(parseFloat(p.tabellare), parseFloat(p.afac), prolAnn, indennAnn, dopo, camp);
+    const ralVal    = ral(tab, afac, prolAnn, indennAnn, dopo, camp);
     document.getElementById("summaryRal").textContent = `€ ${fmtEUR(ralVal)}`;
     document.getElementById("summaryRalSub").textContent = `Anno scolastico ${annoScolastico(p.data_inizio)}`;
   }
