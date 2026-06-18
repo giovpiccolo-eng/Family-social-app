@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Generator · Ingenium Education Group</title>
+  <style>
+    /* ====================================================================
+       Palette: navy #1A3A5C, mid-blue #2E6BA8, off-white, soft greys.
+       ==================================================================== */
+    :root {
+      --navy:        #1A3A5C;
+      --navy-dark:   #122947;
+      --blue:        #2E6BA8;
+      --blue-soft:   #E8F1F9;
+      --grey-50:     #F7F8FA;
+      --grey-100:    #ECEEF2;
+      --grey-200:    #DCDFE5;
+      --grey-400:    #97A0AE;
+      --grey-700:    #4A5260;
+      --text:        #1F2530;
+      --warn-bg:     #FFF6E5;
+      --warn-border: #F0B548;
+      --warn-text:   #8B5A00;
+      --err-bg:      #FDECEC;
+      --err-border:  #E26060;
+      --radius:      6px;
+      --shadow:      0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(26,58,92,0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: Inter, -apple-system, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: var(--grey-50);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* Top bar */
+    header.appbar {
+      background: var(--navy);
+      color: #fff;
+      padding: 18px 28px;
+      box-shadow: var(--shadow);
+    }
+    .appbar h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .appbar .sub {
+      font-size: 12px;
+      opacity: 0.82;
+      margin-top: 2px;
+    }
+
+    /* Layout */
+    main {
+      max-width: 880px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 32px;
+    }
+
+    /* Progress bar */
+    .progress {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 24px;
+    }
+    .progress .bar {
+      flex: 1; height: 6px;
+      background: var(--grey-100); border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress .bar > span {
+      display: block; height: 100%; width: 0%;
+      background: var(--blue);
+      transition: width 0.25s ease;
+    }
+    .progress .step-label {
+      font-size: 12px; color: var(--grey-700);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Step heading */
+    h2.step-title {
+      color: var(--navy);
+      margin: 0 0 4px 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    p.step-sub {
+      margin: 0 0 22px 0;
+      color: var(--grey-700);
+      font-size: 14px;
+    }
+
+    /* Steps */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* Form grid */
+    .grid {
+      display: grid; gap: 16px 20px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .grid > .full { grid-column: 1 / -1; }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { padding: 22px 18px; }
+    }
+
+    /* Fields */
+    .field { display: flex; flex-direction: column; }
+    .field label {
+      font-weight: 600; font-size: 13px;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .field label .opt {
+      font-weight: 400; color: var(--grey-400); font-size: 12px;
+      margin-left: 4px;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field input[type="date"],
+    .field select,
+    .field textarea {
+      font: inherit; color: var(--text);
+      background: #fff;
+      border: 1px solid var(--grey-200);
+      border-radius: var(--radius);
+      padding: 9px 11px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(46,107,168,0.15);
+    }
+    .field input[readonly] {
+      background: var(--grey-50);
+      color: var(--grey-700);
+    }
+    .field .hint {
+      font-size: 12px; color: var(--grey-700);
+      margin-top: 6px;
+    }
+    .field .err {
+      font-size: 12px; color: #c52f2f;
+      margin-top: 6px;
+      display: none;
+    }
+    .field.invalid input,
+    .field.invalid select { border-color: #c52f2f; background: var(--err-bg); }
+    .field.invalid .err { display: block; }
+
+    /* Currency input prefix */
+    .with-prefix {
+      position: relative;
+    }
+    .with-prefix .prefix {
+      position: absolute;
+      left: 11px; top: 50%; transform: translateY(-50%);
+      color: var(--grey-400); font-weight: 600;
+      pointer-events: none;
+    }
+    .with-prefix input { padding-left: 26px; }
+
+    /* Radio / toggle groups */
+    .opts {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .opts label {
+      flex: 1; min-width: 110px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 9px 12px;
+      border: 1px solid var(--grey-200);
+      border-radius: var(--radius);
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-700);
+      transition: all 0.12s;
+    }
+    .opts label:hover { border-color: var(--blue); color: var(--navy); }
+    .opts input { display: none; }
+    .opts input:checked + span,
+    .opts input:checked ~ * { color: var(--navy); font-weight: 600; }
+    .opts label.selected {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: var(--navy);
+    }
+
+    /* Yes/No toggle */
+    .yesno {
+      display: inline-flex;
+      border: 1px solid var(--grey-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .yesno label {
+      padding: 7px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-700);
+      background: #fff;
+      transition: all 0.12s;
+    }
+    .yesno label.selected {
+      background: var(--blue);
+      color: #fff;
+    }
+    .yesno input { display: none; }
+
+    /* Conditional panel (revealed when yes/no -> yes) */
+    .sub-panel {
+      margin-top: 14px;
+      padding: 16px;
+      background: var(--grey-50);
+      border: 1px solid var(--grey-100);
+      border-radius: var(--radius);
+    }
+    .sub-panel .grid { gap: 12px 18px; }
+
+    /* Live calc strip */
+    .live {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: var(--blue-soft);
+      border-left: 3px solid var(--blue);
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--navy);
+      font-variant-numeric: tabular-nums;
+    }
+    .live strong { font-weight: 700; }
+
+    /* Warning banner (e.g. 24-month) */
+    .warn {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn-border);
+      color: var(--warn-text);
+      border-radius: 4px;
+      font-size: 14px;
+      display: none;
+    }
+    .warn.show { display: block; }
+
+    /* Footer nav */
+    .nav {
+      display: flex; justify-content: space-between;
+      gap: 12px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--grey-100);
+    }
+    button {
+      font: inherit; cursor: pointer;
+      border-radius: var(--radius);
+      padding: 10px 22px;
+      font-weight: 600;
+      transition: all 0.12s;
+    }
+    button.primary {
+      background: var(--blue); color: #fff;
+      border: 1px solid var(--blue);
+    }
+    button.primary:hover { background: var(--navy); border-color: var(--navy); }
+    button.primary:disabled { background: var(--grey-200); border-color: var(--grey-200); cursor: not-allowed; color: var(--grey-400); }
+    button.secondary {
+      background: #fff; color: var(--navy);
+      border: 1px solid var(--grey-200);
+    }
+    button.secondary:hover { border-color: var(--navy); }
+
+    /* Summary table */
+    .summary-section { margin-bottom: 18px; }
+    .summary-section h3 {
+      color: var(--navy);
+      font-size: 14px;
+      margin: 0 0 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .kv {
+      display: grid; grid-template-columns: minmax(160px, 30%) 1fr;
+      gap: 4px 16px;
+      font-size: 14px;
+    }
+    .kv dt { color: var(--grey-700); }
+    .kv dd { margin: 0; font-weight: 500; }
+    .ral-box {
+      margin-top: 18px;
+      padding: 16px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: var(--radius);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ral-box .label { font-size: 13px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
+    .ral-box .val { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+
+<body>
+  <header class="appbar">
+    <h1>Ingenium Education Group · Contract Generator</h1>
+    <div class="sub">CCNL ANINSEI 2024–2027 · Acorn International School &amp; St Francis International School</div>
+  </header>
+
+  <main>
+    <div class="card">
+
+      <div class="progress">
+        <div class="bar"><span id="bar"></span></div>
+        <span class="step-label" id="stepLabel">Step 1 di 9</span>
+      </div>
+
+      <form id="wizard" novalidate>
+
+        <!-- ============================================================
+             STEP 1 — Identity
+             ============================================================ -->
+        <section class="step active" data-step="1">
+          <h2 class="step-title">Anagrafica dipendente</h2>
+          <p class="step-sub">Dati identificativi del soggetto destinatario della proposta.</p>
+
+          <div class="grid">
+            <div class="field full">
+              <label for="nome">Nome e cognome</label>
+              <input id="nome" name="nome" type="text" placeholder="Es. Alba Gulino" required>
+              <div class="err">Inserisci nome e cognome.</div>
+            </div>
+
+            <div class="field full">
+              <label>Sesso</label>
+              <div class="opts" data-name="sesso">
+                <label data-value="M"><input type="radio" name="sesso" value="M"><span>Sig. (M)</span></label>
+                <label data-value="F"><input type="radio" name="sesso" value="F"><span>Sig.ra (F)</span></label>
+              </div>
+              <div class="err">Seleziona il sesso.</div>
+            </div>
+
+            <div class="field">
+              <label for="data_nascita">Data di nascita <span class="opt">(opzionale)</span></label>
+              <input id="data_nascita" name="data_nascita" type="date">
+            </div>
+
+            <div class="field">
+              <label for="codice_fiscale">Codice fiscale <span class="opt">(opzionale)</span></label>
+              <input id="codice_fiscale" name="codice_fiscale" type="text"
+                     maxlength="16" pattern="[A-Za-z0-9]{16}"
+                     placeholder="16 caratteri" style="text-transform:uppercase">
+              <div class="err">Il CF deve avere esattamente 16 caratteri alfanumerici.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 2 — Contract Type
+             ============================================================ -->
+        <section class="step" data-step="2">
+          <h2 class="step-title">Tipologia di contratto</h2>
+          <p class="step-sub">Orario, durata e sede della prestazione.</p>
+
+          <div class="grid">
+            <div class="field full">
+              <label>Tipo di orario</label>
+              <div class="opts" data-name="tipo_contratto">
+                <label data-value="tempo_pieno"><input type="radio" name="tipo_contratto" value="tempo_pieno"><span>Tempo pieno</span></label>
+                <label data-value="part_time"><input type="radio" name="tipo_contratto" value="part_time"><span>Part-time</span></label>
+              </div>
+              <div class="err">Seleziona il tipo di orario.</div>
+            </div>
+
+            <div class="field full">
+              <label>Durata</label>
+              <div class="opts" data-name="durata">
+                <label data-value="indeterminato"><input type="radio" name="durata" value="indeterminato"><span>Indeterminato</span></label>
+                <label data-value="determinato"><input type="radio" name="durata" value="determinato"><span>Determinato</span></label>
+              </div>
+              <div class="err">Seleziona la durata.</div>
+            </div>
+
+            <div class="field full">
+              <label>Sede</label>
+              <div class="opts" data-name="sede">
+                <label data-value="Acorn"><input type="radio" name="sede" value="Acorn"><span>Acorn International School</span></label>
+                <label data-value="St Francis"><input type="radio" name="sede" value="St Francis"><span>St Francis International School</span></label>
+              </div>
+              <div class="err">Seleziona la sede.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 3 — Role & Level
+             ============================================================ -->
+        <section class="step" data-step="3">
+          <h2 class="step-title">Ruolo e livello</h2>
+          <p class="step-sub">L'area e l'orario base sono assegnati automaticamente dal livello selezionato.</p>
+
+          <div class="grid">
+            <div class="field">
+              <label for="livello">Livello CCNL</label>
+              <select id="livello" name="livello" required>
+                <option value="">— seleziona —</option>
+                <option value="I">I — Ausiliario</option>
+                <option value="II">II — Operaio qualificato</option>
+                <option value="III">III — Impiegato d'ordine / Ass. infanzia</option>
+                <option value="IV">IV — Docente infanzia / Atelierista</option>
+                <option value="V">V — Docente primaria</option>
+                <option value="VI">VI — Docente secondaria I e II grado</option>
+                <option value="VII">VII — Docente accademia / specializzazione</option>
+                <option value="VIII-A">VIII-A — Direttore / Preside I grado</option>
+                <option value="VIII-B">VIII-B — Preside II grado</option>
+              </select>
+              <div class="err">Seleziona un livello.</div>
+            </div>
+
+            <div class="field">
+              <label for="area">Area <span class="opt">(auto)</span></label>
+              <input id="area" type="text" readonly placeholder="Calcolata da livello">
+            </div>
+
+            <div class="field full">
+              <label for="mansione">Mansione</label>
+              <input id="mansione" name="mansione" type="text"
+                     placeholder="Es. Atelierista, Docente Scuola Primaria" required>
+              <div class="err">Inserisci la mansione.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 4 — Dates
+             ============================================================ -->
+        <section class="step" data-step="4">
+          <h2 class="step-title">Date</h2>
+          <p class="step-sub">Decorrenza e, per i determinati, scadenza del rapporto.</p>
+
+          <div class="grid">
+            <div class="field">
+              <label for="data_inizio">Data inizio</label>
+              <input id="data_inizio" name="data_inizio" type="date" required>
+              <div class="err">Inserisci la data di inizio.</div>
+            </div>
+
+            <div class="field" id="fineWrap" style="display:none">
+              <label for="data_fine">Data fine</label>
+              <input id="data_fine" name="data_fine" type="date">
+              <div class="err">Inserisci la data di fine contratto.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 5 — Orario
+             ============================================================ -->
+        <section class="step" data-step="5">
+          <h2 class="step-title">Orario di lavoro</h2>
+          <p class="step-sub">L'orario base è precompilato dal livello; modificabile per part-time.</p>
+
+          <div class="grid">
+            <div class="field">
+              <label for="ore_base">Orario base livello <span class="opt">(CCNL)</span></label>
+              <input id="ore_base" type="text" readonly>
+            </div>
+
+            <div class="field">
+              <label for="ore_settimanali">Ore settimanali</label>
+              <input id="ore_settimanali" name="ore_settimanali" type="number" min="1" max="40" step="1" required>
+              <div class="hint" id="ratioHint"></div>
+              <div class="err">Inserisci le ore settimanali.</div>
+            </div>
+
+            <div class="field full" id="prolungamentoWrap" style="display:none">
+              <label>Prolungamento orario (art. 35 — solo V livello)</label>
+              <div class="yesno" data-name="prolungamento_attivo">
+                <label data-value="no"><input type="radio" name="prolungamento_attivo" value="no">No</label>
+                <label data-value="si"><input type="radio" name="prolungamento_attivo" value="si">Sì</label>
+              </div>
+
+              <div class="sub-panel" id="prolungamentoPanel" style="display:none">
+                <div class="grid">
+                  <div class="field">
+                    <label for="ore_prolungamento">Ore prolungamento (max 8)</label>
+                    <input id="ore_prolungamento" name="ore_prolungamento" type="number" min="1" max="8" step="1">
+                    <div class="err">Inserisci ore tra 1 e 8.</div>
+                  </div>
+                  <div class="field">
+                    <label>Importo mensile <span class="opt">(auto)</span></label>
+                    <input id="prol_mensile_preview" type="text" readonly>
+                  </div>
+                </div>
+                <div class="live" id="prolLive" style="display:none"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 6 — Retribuzione
+             ============================================================ -->
+        <section class="step" data-step="6">
+          <h2 class="step-title">Retribuzione</h2>
+          <p class="step-sub">Il tabellare è ricavato dal livello e dall'anno di inizio; AFAC e indennità a discrezione.</p>
+
+          <div class="grid">
+            <div class="field">
+              <label>Minimo Conglobato (tabellare) <span class="opt">(auto)</span></label>
+              <div class="with-prefix">
+                <span class="prefix">€</span>
+                <input id="tabellare_display" type="text" readonly>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="afac">AFAC <span class="opt">(mensile lordo full-time)</span></label>
+              <div class="with-prefix">
+                <span class="prefix">€</span>
+                <input id="afac" name="afac" type="text" inputmode="decimal" value="0,00">
+              </div>
+              <div class="hint" id="afacPtHint"></div>
+            </div>
+
+            <div class="field">
+              <label>Totale mensile <span class="opt">(auto)</span></label>
+              <div class="with-prefix">
+                <span class="prefix">€</span>
+                <input id="totale_mensile" type="text" readonly>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Indennità di funzione</label>
+              <div class="yesno" data-name="indennita_attiva">
+                <label data-value="no"><input type="radio" name="indennita_attiva" value="no" checked>No</label>
+                <label data-value="si"><input type="radio" name="indennita_attiva" value="si">Sì</label>
+              </div>
+              <div class="sub-panel" id="indennitaPanel" style="display:none; margin-top:10px">
+                <div class="field">
+                  <label for="indennita_funzione">Importo mensile</label>
+                  <div class="with-prefix">
+                    <span class="prefix">€</span>
+                    <input id="indennita_funzione" name="indennita_funzione" type="text" inputmode="decimal" value="0,00">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field full">
+              <label>Fringe benefit</label>
+              <div class="yesno" data-name="fringe_attivo">
+                <label data-value="no"><input type="radio" name="fringe_attivo" value="no" checked>No</label>
+                <label data-value="si"><input type="radio" name="fringe_attivo" value="si">Sì</label>
+              </div>
+              <div class="sub-panel" id="fringePanel" style="display:none">
+                <div class="opts" data-name="fringe_figli">
+                  <label data-value="si"><input type="radio" name="fringe_figli" value="si"><span>Con figli a carico — € 2.000</span></label>
+                  <label data-value="no"><input type="radio" name="fringe_figli" value="no"><span>Senza figli a carico — € 1.000</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 7 — Voci aggiuntive
+             ============================================================ -->
+        <section class="step" data-step="7">
+          <h2 class="step-title">Voci aggiuntive</h2>
+          <p class="step-sub">Doposcuola e School Camp con compenso omnicomprensivo annuo.</p>
+
+          <div class="grid">
+            <div class="field full">
+              <label>Doposcuola</label>
+              <div class="yesno" data-name="doposcuola_attivo">
+                <label data-value="no"><input type="radio" name="doposcuola_attivo" value="no" checked>No</label>
+                <label data-value="si"><input type="radio" name="doposcuola_attivo" value="si">Sì</label>
+              </div>
+              <div class="sub-panel" id="doposcuolaPanel" style="display:none">
+                <div class="grid">
+                  <div class="field">
+                    <label for="doposcuola_ore">Ore totali annue</label>
+                    <input id="doposcuola_ore" type="number" min="1" step="1" placeholder="Es. 65">
+                  </div>
+                  <div class="field">
+                    <label for="doposcuola_ambito">Ambito <span class="opt">(opzionale)</span></label>
+                    <input id="doposcuola_ambito" type="text" placeholder='es. "nell\'ambito Atelier"'>
+                  </div>
+                </div>
+                <div class="live" id="doposcuolaLive" style="display:none"></div>
+              </div>
+            </div>
+
+            <div class="field full">
+              <label>School Camp</label>
+              <div class="yesno" data-name="camp_attivo">
+                <label data-value="no"><input type="radio" name="camp_attivo" value="no" checked>No</label>
+                <label data-value="si"><input type="radio" name="camp_attivo" value="si">Sì</label>
+              </div>
+              <div class="sub-panel" id="campPanel" style="display:none">
+                <div class="field">
+                  <label for="camp_settimane">Numero settimane</label>
+                  <input id="camp_settimane" type="number" min="1" step="1" placeholder="Es. 7">
+                </div>
+                <div class="live" id="campLive" style="display:none"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 8 — Clausole speciali
+             ============================================================ -->
+        <section class="step" data-step="8">
+          <h2 class="step-title">Clausole speciali</h2>
+          <p class="step-sub">Patto di durata minima e, per i contratti determinati, rinnovo / estensione.</p>
+
+          <div class="grid">
+            <div class="field full">
+              <label>Patto di durata minima</label>
+              <div class="yesno" data-name="patto_attivo">
+                <label data-value="no"><input type="radio" name="patto_attivo" value="no" checked>No</label>
+                <label data-value="si"><input type="radio" name="patto_attivo" value="si">Sì</label>
+              </div>
+              <div class="sub-panel" id="pattoPanel" style="display:none">
+                <div class="grid">
+                  <div class="field">
+                    <label>Decorrenza <span class="opt">(auto da Step 4)</span></label>
+                    <input id="patto_inizio" type="text" readonly>
+                  </div>
+                  <div class="field">
+                    <label>Scadenza <span class="opt">(auto da Step 4)</span></label>
+                    <input id="patto_fine" type="text" readonly>
+                  </div>
+                  <div class="field">
+                    <label for="patto_penale">Penale</label>
+                    <div class="with-prefix">
+                      <span class="prefix">€</span>
+                      <input id="patto_penale" type="text" inputmode="decimal" value="5.000,00">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field full" id="rinnovoWrap" style="display:none">
+              <label>Rinnovo / Estensione <span class="opt">(solo per determinato)</span></label>
+              <div class="yesno" data-name="rinnovo_attivo">
+                <label data-value="no"><input type="radio" name="rinnovo_attivo" value="no" checked>No</label>
+                <label data-value="si"><input type="radio" name="rinnovo_attivo" value="si">Sì</label>
+              </div>
+              <div class="sub-panel" id="rinnovoPanel" style="display:none">
+                <div class="grid">
+                  <div class="field">
+                    <label for="rinnovo_precedenti">Mesi precedenti</label>
+                    <input id="rinnovo_precedenti" type="number" min="0" step="1" value="0">
+                  </div>
+                  <div class="field">
+                    <label for="rinnovo_durata">Durata rinnovo (mesi)</label>
+                    <input id="rinnovo_durata" type="number" min="1" step="1">
+                  </div>
+                </div>
+                <div class="warn" id="warn24">
+                  <strong>Attenzione:</strong> la durata complessiva supera i 24 mesi previsti dall'art. 19 D.lgs. 81/2015. Valutare conversione a tempo indeterminato.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             STEP 9 — Summary
+             ============================================================ -->
+        <section class="step" data-step="9">
+          <h2 class="step-title">Riepilogo</h2>
+          <p class="step-sub">Verifica i dati prima di generare il contratto.</p>
+
+          <div id="summaryBody"></div>
+
+          <div class="ral-box">
+            <div>
+              <div class="label">Retribuzione annua lorda</div>
+              <div class="val" id="summaryRal">€ 0,00</div>
+            </div>
+            <div style="text-align:right; font-size:13px; opacity:0.85;" id="summaryRalSub"></div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             Footer navigation
+             ============================================================ -->
+        <div class="nav">
+          <button type="button" class="secondary" id="btnBack" disabled>← Indietro</button>
+          <button type="button" class="primary" id="btnNext">Avanti →</button>
+          <button type="submit" class="primary" id="btnGenerate" style="display:none">Genera contratto</button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <script>
+  /* =====================================================================
+     CCNL data — mirrors of ccnl_data.py (frontend display only; backend
+     recomputes with Decimal).
+     ===================================================================== */
+  const TABELLARE = {
+    "I":      {"2025": 1280.90, "2026": 1322.50, "2027": 1347.46},
+    "II":     {"2025": 1311.02, "2026": 1354.06, "2027": 1379.61},
+    "III":    {"2025": 1374.80, "2026": 1419.45, "2027": 1446.24},
+    "IV":     {"2025": 1444.47, "2026": 1491.38, "2027": 1519.53},
+    "V":      {"2025": 1539.64, "2026": 1589.64, "2027": 1619.64},
+    "VI":     {"2025": 1539.64, "2026": 1589.64, "2027": 1619.64},
+    "VII":    {"2025": 1563.21, "2026": 1615.68, "2027": 1646.17},
+    "VIII-A": {"2025": 1661.64, "2026": 1716.64, "2027": 1748.60},
+    "VIII-B": {"2025": 1751.92, "2026": 1809.92, "2027": 1843.62},
+  };
+
+  const ORE_BASE = {
+    "I": 38, "II": 38, "III": 38,
+    "IV": 34, "V": 24, "VI": 18, "VII": 18,
+    "VIII-A": null, "VIII-B": null,
+  };
+
+  const AREA = {
+    "I": "Prima (ATA)", "II": "Prima (ATA)", "III": "Prima (ATA)",
+    "IV": "Seconda (DOC)", "V": "Seconda (DOC)", "VI": "Seconda (DOC)", "VII": "Seconda (DOC)",
+    "VIII-A": "Direttiva", "VIII-B": "Direttiva",
+  };
+
+  const PROFILO = {
+    "I": "Ausiliario", "II": "Operaio qualificato", "III": "Impiegato d'ordine / Ass. infanzia",
+    "IV": "Docente infanzia / Atelierista", "V": "Docente primaria",
+    "VI": "Docente secondaria I e II grado", "VII": "Docente accademia / specializzazione",
+    "VIII-A": "Direttore / Preside I grado", "VIII-B": "Preside II grado",
+  };
+
+  const PROVA_INDET = { // months for indeterminato
+    "I": 2, "II": 2, "III": 2,
+    "IV": 4, "V": 4, "VI": 4, "VII": 4, "VIII-A": 4, "VIII-B": 4,
+  };
+
+  const DOPOSCUOLA_RATE = 40;
+  const CAMP_RATE = 380;
+  const MENSILITA = 13;
+
+  /* =====================================================================
+     Italian number formatting and parsing
+     ===================================================================== */
+  function fmtEUR(n) {
+    if (!isFinite(n)) return "0,00";
+    return Number(n).toLocaleString("it-IT", {
+      minimumFractionDigits: 2, maximumFractionDigits: 2,
+    });
+  }
+  function fmtInt(n) {
+    return Number(n).toLocaleString("it-IT", { maximumFractionDigits: 0 });
+  }
+  /** Parse a string formatted like Italian currency ("1.234,56") -> 1234.56. */
+  function parseEUR(str) {
+    if (str === null || str === undefined) return 0;
+    const cleaned = String(str).replace(/\./g, "").replace(",", ".").replace(/[^\d.\-]/g, "");
+    const n = parseFloat(cleaned);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function yearOf(isoDate) {
+    if (!isoDate) return null;
+    const d = new Date(isoDate);
+    return d.getFullYear();
+  }
+  function annoScolastico(isoDate) {
+    if (!isoDate) return "";
+    const d = new Date(isoDate);
+    const m = d.getMonth() + 1, y = d.getFullYear();
+    return (m >= 8) ? `${y}/${y + 1}` : `${y - 1}/${y}`;
+  }
+  function tabellareForYear(livello, year) {
+    if (!livello || !TABELLARE[livello]) return 0;
+    let key;
+    if (year >= 2027) key = "2027";
+    else if (year >= 2026) key = "2026";
+    else key = "2025";
+    return TABELLARE[livello][key];
+  }
+
+  /* =====================================================================
+     Calculations (display-only mirrors of generator.py)
+     ===================================================================== */
+  function roundCents(n) { return Math.round(n * 100) / 100; }
+
+  function tabellarePT(tabellareFT, orePT, oreBase) {
+    if (!oreBase) return tabellareFT;
+    return roundCents(tabellareFT * orePT / oreBase);
+  }
+  function prolungamentoMensile(tabellareMonthly, oreProl) {
+    const quotaH = tabellareMonthly / 104;
+    return roundCents(quotaH * 0.80 * oreProl * 4.333);
+  }
+  function ral(tab, afac, prolAnn, indennitaAnn, dopo, camp) {
+    return roundCents((tab + afac) * MENSILITA + prolAnn + indennitaAnn + dopo + camp);
+  }
+
+  /* =====================================================================
+     Wizard state + step navigation
+     ===================================================================== */
+  const TOTAL_STEPS = 9;
+  let current = 1;
+
+  const steps = document.querySelectorAll(".step");
+  const bar = document.getElementById("bar");
+  const stepLabel = document.getElementById("stepLabel");
+  const btnBack = document.getElementById("btnBack");
+  const btnNext = document.getElementById("btnNext");
+  const btnGenerate = document.getElementById("btnGenerate");
+
+  function showStep(n) {
+    current = n;
+    steps.forEach(s => s.classList.toggle("active", Number(s.dataset.step) === n));
+    bar.style.width = `${(n / TOTAL_STEPS) * 100}%`;
+    stepLabel.textContent = `Step ${n} di ${TOTAL_STEPS}`;
+    btnBack.disabled = (n === 1);
+    btnNext.style.display = (n === TOTAL_STEPS) ? "none" : "inline-block";
+    btnGenerate.style.display = (n === TOTAL_STEPS) ? "inline-block" : "none";
+    if (n === TOTAL_STEPS) renderSummary();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  btnBack.addEventListener("click", () => showStep(Math.max(1, current - 1)));
+  btnNext.addEventListener("click", () => {
+    if (validateStep(current)) showStep(Math.min(TOTAL_STEPS, current + 1));
+  });
+
+  /* =====================================================================
+     Custom radio "opts" / "yesno" — click to select, mark .selected
+     ===================================================================== */
+  document.querySelectorAll(".opts, .yesno").forEach(group => {
+    group.querySelectorAll("label").forEach(lbl => {
+      lbl.addEventListener("click", e => {
+        e.preventDefault();
+        const radio = lbl.querySelector("input[type=radio]");
+        if (!radio) return;
+        radio.checked = true;
+        group.querySelectorAll("label").forEach(l => l.classList.remove("selected"));
+        lbl.classList.add("selected");
+        radio.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+  });
+
+  /* =====================================================================
+     Reactive field wiring
+     ===================================================================== */
+
+  // -- Step 1: nome / sesso / data nascita / CF
+  const elNome = document.getElementById("nome");
+  const elCF   = document.getElementById("codice_fiscale");
+  elCF.addEventListener("input", e => { e.target.value = e.target.value.toUpperCase(); });
+
+  // -- Step 2: tipo, durata, sede
+  document.querySelectorAll("input[name=durata]").forEach(r => r.addEventListener("change", () => {
+    const isDet = r.checked && r.value === "determinato";
+    document.getElementById("fineWrap").style.display = isDet ? "" : "none";
+    document.getElementById("rinnovoWrap").style.display = isDet ? "" : "none";
+  }));
+  document.querySelectorAll("input[name=tipo_contratto]").forEach(r => r.addEventListener("change", recomputeOrarioAndRetribuzione));
+
+  // -- Step 3: livello -> area, profilo, prolungamento visibility, ore base
+  const elLivello = document.getElementById("livello");
+  const elArea    = document.getElementById("area");
+  const elMansione = document.getElementById("mansione");
+  elLivello.addEventListener("change", () => {
+    const lv = elLivello.value;
+    elArea.value = lv ? `${AREA[lv]} — ${PROFILO[lv]}` : "";
+    const oreBase = ORE_BASE[lv];
+    document.getElementById("ore_base").value = oreBase ? `${oreBase}h/sett` : "N/A";
+    const elOre = document.getElementById("ore_settimanali");
+    if (oreBase) elOre.value = oreBase;
+    document.getElementById("prolungamentoWrap").style.display = (lv === "V") ? "" : "none";
+    recomputeOrarioAndRetribuzione();
+  });
+
+  // -- Step 4: dates
+  const elInizio = document.getElementById("data_inizio");
+  const elFine   = document.getElementById("data_fine");
+  elInizio.addEventListener("change", () => {
+    recomputeOrarioAndRetribuzione();
+    syncPattoDates();
+  });
+  elFine.addEventListener("change", syncPattoDates);
+
+  // -- Step 5: ore settimanali, prolungamento
+  document.getElementById("ore_settimanali").addEventListener("input", recomputeOrarioAndRetribuzione);
+  document.querySelectorAll("input[name=prolungamento_attivo]").forEach(r => r.addEventListener("change", () => {
+    document.getElementById("prolungamentoPanel").style.display = (r.checked && r.value === "si") ? "" : "none";
+    recomputeProlungamento();
+  }));
+  document.getElementById("ore_prolungamento").addEventListener("input", recomputeProlungamento);
+
+  // -- Step 6: AFAC, indennità funzione, fringe benefit
+  const elAfac = document.getElementById("afac");
+  const elIndennita = document.getElementById("indennita_funzione");
+  ["focus","blur","input"].forEach(ev => {
+    elAfac.addEventListener(ev, () => { recomputeOrarioAndRetribuzione(); if (ev === "blur") elAfac.value = fmtEUR(parseEUR(elAfac.value)); });
+    elIndennita.addEventListener(ev, () => { recomputeOrarioAndRetribuzione(); if (ev === "blur") elIndennita.value = fmtEUR(parseEUR(elIndennita.value)); });
+  });
+  document.querySelectorAll("input[name=indennita_attiva]").forEach(r => r.addEventListener("change", () => {
+    document.getElementById("indennitaPanel").style.display = (r.checked && r.value === "si") ? "" : "none";
+    if (!(r.value === "si" && r.checked)) elIndennita.value = "0,00";
+    recomputeOrarioAndRetribuzione();
+  }));
+  document.querySelectorAll("input[name=fringe_attivo]").forEach(r => r.addEventListener("change", () => {
+    document.getElementById("fringePanel").style.display = (r.checked && r.value === "si") ? "" : "none";
+  }));
+
+  // -- Step 7: doposcuola, camp live previews
+  document.querySelectorAll("input[name=doposcuola_attivo]").forEach(r => r.addEventListener("change", () => {
+    document.getElementById("doposcuolaPanel").style.display = (r.checked && r.value === "si") ? "" : "none";
+    recomputeDoposcuola();
+  }));
+  document.getElementById("doposcuola_ore").addEventListener("input", recomputeDoposcuola);
+  document.querySelectorAll("input[name=camp_attivo]").forEach(r => r.addEventListener("change", () => {
+    document.getElementById("campPanel").style.display = (r.checked && r.value === "si") ? "" : "none";
+    recomputeCamp();
+  }));
+  document.getElementById("camp_settimane").addEventListener("input", recomputeCamp);
+
+  // -- Step 8: patto, rinnovo
+  document.querySelectorAll("input[name=patto_attivo]").forEach(r => r.addEventListener("change", () => {
+    document.getElementById("pattoPanel").style.display = (r.checked && r.value === "si") ? "" : "none";
+    syncPattoDates();
+  }));
+  document.getElementById("patto_penale").addEventListener("blur", e => {
+    e.target.value = fmtEUR(parseEUR(e.target.value));
+  });
+  document.querySelectorAll("input[name=rinnovo_attivo]").forEach(r => r.addEventListener("change", () => {
+    document.getElementById("rinnovoPanel").style.display = (r.checked && r.value === "si") ? "" : "none";
+    recompute24Month();
+  }));
+  ["rinnovo_precedenti","rinnovo_durata"].forEach(id =>
+    document.getElementById(id).addEventListener("input", recompute24Month));
+
+  /* =====================================================================
+     Reactive recomputations
+     ===================================================================== */
+
+  function selectedRadio(name) {
+    const r = document.querySelector(`input[name=${name}]:checked`);
+    return r ? r.value : null;
+  }
+
+  function recomputeOrarioAndRetribuzione() {
+    const lv = elLivello.value;
+    if (!lv) {
+      document.getElementById("tabellare_display").value = "";
+      document.getElementById("totale_mensile").value = "";
+      return;
+    }
+    const year = yearOf(elInizio.value) || new Date().getFullYear();
+    const tabFT = tabellareForYear(lv, year);
+    const oreBase = ORE_BASE[lv];
+    const ore = parseInt(document.getElementById("ore_settimanali").value, 10) || oreBase || 0;
+    const isPT = selectedRadio("tipo_contratto") === "part_time";
+
+    const tab = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    document.getElementById("tabellare_display").value = fmtEUR(tab);
+
+    // ratio hint under ore settimanali
+    const ratioHint = document.getElementById("ratioHint");
+    if (isPT && oreBase) ratioHint.textContent = `Rapporto part-time ${ore}/${oreBase} (tabellare proporzionato).`;
+    else ratioHint.textContent = "";
+
+    // AFAC PT hint
+    const afacFT = parseEUR(elAfac.value);
+    const afacPT = (isPT && oreBase) ? roundCents(afacFT * ore / oreBase) : afacFT;
+    document.getElementById("afacPtHint").textContent =
+      (isPT && oreBase && afacFT > 0)
+        ? `AFAC proporzionato part-time: € ${fmtEUR(afacPT)}`
+        : "";
+
+    const indennita = parseEUR(elIndennita.value);
+    const totale = roundCents(tab + afacPT + indennita);
+    document.getElementById("totale_mensile").value = fmtEUR(totale);
+
+    recomputeProlungamento();
+  }
+
+  function recomputeProlungamento() {
+    const live = document.getElementById("prolLive");
+    const wrap = document.getElementById("prolungamentoPanel");
+    const attivo = selectedRadio("prolungamento_attivo") === "si";
+    if (!attivo) {
+      document.getElementById("prol_mensile_preview").value = "";
+      live.style.display = "none";
+      return;
+    }
+    const lv = elLivello.value;
+    const year = yearOf(elInizio.value) || new Date().getFullYear();
+    const tabFT = tabellareForYear(lv, year);
+    const oreBase = ORE_BASE[lv];
+    const isPT = selectedRadio("tipo_contratto") === "part_time";
+    const ore = parseInt(document.getElementById("ore_settimanali").value, 10) || oreBase || 0;
+    const tab = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    const oreProl = parseInt(document.getElementById("ore_prolungamento").value, 10) || 0;
+    if (oreProl <= 0) {
+      document.getElementById("prol_mensile_preview").value = "0,00";
+      live.style.display = "none";
+      return;
+    }
+    const mensile = prolungamentoMensile(tab, oreProl);
+    const annuale = roundCents(mensile * MENSILITA);
+    document.getElementById("prol_mensile_preview").value = fmtEUR(mensile);
+    live.style.display = "";
+    live.innerHTML = `Formula: <strong>${fmtEUR(tab)} ÷ 104 × 0,80 × ${oreProl} × 4,333</strong> = <strong>€ ${fmtEUR(mensile)}/mese</strong> (≈ € ${fmtEUR(annuale)}/anno).`;
+  }
+
+  function recomputeDoposcuola() {
+    const live = document.getElementById("doposcuolaLive");
+    const ore = parseInt(document.getElementById("doposcuola_ore").value, 10) || 0;
+    if (selectedRadio("doposcuola_attivo") !== "si" || ore <= 0) {
+      live.style.display = "none"; return;
+    }
+    const compenso = roundCents(ore * DOPOSCUOLA_RATE);
+    live.style.display = "";
+    live.innerHTML = `<strong>${ore} ore × € 40,00</strong> = <strong>€ ${fmtEUR(compenso)}</strong> lordi annui.`;
+  }
+
+  function recomputeCamp() {
+    const live = document.getElementById("campLive");
+    const sett = parseInt(document.getElementById("camp_settimane").value, 10) || 0;
+    if (selectedRadio("camp_attivo") !== "si" || sett <= 0) {
+      live.style.display = "none"; return;
+    }
+    const compenso = roundCents(sett * CAMP_RATE);
+    live.style.display = "";
+    live.innerHTML = `<strong>${sett} settimane × € 380,00</strong> = <strong>€ ${fmtEUR(compenso)}</strong> lordi annui.`;
+  }
+
+  function syncPattoDates() {
+    const inizio = elInizio.value, fine = elFine.value;
+    const fmt = iso => iso ? iso.split("-").reverse().join("/") : "";
+    document.getElementById("patto_inizio").value = fmt(inizio);
+    document.getElementById("patto_fine").value = fmt(fine);
+  }
+
+  function recompute24Month() {
+    const warn = document.getElementById("warn24");
+    const attivo = selectedRadio("rinnovo_attivo") === "si";
+    if (!attivo) { warn.classList.remove("show"); return; }
+    const prec = parseInt(document.getElementById("rinnovo_precedenti").value, 10) || 0;
+    const dur  = parseInt(document.getElementById("rinnovo_durata").value, 10) || 0;
+    warn.classList.toggle("show", (prec + dur) >= 24);
+  }
+
+  /* =====================================================================
+     Per-step validation
+     ===================================================================== */
+  function markInvalid(field, invalid) {
+    field.closest(".field").classList.toggle("invalid", invalid);
+  }
+  function validateStep(n) {
+    let ok = true;
+    if (n === 1) {
+      ok &= require(elNome);
+      ok &= !!selectedRadio("sesso");
+      const cf = elCF.value.trim();
+      if (cf && !/^[A-Z0-9]{16}$/.test(cf)) {
+        markInvalid(elCF, true); ok = false;
+      } else markInvalid(elCF, false);
+    } else if (n === 2) {
+      ok = !!(selectedRadio("tipo_contratto") && selectedRadio("durata") && selectedRadio("sede"));
+    } else if (n === 3) {
+      ok &= require(elLivello);
+      ok &= require(elMansione);
+    } else if (n === 4) {
+      ok &= require(elInizio);
+      if (selectedRadio("durata") === "determinato") ok &= require(elFine);
+    } else if (n === 5) {
+      ok &= require(document.getElementById("ore_settimanali"));
+      if (selectedRadio("prolungamento_attivo") === "si")
+        ok &= require(document.getElementById("ore_prolungamento"));
+    } else if (n === 6) {
+      // AFAC and indennità optional; no required input here
+      ok = true;
+    } else if (n === 7) {
+      if (selectedRadio("doposcuola_attivo") === "si")
+        ok &= require(document.getElementById("doposcuola_ore"));
+      if (selectedRadio("camp_attivo") === "si")
+        ok &= require(document.getElementById("camp_settimane"));
+    } else if (n === 8) {
+      if (selectedRadio("rinnovo_attivo") === "si")
+        ok &= require(document.getElementById("rinnovo_durata"));
+    }
+    return !!ok;
+  }
+  function require(el) {
+    const empty = !el.value || String(el.value).trim() === "";
+    markInvalid(el, empty);
+    return !empty;
+  }
+
+  /* =====================================================================
+     Build payload + summary
+     ===================================================================== */
+  function buildPayload() {
+    const lv = elLivello.value;
+    const inizioISO = elInizio.value;
+    const oreBase = ORE_BASE[lv];
+    const ore = parseInt(document.getElementById("ore_settimanali").value, 10) || oreBase || 0;
+    const isPT = selectedRadio("tipo_contratto") === "part_time";
+    const year = yearOf(inizioISO) || new Date().getFullYear();
+    const tabFT = tabellareForYear(lv, year);
+    const tab = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    const afacFT = parseEUR(elAfac.value);
+    const afac = (isPT && oreBase) ? roundCents(afacFT * ore / oreBase) : afacFT;
+    const indennita = (selectedRadio("indennita_attiva") === "si") ? parseEUR(elIndennita.value) : 0;
+
+    // prolungamento
+    let prol = null;
+    if (selectedRadio("prolungamento_attivo") === "si") {
+      const oreProl = parseInt(document.getElementById("ore_prolungamento").value, 10) || 0;
+      const mensile = prolungamentoMensile(tab, oreProl);
+      prol = { attivo: true, ore: oreProl,
+               importo_mensile: mensile.toFixed(2),
+               importo_annuale: roundCents(mensile * MENSILITA).toFixed(2) };
+    }
+
+    // doposcuola
+    let dopo = null;
+    if (selectedRadio("doposcuola_attivo") === "si") {
+      const oreD = parseInt(document.getElementById("doposcuola_ore").value, 10) || 0;
+      const ambitoRaw = (document.getElementById("doposcuola_ambito").value || "").trim();
+      let ambito = "";
+      if (ambitoRaw) ambito = ambitoRaw.startsWith(" ") ? ambitoRaw : ` ${ambitoRaw}`;
+      dopo = { ore: oreD, ambito, compenso: roundCents(oreD * DOPOSCUOLA_RATE).toFixed(2) };
+    }
+
+    // camp
+    let camp = null;
+    if (selectedRadio("camp_attivo") === "si") {
+      const sett = parseInt(document.getElementById("camp_settimane").value, 10) || 0;
+      camp = { settimane: sett, compenso: roundCents(sett * CAMP_RATE).toFixed(2) };
+    }
+
+    // fringe
+    let fringe = null;
+    if (selectedRadio("fringe_attivo") === "si") {
+      fringe = { con_figli: selectedRadio("fringe_figli") === "si" };
+    }
+
+    // patto
+    let patto = null;
+    if (selectedRadio("patto_attivo") === "si") {
+      patto = { penale: parseEUR(document.getElementById("patto_penale").value).toFixed(2) };
+    }
+
+    // rinnovo (only meaningful if determinato)
+    let rinnovo = null;
+    if (selectedRadio("durata") === "determinato" && selectedRadio("rinnovo_attivo") === "si") {
+      rinnovo = {
+        mesi_precedenti: parseInt(document.getElementById("rinnovo_precedenti").value, 10) || 0,
+        durata_mesi: parseInt(document.getElementById("rinnovo_durata").value, 10) || 0,
+      };
+    }
+
+    return {
+      nome: elNome.value.trim(),
+      sesso: selectedRadio("sesso"),
+      data_nascita: document.getElementById("data_nascita").value || null,
+      codice_fiscale: elCF.value.trim() || null,
+      tipo_contratto: selectedRadio("tipo_contratto") === "tempo_pieno" ? "tempo_pieno" : "tempo_parziale",
+      durata: selectedRadio("durata"),
+      sede: selectedRadio("sede"),
+      livello: lv,
+      mansione: elMansione.value.trim(),
+      data_inizio: inizioISO,
+      data_fine: elFine.value || null,
+      ore_settimanali: ore,
+      tabellare: tab.toFixed(2),
+      afac: afac.toFixed(2),
+      indennita_funzione: indennita.toFixed(2),
+      prolungamento: prol,
+      doposcuola: dopo,
+      camp,
+      fringe,
+      patto,
+      rinnovo,
+    };
+  }
+
+  function renderSummary() {
+    const p = buildPayload();
+    const sez = [];
+
+    sez.push({ h: "Dipendente", kv: [
+      ["Nome",      p.nome || "—"],
+      ["Sesso",     p.sesso === "F" ? "Sig.ra" : "Sig."],
+      ["Nascita",   p.data_nascita ? p.data_nascita.split("-").reverse().join("/") : "—"],
+      ["CF",        p.codice_fiscale || "—"],
+    ]});
+    sez.push({ h: "Contratto", kv: [
+      ["Tipo orario",  p.tipo_contratto === "tempo_pieno" ? "Tempo pieno" : "Part-time"],
+      ["Durata",       p.durata === "determinato" ? "Determinato" : "Indeterminato"],
+      ["Sede",         p.sede],
+      ["Livello",      `${p.livello} (${AREA[p.livello]})`],
+      ["Mansione",     p.mansione],
+      ["Decorrenza",   p.data_inizio ? p.data_inizio.split("-").reverse().join("/") : "—"],
+      ["Scadenza",     p.data_fine ? p.data_fine.split("-").reverse().join("/") : "—"],
+      ["Ore settimanali", String(p.ore_settimanali)],
+      ["Anno scolastico", annoScolastico(p.data_inizio)],
+    ]});
+    const retKV = [
+      ["Tabellare", `€ ${fmtEUR(parseFloat(p.tabellare))}`],
+      ["AFAC",      `€ ${fmtEUR(parseFloat(p.afac))}`],
+    ];
+    if (parseFloat(p.indennita_funzione) > 0)
+      retKV.push(["Indennità funzione", `€ ${fmtEUR(parseFloat(p.indennita_funzione))}`]);
+    const totaleMensile = roundCents(parseFloat(p.tabellare) + parseFloat(p.afac) + parseFloat(p.indennita_funzione));
+    retKV.push(["Totale mensile", `€ ${fmtEUR(totaleMensile)}`]);
+    sez.push({ h: "Retribuzione mensile", kv: retKV });
+
+    if (p.prolungamento) {
+      sez.push({ h: "Prolungamento orario (art. 35)", kv: [
+        ["Ore settimanali", String(p.prolungamento.ore)],
+        ["Importo mensile", `€ ${fmtEUR(parseFloat(p.prolungamento.importo_mensile))}`],
+        ["Importo annuo (×13)", `€ ${fmtEUR(parseFloat(p.prolungamento.importo_annuale))}`],
+      ]});
+    }
+    if (p.doposcuola) sez.push({ h: "Doposcuola", kv: [
+      ["Ore annue", String(p.doposcuola.ore)],
+      ["Compenso annuo", `€ ${fmtEUR(parseFloat(p.doposcuola.compenso))}`],
+    ]});
+    if (p.camp) sez.push({ h: "School Camp", kv: [
+      ["Settimane", String(p.camp.settimane)],
+      ["Compenso annuo", `€ ${fmtEUR(parseFloat(p.camp.compenso))}`],
+    ]});
+    if (p.fringe) sez.push({ h: "Fringe benefit", kv: [
+      ["Tipologia", p.fringe.con_figli ? "Con figli (€ 2.000)" : "Senza figli (€ 1.000)"],
+    ]});
+    if (p.patto) sez.push({ h: "Patto di durata minima", kv: [
+      ["Penale", `€ ${fmtEUR(parseFloat(p.patto.penale))}`],
+    ]});
+    if (p.rinnovo) {
+      const tot = p.rinnovo.mesi_precedenti + p.rinnovo.durata_mesi;
+      sez.push({ h: "Rinnovo / Estensione", kv: [
+        ["Mesi precedenti", String(p.rinnovo.mesi_precedenti)],
+        ["Durata rinnovo",  `${p.rinnovo.durata_mesi} mesi`],
+        ["Totale",          `${tot} mesi${tot >= 24 ? " ⚠️ ≥ 24" : ""}`],
+      ]});
+    }
+
+    document.getElementById("summaryBody").innerHTML = sez.map(s => `
+      <div class="summary-section">
+        <h3>${s.h}</h3>
+        <dl class="kv">${s.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+      </div>`).join("");
+
+    // RAL
+    const prolAnn   = p.prolungamento ? parseFloat(p.prolungamento.importo_annuale) : 0;
+    const indennAnn = parseFloat(p.indennita_funzione) * MENSILITA;
+    const dopo      = p.doposcuola ? parseFloat(p.doposcuola.compenso) : 0;
+    const camp      = p.camp ? parseFloat(p.camp.compenso) : 0;
+    const ralVal    = ral(parseFloat(p.tabellare), parseFloat(p.afac), prolAnn, indennAnn, dopo, camp);
+    document.getElementById("summaryRal").textContent = `€ ${fmtEUR(ralVal)}`;
+    document.getElementById("summaryRalSub").textContent = `Anno scolastico ${annoScolastico(p.data_inizio)}`;
+  }
+
+  /* =====================================================================
+     Submit
+     ===================================================================== */
+  document.getElementById("wizard").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const payload = buildPayload();
+    btnGenerate.disabled = true;
+    btnGenerate.textContent = "Generazione in corso…";
+    try {
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`Errore server (${res.status})`);
+      const data = await res.json();
+      if (data.docx_url || data.pdf_url) {
+        const qs = new URLSearchParams({
+          nome: payload.nome,
+          docx: data.docx_url || "",
+          pdf: data.pdf_url || "",
+          ral: String(ral(
+            parseFloat(payload.tabellare), parseFloat(payload.afac),
+            payload.prolungamento ? parseFloat(payload.prolungamento.importo_annuale) : 0,
+            parseFloat(payload.indennita_funzione) * MENSILITA,
+            payload.doposcuola ? parseFloat(payload.doposcuola.compenso) : 0,
+            payload.camp ? parseFloat(payload.camp.compenso) : 0,
+          )),
+        });
+        window.location.href = `/result?${qs.toString()}`;
+      }
+    } catch (err) {
+      alert("Generazione fallita: " + err.message);
+      btnGenerate.disabled = false;
+      btnGenerate.textContent = "Genera contratto";
+    }
+  });
+
+  // Initial render
+  showStep(1);
+  </script>
+</body>
+</html>
