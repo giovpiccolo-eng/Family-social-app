@@ -169,16 +169,35 @@ def preavviso_mesi(tipo_contratto: str, livello: str, anzianita_anni: float) -> 
 
 
 # ---------------------------------------------------------------------------
-# 4.5 Prolungamento orario primaria (art. 35)
-# Constants used by calc_prolungamento_mensile() in generator.py.
+# 4.5 Prolungamento Orario — formula da foglio "Calcolo PO stipendi" (Ingenium).
+#
+#   annuale = (tabellare + AFAC) / divisore  ×  0,80  ×  ore_prol  ×  39 settimane
+#
+# - divisore: dipende dall'orario base settimanale del livello (lookup
+#   DIVISORE_ORARIO sotto).  Es. 34h => 147, 24h => 104, 18h => 78.
+# - 80%: percentuale di pagamento PO sul costo orario base.
+# - 39: settimane scolastiche per cui il PO è erogato (anno scolastico).
+#
+# Applicabilità: IV (Infanzia, max 4h), V (Primaria, max 8h), VI (MHS, max 6h).
 # ---------------------------------------------------------------------------
 
 PROLUNGAMENTO = {
-    "livello_applicabile": "V",
-    "max_ore_settimanali": 8,
-    "divisore_quota_oraria": Decimal("104"),
+    "livelli_applicabili":   ["IV", "V", "VI"],
+    "max_ore_per_livello":   {"IV": 4, "V": 8, "VI": 6},
     "coefficiente_riduzione": Decimal("0.80"),
-    "moltiplicatore_mensile": Decimal("4.333"),
+    "settimane_scolastiche":  39,
+}
+
+# Divisore orario per il calcolo del costo orario (CCNL ANINSEI).
+# divisore ≈ orario_settimanale × 13/3 arrotondato.
+DIVISORE_ORARIO = {
+    38: 164,   # ATA
+    36: 156,
+    34: 147,   # Infanzia (IV)
+    32: 139,
+    24: 104,   # Primaria (V)
+    21:  91,
+    18:  78,   # Secondaria / MHS (VI, VII)
 }
 
 

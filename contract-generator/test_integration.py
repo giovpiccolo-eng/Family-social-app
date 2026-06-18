@@ -21,13 +21,14 @@ import shutil
 import unittest
 import zipfile
 from datetime import date
+from decimal import Decimal
 from pathlib import Path
 
 from app import app
 from generator import (
     MENSILITA_ANNUE,
     calc_doposcuola,
-    calc_prolungamento_mensile,
+    calc_prolungamento_annuale,
     calc_ral,
     calc_school_camp,
     check_24months,
@@ -52,11 +53,12 @@ def _extract_text(docx_path: Path) -> str:
 # ---------------------------------------------------------------------------
 
 def payload_alba_gulino() -> dict:
-    """A — Acorn, IV livello, FT determinato 26/08/2026-30/06/2027."""
+    """A — Acorn, IV livello, FT determinato 26/08/2026-30/06/2027.
+    PO uses new Ingenium worksheet formula. Indennità is annual."""
     start = date(2026, 8, 26)
     tab = get_tabellare("IV", start)                       # 1491.38
-    prol_mensile = calc_prolungamento_mensile(tab, 4)
-    prol_annuale = prol_mensile * MENSILITA_ANNUE
+    afac = Decimal("206.00")
+    prol_annuale = calc_prolungamento_annuale(tab, afac, "IV", 4)  # 1441.04
     dopo = calc_doposcuola(65)                              # 2600.00
     camp = calc_school_camp(7)                              # 2660.00
     return {
@@ -73,11 +75,10 @@ def payload_alba_gulino() -> dict:
         "data_fine": "2027-06-30",
         "ore_settimanali": 34,
         "tabellare": str(tab),
-        "afac": "206.00",
-        "indennita_funzione": "0",
+        "afac": str(afac),
+        "indennita_funzione": "0",                         # annual
         "prolungamento": {
             "attivo": True, "ore": 4,
-            "importo_mensile": str(prol_mensile),
             "importo_annuale": str(prol_annuale),
         },
         "doposcuola": {"ore": 65, "ambito": " nell'ambito Atelier",
@@ -249,13 +250,13 @@ class TestScenarioA(_ScenarioBase):
         self.assertNotIn("Patto di durata minima:", self.text)
 
     def test_ral_value_appears(self):
-        # RAL = (1491.38 + 206) * 13 + prol_annuale + 2600 + 2660
+        # New PO formula (Ingenium worksheet) — RAL changes vs old brief value
         tab = get_tabellare("IV", date(2026, 8, 26))
         from decimal import Decimal
-        prol_mensile = calc_prolungamento_mensile(tab, 4)
+        prol_annuale = calc_prolungamento_annuale(tab, Decimal("206.00"), "IV", 4)
         ral = calc_ral(
             tab, Decimal("206.00"),
-            prolungamento_annuale=prol_mensile * MENSILITA_ANNUE,
+            prolungamento_annuale=prol_annuale,
             doposcuola=Decimal("2600.00"),
             camp=Decimal("2660.00"),
         )

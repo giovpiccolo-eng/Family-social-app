@@ -14,6 +14,7 @@ from ccnl_data import (
     TABELLARE,
     ORE_BASE,
     PROLUNGAMENTO,
+    DIVISORE_ORARIO,
     DOPOSCUOLA_RATE_HOUR,
     SCHOOL_CAMP_RATE_WEEK,
     MENSILITA_ANNUE,
@@ -67,24 +68,54 @@ def proportion_parttime(value: Decimal, ore_pt: int, ore_base: int) -> Decimal:
 
 
 # ---------------------------------------------------------------------------
-# 5.3 — Prolungamento orario primaria (art. 35)
+# 5.3 — Prolungamento Orario (foglio "Calcolo PO stipendi")
 # ---------------------------------------------------------------------------
 
-def calc_prolungamento_mensile(tabellare: Decimal, ore_prol: int) -> Decimal:
+def calc_prolungamento_annuale(
+    tabellare: Decimal,
+    afac: Decimal,
+    livello: str,
+    ore_prol: int,
+) -> Decimal:
     """
-    Monthly amount due for prolungamento orario (V livello — docenti primaria).
-        quota_h      = tabellare / 104
-        quota_h_prol = quota_h × 0.80
-        importo     = quota_h_prol × ore_prol × 4.333
+    Annual PO compensation, per the Ingenium PO worksheet:
+        costo_orario   = (tabellare + AFAC) / divisore[ore_base(livello)]
+        costo_PO       = costo_orario × 0.80
+        annuale        = costo_PO × ore_prol × 39 settimane
+
+    Tabellare and AFAC are monthly values (may already be PT-proportioned).
+    Divisore is taken from the CCNL hours-base of the livello, not from the
+    employee's actual weekly hours — this matches the spreadsheet.
     """
-    if ore_prol < 0 or ore_prol > PROLUNGAMENTO["max_ore_settimanali"]:
+    if livello not in PROLUNGAMENTO["livelli_applicabili"]:
         raise ValueError(
-            f"ore_prol must be in [0, {PROLUNGAMENTO['max_ore_settimanali']}]"
+            f"Prolungamento non applicabile al livello {livello}. "
+            f"Applicabile a: {PROLUNGAMENTO['livelli_applicabili']}"
         )
-    quota_h = tabellare / PROLUNGAMENTO["divisore_quota_oraria"]
-    quota_prol = quota_h * PROLUNGAMENTO["coefficiente_riduzione"]
-    importo = quota_prol * Decimal(ore_prol) * PROLUNGAMENTO["moltiplicatore_mensile"]
-    return _money(importo)
+    max_ore = PROLUNGAMENTO["max_ore_per_livello"][livello]
+    if ore_prol < 0 or ore_prol > max_ore:
+        raise ValueError(f"ore_prol per livello {livello} deve essere in [0, {max_ore}]")
+
+    ore_base = ORE_BASE[livello]
+    if ore_base not in DIVISORE_ORARIO:
+        raise ValueError(f"Divisore mancante per orario {ore_base}h")
+    divisore = Decimal(DIVISORE_ORARIO[ore_base])
+
+    costo_orario = (tabellare + afac) / divisore
+    costo_po = costo_orario * PROLUNGAMENTO["coefficiente_riduzione"]
+    annuale = costo_po * Decimal(ore_prol) * Decimal(PROLUNGAMENTO["settimane_scolastiche"])
+    return _money(annuale)
+
+
+def calc_prolungamento_mensile(
+    tabellare: Decimal,
+    afac: Decimal,
+    livello: str,
+    ore_prol: int,
+) -> Decimal:
+    """Monthly equivalent = annuale / 13 mensilità. Display-only."""
+    annuale = calc_prolungamento_annuale(tabellare, afac, livello, ore_prol)
+    return _money(annuale / Decimal(MENSILITA_ANNUE))
 
 
 # ---------------------------------------------------------------------------
@@ -447,13 +478,17 @@ def _add_orario(doc, payload: dict) -> None:
 def _retribution_amounts(payload: dict) -> tuple[Decimal, Decimal, Decimal]:
     """Apply part-time proportioning per brief §3 Step 6 and §4.2.
 
-    Tabellare and AFAC are submitted as FULL-TIME values; the backend
-    proportions both by ore_settimanali / ORE_BASE[livello] when part-time.
-    Indennità di funzione is a flat allowance — not proportioned.
+    Returns: (tabellare_mensile, afac_mensile, indennita_ANNUALE).
+
+    - Tabellare and AFAC are submitted as FULL-TIME monthly values; the
+      backend proportions both by ore_settimanali / ORE_BASE[livello] when
+      part-time.
+    - `indennita_funzione` is an ANNUAL gross amount (per Giovanni's update).
+      Not proportioned; not converted to monthly here.
     """
     tabellare = _d(payload["tabellare"])
     afac = _d(payload.get("afac", 0))
-    indennita = _d(payload.get("indennita_funzione", 0))
+    indennita_annuale = _d(payload.get("indennita_funzione", 0))
 
     is_pt = payload["tipo_contratto"] != "tempo_pieno"
     if is_pt:
@@ -463,15 +498,20 @@ def _retribution_amounts(payload: dict) -> tuple[Decimal, Decimal, Decimal]:
         if ore_base:
             tabellare = proportion_parttime(tabellare, ore, ore_base)
             afac = proportion_parttime(afac, ore, ore_base)
-    return tabellare, afac, indennita
+    return tabellare, afac, indennita_annuale
 
 
 def _add_retribuzione(doc, payload: dict) -> Decimal:
-    """§7.1 #11 — intro + 2-column retribution table. Returns totale mensile."""
+    """§7.1 #11 — intro + 2-column retribution table. Returns totale mensile.
+
+    Indennità di funzione is shown as the monthly equivalent (annuale / 13)
+    so it stays consistent with the other monthly rows.
+    """
     _add_header(doc, STATIC_BLOCKS["header_retribuzione"])
 
-    tabellare, afac, indennita = _retribution_amounts(payload)
-    totale_mensile = tabellare + afac + indennita
+    tabellare, afac, indennita_annuale = _retribution_amounts(payload)
+    indennita_mensile = _money(indennita_annuale / Decimal(MENSILITA_ANNUE))
+    totale_mensile = tabellare + afac + indennita_mensile
 
     _add_para(doc, STATIC_BLOCKS["retribuzione_intro"].format(
         totale_mensile=format_currency_it(totale_mensile),
@@ -486,8 +526,8 @@ def _add_retribuzione(doc, payload: dict) -> Decimal:
     rows = [(f"Minimo Conglobato ({livello}{ratio_label})", tabellare)]
     if afac > 0:
         rows.append(("AFAC", afac))
-    if indennita > 0:
-        rows.append(("Indennità di funzione", indennita))
+    if indennita_mensile > 0:
+        rows.append(("Indennità di funzione (mensile equiv.)", indennita_mensile))
     rows.append(("TOTALE", totale_mensile))
 
     table = doc.add_table(rows=1 + len(rows), cols=2)
@@ -703,23 +743,23 @@ def build_contract(payload: dict, output_dir: Path | None = None) -> Path:
     _set_default_font(doc)
 
     # Pre-compute RAL so it can appear in §15 / RAL summary.
-    # tabellare and afac here are already proportioned to PT if applicable.
-    tabellare, afac, indennita = _retribution_amounts(payload)
+    # tabellare and afac are already PT-proportioned if applicable;
+    # indennita_annuale is the gross yearly value (Giovanni's change).
+    tabellare, afac, indennita_annuale = _retribution_amounts(payload)
     prol_block = payload.get("prolungamento") or {}
     if prol_block.get("attivo"):
-        # If a precomputed yearly amount was sent, use it; otherwise derive
-        # mensile from tabellare (post-proportioning) × 13.
+        # Use precomputed annuale if provided; otherwise derive via Excel formula.
         if prol_block.get("importo_annuale"):
             prol_annuale = _d(prol_block["importo_annuale"])
         else:
-            prol_mensile = calc_prolungamento_mensile(tabellare, int(prol_block["ore"]))
-            prol_annuale = prol_mensile * MENSILITA_ANNUE
+            prol_annuale = calc_prolungamento_annuale(
+                tabellare, afac, payload["livello"], int(prol_block["ore"]),
+            )
     else:
         prol_annuale = Decimal("0")
-    indennita_ann = indennita * MENSILITA_ANNUE
     dopo = _d(payload["doposcuola"]["compenso"]) if payload.get("doposcuola") else Decimal("0")
     camp = _d(payload["camp"]["compenso"]) if payload.get("camp") else Decimal("0")
-    ral = calc_ral(tabellare, afac, prol_annuale, indennita_ann, dopo, camp)
+    ral = calc_ral(tabellare, afac, prol_annuale, indennita_annuale, dopo, camp)
 
     # 1 logo
     _add_logo(doc, payload["sede"])

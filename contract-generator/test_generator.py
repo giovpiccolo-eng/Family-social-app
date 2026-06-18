@@ -13,6 +13,7 @@ from decimal import Decimal
 from generator import (
     get_tabellare,
     proportion_parttime,
+    calc_prolungamento_annuale,
     calc_prolungamento_mensile,
     calc_doposcuola,
     calc_school_camp,
@@ -86,49 +87,61 @@ class TestProportionParttime(unittest.TestCase):
 # 5.3 — calc_prolungamento_mensile
 # ---------------------------------------------------------------------------
 
-class TestCalcProlungamentoMensile(unittest.TestCase):
+class TestCalcProlungamento(unittest.TestCase):
+    """New formula (Ingenium PO worksheet):
+       annuale = (tab + AFAC) / divisore × 0.80 × ore × 39 settimane.
+    """
 
-    def test_v_livello_4_ore_formula_identity(self):
-        """
-        Brief known-good: V livello prolungamento 4 ore =
-        quota_h × 0.80 × 4 × 4.333.
-        Verifies the function follows that formula exactly (no off-by-one,
-        no rounding before the multiplication chain).
-        """
-        tabellare = get_tabellare("V", date(2026, 8, 26))  # 1589.64
-        quota_h = tabellare / Decimal("104")
-        expected_raw = quota_h * Decimal("0.80") * Decimal("4") * Decimal("4.333")
-        expected = expected_raw.quantize(Decimal("0.01"))
-        self.assertEqual(calc_prolungamento_mensile(tabellare, 4), expected)
+    def test_v_livello_4_ore_no_afac(self):
+        # V/24h, divisore 104. (1589.64+0)/104 = 15.285 × 0.80 = 12.228
+        # × 4 ore × 39 sett = 1907.568 -> 1907.57
+        ann = calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "V", 4)
+        self.assertEqual(ann, Decimal("1907.57"))
 
-    def test_v_livello_4_ore_value(self):
-        # 1589.64 / 104 = 15.2850000 -> ×0.80 = 12.2280 -> ×4 = 48.9120 -> ×4.333 = 211.9377...
-        self.assertEqual(
-            calc_prolungamento_mensile(Decimal("1589.64"), 4),
-            Decimal("211.94"),
-        )
+    def test_iv_livello_4_ore_with_afac(self):
+        # IV/34h, divisore 147. (1491.38+206)/147 = 11.5468... × 0.80 = 9.2374...
+        # × 4 ore × 39 sett = 1441.04
+        ann = calc_prolungamento_annuale(Decimal("1491.38"), Decimal("206.00"), "IV", 4)
+        self.assertEqual(ann, Decimal("1441.04"))
+
+    def test_vi_livello_6_ore_no_afac(self):
+        # VI/18h, divisore 78. (1589.64+0)/78 × 0.80 × 6 × 39 = 3815.13
+        ann = calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "VI", 6)
+        self.assertEqual(ann, Decimal("3815.14"))
+
+    def test_mensile_is_annuale_div_13(self):
+        ann = calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "V", 4)
+        men = calc_prolungamento_mensile(Decimal("1589.64"), Decimal("0"), "V", 4)
+        self.assertEqual(men, (ann / Decimal("13")).quantize(Decimal("0.01")))
 
     def test_zero_ore_yields_zero(self):
         self.assertEqual(
-            calc_prolungamento_mensile(Decimal("1589.64"), 0),
+            calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "V", 0),
             Decimal("0.00"),
         )
 
-    def test_max_8_ore_accepted(self):
-        # Boundary: 8 ore is the legal max under art. 35.
-        result = calc_prolungamento_mensile(Decimal("1589.64"), 8)
-        self.assertGreater(result, Decimal("0"))
-
-    def test_over_max_ore_raises(self):
+    def test_max_ore_per_livello(self):
+        # IV max 4
+        calc_prolungamento_annuale(Decimal("1491.38"), Decimal("0"), "IV", 4)
         with self.assertRaises(ValueError):
-            calc_prolungamento_mensile(
-                Decimal("1589.64"),
-                PROLUNGAMENTO["max_ore_settimanali"] + 1,
-            )
+            calc_prolungamento_annuale(Decimal("1491.38"), Decimal("0"), "IV", 5)
+        # V max 8
+        calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "V", 8)
+        with self.assertRaises(ValueError):
+            calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "V", 9)
+        # VI max 6
+        calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "VI", 6)
+        with self.assertRaises(ValueError):
+            calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "VI", 7)
+
+    def test_livello_not_applicable_raises(self):
+        for lv in ("I", "II", "III", "VII", "VIII-A", "VIII-B"):
+            with self.assertRaises(ValueError):
+                calc_prolungamento_annuale(Decimal("1500"), Decimal("0"), lv, 1)
 
     def test_negative_ore_raises(self):
         with self.assertRaises(ValueError):
-            calc_prolungamento_mensile(Decimal("1589.64"), -1)
+            calc_prolungamento_annuale(Decimal("1589.64"), Decimal("0"), "V", -1)
 
 
 # ---------------------------------------------------------------------------

@@ -335,7 +335,7 @@
               <div class="err">Inserisci le ore settimanali.</div>
             </div>
             <div class="field full" id="prolungamentoWrap" style="display:none">
-              <label>Prolungamento orario (art. 35 — solo V livello)</label>
+              <label id="prolungamentoLabel">Prolungamento orario (art. 35)</label>
               <div class="yesno" data-name="prolungamento_attivo">
                 <label data-value="no"><input type="radio" name="prolungamento_attivo" value="no">No</label>
                 <label data-value="si"><input type="radio" name="prolungamento_attivo" value="si">Sì</label>
@@ -343,13 +343,13 @@
               <div class="sub-panel" id="prolungamentoPanel" style="display:none">
                 <div class="grid">
                   <div class="field">
-                    <label for="ore_prolungamento">Ore prolungamento (max 8)</label>
+                    <label for="ore_prolungamento">Ore prolungamento <span class="opt" id="prolMaxHint">(max 8)</span></label>
                     <input id="ore_prolungamento" name="ore_prolungamento" type="number" min="1" max="8" step="1">
-                    <div class="err">Inserisci ore tra 1 e 8.</div>
+                    <div class="err">Inserisci un numero valido.</div>
                   </div>
                   <div class="field">
-                    <label>Importo mensile <span class="opt">(auto)</span></label>
-                    <input id="prol_mensile_preview" type="text" readonly>
+                    <label>Importo annuo <span class="opt">(auto)</span></label>
+                    <input id="prol_annuo_preview" type="text" readonly>
                   </div>
                 </div>
                 <div class="live" id="prolLive" style="display:none"></div>
@@ -384,8 +384,9 @@
               </div>
               <div class="sub-panel" id="indennitaPanel" style="display:none; margin-top:10px">
                 <div class="field">
-                  <label for="indennita_funzione">Importo mensile</label>
+                  <label for="indennita_funzione">Importo annuo <span class="opt">(lordo)</span></label>
                   <div class="with-prefix"><span class="prefix">€</span><input id="indennita_funzione" name="indennita_funzione" type="text" inputmode="decimal" value="0,00"></div>
+                  <div class="hint" id="indennitaMensHint"></div>
                 </div>
               </div>
             </div>
@@ -554,6 +555,11 @@
     "VIII-B": {"2025": 1751.92, "2026": 1809.92, "2027": 1843.62},
   };
   const ORE_BASE = { "I":38, "II":38, "III":38, "IV":34, "V":24, "VI":18, "VII":18, "VIII-A":null, "VIII-B":null };
+  // Prolungamento Orario — Ingenium PO worksheet
+  const DIVISORE_ORARIO = { 38:164, 36:156, 34:147, 32:139, 24:104, 21:91, 18:78 };
+  const PO_MAX_ORE = { "IV": 4, "V": 8, "VI": 6 };
+  const SETTIMANE_SCOLASTICHE = 39;
+  const PO_COEFF = 0.80;
   const AREA = {
     "I":"Prima (ATA)","II":"Prima (ATA)","III":"Prima (ATA)",
     "IV":"Seconda (DOC)","V":"Seconda (DOC)","VI":"Seconda (DOC)","VII":"Seconda (DOC)",
@@ -656,8 +662,12 @@
     if (!oreBase) return tabFT;
     return roundCents(tabFT * orePT / oreBase);
   }
-  function prolungamentoMensile(tab, oreProl) {
-    return roundCents((tab / 104) * 0.80 * oreProl * 4.333);
+  function calcProlungamentoAnnuale(tab, afac, livello, oreProl) {
+    // Ingenium PO worksheet: (tab + AFAC) / divisore × 0.80 × ore × 39 settimane
+    const oreBase = ORE_BASE[livello];
+    const divisore = DIVISORE_ORARIO[oreBase];
+    if (!divisore) return 0;
+    return roundCents(((tab + afac) / divisore) * PO_COEFF * oreProl * SETTIMANE_SCOLASTICHE);
   }
   function calcRal(tab, afac, prolAnn, indennAnn, dopo, camp) {
     return roundCents((tab + afac) * MENSILITA + prolAnn + indennAnn + dopo + camp);
@@ -729,7 +739,15 @@
     const ob = ORE_BASE[lv];
     document.getElementById("ore_base").value = ob ? `${ob}h/sett` : "N/A";
     if (ob) document.getElementById("ore_settimanali").value = ob;
-    document.getElementById("prolungamentoWrap").style.display = (lv === "V") ? "" : "none";
+    // PO applies to IV/V/VI with per-livello max
+    const maxPO = PO_MAX_ORE[lv];
+    document.getElementById("prolungamentoWrap").style.display = maxPO ? "" : "none";
+    if (maxPO) {
+      const op = document.getElementById("ore_prolungamento");
+      op.max = maxPO;
+      if (parseInt(op.value, 10) > maxPO) op.value = maxPO;
+      document.getElementById("prolMaxHint").textContent = `(max ${maxPO})`;
+    }
     recompute();
   });
 
@@ -803,27 +821,33 @@
     document.getElementById("afacPtHint").textContent =
       (isPT && oreBase && afacFT > 0) ? `AFAC proporzionato: € ${fmtEUR(afacPT)}` : "";
 
-    const ind = parseEUR(elIndennita.value);
-    document.getElementById("totale_mensile").value = fmtEUR(roundCents(tab + afacPT + ind));
+    const indAnn = parseEUR(elIndennita.value);
+    const indMen = indAnn ? roundCents(indAnn / MENSILITA) : 0;
+    document.getElementById("indennitaMensHint").textContent =
+      indAnn > 0 ? `Equivalente mensile (annuo ÷ 13): € ${fmtEUR(indMen)}` : "";
+    document.getElementById("totale_mensile").value = fmtEUR(roundCents(tab + afacPT + indMen));
     recomputeProl();
   }
   function recomputeProl() {
     const live = document.getElementById("prolLive");
     const attivo = selectedRadio("prolungamento_attivo") === "si";
-    if (!attivo) { document.getElementById("prol_mensile_preview").value = ""; live.style.display = "none"; return; }
+    if (!attivo) { document.getElementById("prol_annuo_preview").value = ""; live.style.display = "none"; return; }
     const lv = elLivello.value;
     const year = yearOf(elInizio.value) || new Date().getFullYear();
     const tabFT = tabellareForYear(lv, year);
     const oreBase = ORE_BASE[lv];
     const isPT = selectedRadio("tipo_contratto") === "part_time";
     const ore = parseInt(document.getElementById("ore_settimanali").value, 10) || oreBase || 0;
+    const afacFT = parseEUR(elAfac.value);
     const tab = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    const afac = (isPT && oreBase) ? roundCents(afacFT * ore / oreBase) : afacFT;
     const oreProl = parseInt(document.getElementById("ore_prolungamento").value, 10) || 0;
-    if (oreProl <= 0) { document.getElementById("prol_mensile_preview").value = "0,00"; live.style.display = "none"; return; }
-    const m = prolungamentoMensile(tab, oreProl);
-    document.getElementById("prol_mensile_preview").value = fmtEUR(m);
+    if (oreProl <= 0) { document.getElementById("prol_annuo_preview").value = "0,00"; live.style.display = "none"; return; }
+    const annuale = calcProlungamentoAnnuale(tab, afac, lv, oreProl);
+    const divisore = DIVISORE_ORARIO[ORE_BASE[lv]];
+    document.getElementById("prol_annuo_preview").value = fmtEUR(annuale);
     live.style.display = "";
-    live.innerHTML = `Formula: <strong>${fmtEUR(tab)} ÷ 104 × 0,80 × ${oreProl} × 4,333</strong> = <strong>€ ${fmtEUR(m)}/mese</strong> (≈ € ${fmtEUR(m * MENSILITA)}/anno).`;
+    live.innerHTML = `Formula: <strong>(${fmtEUR(tab)} + ${fmtEUR(afac)}) ÷ ${divisore} × 0,80 × ${oreProl} × 39 sett</strong> = <strong>€ ${fmtEUR(annuale)}/anno</strong>.`;
   }
   function recomputeDopo() {
     const live = document.getElementById("doposcuolaLive");
@@ -890,11 +914,12 @@
     const indennita = (selectedRadio("indennita_attiva") === "si") ? parseEUR(elIndennita.value) : 0;
 
     const tabForProl = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    const afacForProl = (isPT && oreBase) ? roundCents(afacFT * ore / oreBase) : afacFT;
     let prol = null;
     if (selectedRadio("prolungamento_attivo") === "si") {
       const op = parseInt(document.getElementById("ore_prolungamento").value, 10) || 0;
-      const m = prolungamentoMensile(tabForProl, op);
-      prol = { attivo: true, ore: op, importo_mensile: m, importo_annuale: roundCents(m * MENSILITA) };
+      const ann = calcProlungamentoAnnuale(tabForProl, afacForProl, lv, op);
+      prol = { attivo: true, ore: op, importo_annuale: ann };
     }
     let dopo = null;
     if (selectedRadio("doposcuola_attivo") === "si") {
@@ -960,8 +985,10 @@
     const afac = (isPT && oreBase) ? roundCents(p.afacFT * p.ore_settimanali / oreBase) : p.afacFT;
     const ret = [["Tabellare", `€ ${fmtEUR(tab)}${isPT ? ` (FT € ${fmtEUR(p.tabellareFT)})` : ""}`],
                  ["AFAC",      `€ ${fmtEUR(afac)}${isPT ? ` (FT € ${fmtEUR(p.afacFT)})` : ""}`]];
-    if (p.indennita > 0) ret.push(["Indennità funzione", `€ ${fmtEUR(p.indennita)}`]);
-    const totMen = roundCents(tab + afac + p.indennita);
+    // indennita in payload is ANNUAL — convert to monthly for the table
+    const indMensile = p.indennita > 0 ? roundCents(p.indennita / MENSILITA) : 0;
+    if (p.indennita > 0) ret.push(["Indennità funzione (mensile)", `€ ${fmtEUR(indMensile)} — annuo € ${fmtEUR(p.indennita)}`]);
+    const totMen = roundCents(tab + afac + indMensile);
     ret.push(["Totale mensile", `€ ${fmtEUR(totMen)}`]);
     sez.push({ h: "Retribuzione mensile", kv: ret });
 
@@ -994,10 +1021,10 @@
       </div>`).join("");
 
     const prolAnn = p.prolungamento ? p.prolungamento.importo_annuale : 0;
-    const indAnn = p.indennita * MENSILITA;
+    // indennita is already annual
     const dopo = p.doposcuola ? p.doposcuola.compenso : 0;
     const camp = p.camp ? p.camp.compenso : 0;
-    const ral = calcRal(tab, afac, prolAnn, indAnn, dopo, camp);
+    const ral = calcRal(tab, afac, prolAnn, p.indennita, dopo, camp);
     document.getElementById("summaryRal").textContent = `€ ${fmtEUR(ral)}`;
     document.getElementById("summaryRalSub").textContent = `Anno scolastico ${annoScolastico(p.data_inizio)}`;
   }
@@ -1043,8 +1070,10 @@
     const oreBase = ORE_BASE[p.livello];
     const tab = (isPT && oreBase) ? tabellarePT(p.tabellareFT, p.ore_settimanali, oreBase) : p.tabellareFT;
     const afac = (isPT && oreBase) ? roundCents(p.afacFT * p.ore_settimanali / oreBase) : p.afacFT;
-    const indennita = p.indennita;
-    const totaleMensile = roundCents(tab + afac + indennita);
+    // p.indennita is ANNUAL — derive monthly equivalent for the table
+    const indennitaAnnuale = p.indennita;
+    const indennitaMensile = indennitaAnnuale > 0 ? roundCents(indennitaAnnuale / MENSILITA) : 0;
+    const totaleMensile = roundCents(tab + afac + indennitaMensile);
     const annoSc = annoScolastico(p.data_inizio);
     const tipoOrario = isPT ? "part time" : "pieno";
     const I = INFL[p.sesso];
@@ -1129,7 +1158,7 @@
     const ratioLbl = (isPT && oreBase) ? ` — part-time ${p.ore_settimanali}/${oreBase}` : "";
     rows.push([`Minimo Conglobato (${p.livello}${ratioLbl})`, fmtEUR(tab), false]);
     if (afac > 0) rows.push(["AFAC", fmtEUR(afac), false]);
-    if (indennita > 0) rows.push(["Indennità di funzione", fmtEUR(indennita), false]);
+    if (indennitaMensile > 0) rows.push(["Indennità di funzione (mensile equiv.)", fmtEUR(indennitaMensile), false]);
     rows.push(["TOTALE", fmtEUR(totaleMensile), true]);
 
     const table = new D.Table({
@@ -1178,15 +1207,14 @@
     // 15. RAL summary
     const voci = [];
     if (p.prolungamento) voci.push("prolungamento orario");
-    if (indennita > 0) voci.push("indennità di funzione (rinnovabile annualmente)");
+    if (indennitaAnnuale > 0) voci.push("indennità di funzione (rinnovabile annualmente)");
     if (p.doposcuola) voci.push("attività di doposcuola (rinnovabile annualmente)");
     if (p.camp) voci.push("School Camp (rinnovabile annualmente)");
     const vociClause = voci.length ? `, unitamente a quanto erogato a titolo di ${joinIT(voci)}` : "";
     const prolAnn = p.prolungamento ? p.prolungamento.importo_annuale : 0;
-    const indAnn = indennita * MENSILITA;
     const dopo = p.doposcuola ? p.doposcuola.compenso : 0;
     const camp = p.camp ? p.camp.compenso : 0;
-    const ral = calcRal(tab, afac, prolAnn, indAnn, dopo, camp);
+    const ral = calcRal(tab, afac, prolAnn, indennitaAnnuale, dopo, camp);
     children.push(para(`La retribuzione lorda sopra indicata${vociClause}, Le consentirà, per l'anno scolastico ${annoSc}, di percepire una retribuzione annua lorda pari a € ${fmtEUR(ral)} (${numToWordsIT(Math.floor(ral))}/00).`));
 
     // 16. Modalità pagamento

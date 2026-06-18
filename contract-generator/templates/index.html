@@ -468,7 +468,7 @@
             </div>
 
             <div class="field full" id="prolungamentoWrap" style="display:none">
-              <label>Prolungamento orario (art. 35 — solo V livello)</label>
+              <label id="prolungamentoLabel">Prolungamento orario (art. 35)</label>
               <div class="yesno" data-name="prolungamento_attivo">
                 <label data-value="no"><input type="radio" name="prolungamento_attivo" value="no">No</label>
                 <label data-value="si"><input type="radio" name="prolungamento_attivo" value="si">Sì</label>
@@ -477,13 +477,13 @@
               <div class="sub-panel" id="prolungamentoPanel" style="display:none">
                 <div class="grid">
                   <div class="field">
-                    <label for="ore_prolungamento">Ore prolungamento (max 8)</label>
+                    <label for="ore_prolungamento">Ore prolungamento <span class="opt" id="prolMaxHint">(max 8)</span></label>
                     <input id="ore_prolungamento" name="ore_prolungamento" type="number" min="1" max="8" step="1">
-                    <div class="err">Inserisci ore tra 1 e 8.</div>
+                    <div class="err">Inserisci un numero valido.</div>
                   </div>
                   <div class="field">
-                    <label>Importo mensile <span class="opt">(auto)</span></label>
-                    <input id="prol_mensile_preview" type="text" readonly>
+                    <label>Importo annuo <span class="opt">(auto)</span></label>
+                    <input id="prol_annuo_preview" type="text" readonly>
                   </div>
                 </div>
                 <div class="live" id="prolLive" style="display:none"></div>
@@ -533,11 +533,12 @@
               </div>
               <div class="sub-panel" id="indennitaPanel" style="display:none; margin-top:10px">
                 <div class="field">
-                  <label for="indennita_funzione">Importo mensile</label>
+                  <label for="indennita_funzione">Importo annuo <span class="opt">(lordo)</span></label>
                   <div class="with-prefix">
                     <span class="prefix">€</span>
                     <input id="indennita_funzione" name="indennita_funzione" type="text" inputmode="decimal" value="0,00">
                   </div>
+                  <div class="hint" id="indennitaMensHint"></div>
                 </div>
               </div>
             </div>
@@ -718,6 +719,13 @@
     "VIII-A": null, "VIII-B": null,
   };
 
+  // Prolungamento Orario — Ingenium PO worksheet
+  // annuale = (tab + AFAC) / divisore × 0.80 × ore × 39 sett
+  const DIVISORE_ORARIO = { 38:164, 36:156, 34:147, 32:139, 24:104, 21:91, 18:78 };
+  const PO_MAX_ORE = { "IV": 4, "V": 8, "VI": 6 };  // max PO ore/sett per livello
+  const SETTIMANE_SCOLASTICHE = 39;
+  const PO_COEFF = 0.80;
+
   const AREA = {
     "I": "Prima (ATA)", "II": "Prima (ATA)", "III": "Prima (ATA)",
     "IV": "Seconda (DOC)", "V": "Seconda (DOC)", "VI": "Seconda (DOC)", "VII": "Seconda (DOC)",
@@ -789,9 +797,13 @@
     if (!oreBase) return tabellareFT;
     return roundCents(tabellareFT * orePT / oreBase);
   }
-  function prolungamentoMensile(tabellareMonthly, oreProl) {
-    const quotaH = tabellareMonthly / 104;
-    return roundCents(quotaH * 0.80 * oreProl * 4.333);
+  function calcProlungamentoAnnuale(tab, afac, livello, oreProl) {
+    // Ingenium PO worksheet: (tab + AFAC) / divisore × 0.80 × ore × 39 settimane
+    const oreBase = ORE_BASE[livello];
+    const divisore = DIVISORE_ORARIO[oreBase];
+    if (!divisore) return 0;
+    const costoOrario = (tab + afac) / divisore;
+    return roundCents(costoOrario * PO_COEFF * oreProl * SETTIMANE_SCOLASTICHE);
   }
   function ral(tab, afac, prolAnn, indennitaAnn, dopo, camp) {
     return roundCents((tab + afac) * MENSILITA + prolAnn + indennitaAnn + dopo + camp);
@@ -871,7 +883,15 @@
     document.getElementById("ore_base").value = oreBase ? `${oreBase}h/sett` : "N/A";
     const elOre = document.getElementById("ore_settimanali");
     if (oreBase) elOre.value = oreBase;
-    document.getElementById("prolungamentoWrap").style.display = (lv === "V") ? "" : "none";
+    // PO now applies to IV/V/VI; max ore varies per livello
+    const maxPO = PO_MAX_ORE[lv];
+    document.getElementById("prolungamentoWrap").style.display = maxPO ? "" : "none";
+    if (maxPO) {
+      const oreProl = document.getElementById("ore_prolungamento");
+      oreProl.max = maxPO;
+      if (parseInt(oreProl.value, 10) > maxPO) oreProl.value = maxPO;
+      document.getElementById("prolMaxHint").textContent = `(max ${maxPO})`;
+    }
     recomputeOrarioAndRetribuzione();
   });
 
@@ -973,8 +993,11 @@
         ? `AFAC proporzionato part-time: € ${fmtEUR(afacPT)}`
         : "";
 
-    const indennita = parseEUR(elIndennita.value);
-    const totale = roundCents(tab + afacPT + indennita);
+    const indAnnuale = parseEUR(elIndennita.value);
+    const indMensile = indAnnuale ? roundCents(indAnnuale / MENSILITA) : 0;
+    document.getElementById("indennitaMensHint").textContent =
+      (indAnnuale > 0) ? `Equivalente mensile (annuo ÷ 13): € ${fmtEUR(indMensile)}` : "";
+    const totale = roundCents(tab + afacPT + indMensile);
     document.getElementById("totale_mensile").value = fmtEUR(totale);
 
     recomputeProlungamento();
@@ -982,10 +1005,9 @@
 
   function recomputeProlungamento() {
     const live = document.getElementById("prolLive");
-    const wrap = document.getElementById("prolungamentoPanel");
     const attivo = selectedRadio("prolungamento_attivo") === "si";
     if (!attivo) {
-      document.getElementById("prol_mensile_preview").value = "";
+      document.getElementById("prol_annuo_preview").value = "";
       live.style.display = "none";
       return;
     }
@@ -995,18 +1017,20 @@
     const oreBase = ORE_BASE[lv];
     const isPT = selectedRadio("tipo_contratto") === "part_time";
     const ore = parseInt(document.getElementById("ore_settimanali").value, 10) || oreBase || 0;
+    const afacFT = parseEUR(elAfac.value);
     const tab = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    const afac = (isPT && oreBase) ? roundCents(afacFT * ore / oreBase) : afacFT;
     const oreProl = parseInt(document.getElementById("ore_prolungamento").value, 10) || 0;
     if (oreProl <= 0) {
-      document.getElementById("prol_mensile_preview").value = "0,00";
+      document.getElementById("prol_annuo_preview").value = "0,00";
       live.style.display = "none";
       return;
     }
-    const mensile = prolungamentoMensile(tab, oreProl);
-    const annuale = roundCents(mensile * MENSILITA);
-    document.getElementById("prol_mensile_preview").value = fmtEUR(mensile);
+    const annuale = calcProlungamentoAnnuale(tab, afac, lv, oreProl);
+    const divisore = DIVISORE_ORARIO[ORE_BASE[lv]];
+    document.getElementById("prol_annuo_preview").value = fmtEUR(annuale);
     live.style.display = "";
-    live.innerHTML = `Formula: <strong>${fmtEUR(tab)} ÷ 104 × 0,80 × ${oreProl} × 4,333</strong> = <strong>€ ${fmtEUR(mensile)}/mese</strong> (≈ € ${fmtEUR(annuale)}/anno).`;
+    live.innerHTML = `Formula: <strong>(${fmtEUR(tab)} + ${fmtEUR(afac)}) ÷ ${divisore} × 0,80 × ${oreProl} × 39 sett</strong> = <strong>€ ${fmtEUR(annuale)}/anno</strong>.`;
   }
 
   function recomputeDoposcuola() {
@@ -1109,15 +1133,14 @@
     const afacFT = parseEUR(elAfac.value);
     const indennita = (selectedRadio("indennita_attiva") === "si") ? parseEUR(elIndennita.value) : 0;
 
-    // Prolungamento — formula uses the PT-proportioned tabellare locally
+    // PO — Ingenium worksheet formula, applied to PT-proportioned tab+AFAC
     const tabForProl = (isPT && oreBase) ? tabellarePT(tabFT, ore, oreBase) : tabFT;
+    const afacForProl = (isPT && oreBase) ? roundCents(afacFT * ore / oreBase) : afacFT;
     let prol = null;
     if (selectedRadio("prolungamento_attivo") === "si") {
       const oreProl = parseInt(document.getElementById("ore_prolungamento").value, 10) || 0;
-      const mensile = prolungamentoMensile(tabForProl, oreProl);
-      prol = { attivo: true, ore: oreProl,
-               importo_mensile: mensile.toFixed(2),
-               importo_annuale: roundCents(mensile * MENSILITA).toFixed(2) };
+      const annuale = calcProlungamentoAnnuale(tabForProl, afacForProl, lv, oreProl);
+      prol = { attivo: true, ore: oreProl, importo_annuale: annuale.toFixed(2) };
     }
 
     // doposcuola
@@ -1212,15 +1235,17 @@
     const afacFT = parseFloat(p.afac);
     const tab  = (isPT && oreBase) ? tabellarePT(tabFT, p.ore_settimanali, oreBase) : tabFT;
     const afac = (isPT && oreBase) ? roundCents(afacFT * p.ore_settimanali / oreBase) : afacFT;
-    const indennita = parseFloat(p.indennita_funzione);
+    // Indennità di funzione is submitted as ANNUAL; show monthly equiv. in the table.
+    const indAnnuale = parseFloat(p.indennita_funzione);
+    const indMensile = indAnnuale > 0 ? roundCents(indAnnuale / MENSILITA) : 0;
 
     const retKV = [
       ["Tabellare", `€ ${fmtEUR(tab)}` + (isPT ? ` (FT € ${fmtEUR(tabFT)})` : "")],
       ["AFAC",      `€ ${fmtEUR(afac)}` + (isPT ? ` (FT € ${fmtEUR(afacFT)})` : "")],
     ];
-    if (indennita > 0)
-      retKV.push(["Indennità funzione", `€ ${fmtEUR(indennita)}`]);
-    const totaleMensile = roundCents(tab + afac + indennita);
+    if (indAnnuale > 0)
+      retKV.push(["Indennità funzione (mensile)", `€ ${fmtEUR(indMensile)} — annuo € ${fmtEUR(indAnnuale)}`]);
+    const totaleMensile = roundCents(tab + afac + indMensile);
     retKV.push(["Totale mensile", `€ ${fmtEUR(totaleMensile)}`]);
     sez.push({ h: "Retribuzione mensile", kv: retKV });
 
@@ -1262,10 +1287,10 @@
 
     // RAL — built from the PT-proportioned tab/afac (matches the contract).
     const prolAnn   = p.prolungamento ? parseFloat(p.prolungamento.importo_annuale) : 0;
-    const indennAnn = indennita * MENSILITA;
+    // indennità is already annual; pass directly to RAL.
     const dopo      = p.doposcuola ? parseFloat(p.doposcuola.compenso) : 0;
     const camp      = p.camp ? parseFloat(p.camp.compenso) : 0;
-    const ralVal    = ral(tab, afac, prolAnn, indennAnn, dopo, camp);
+    const ralVal    = ral(tab, afac, prolAnn, indAnnuale, dopo, camp);
     document.getElementById("summaryRal").textContent = `€ ${fmtEUR(ralVal)}`;
     document.getElementById("summaryRalSub").textContent = `Anno scolastico ${annoScolastico(p.data_inizio)}`;
   }
