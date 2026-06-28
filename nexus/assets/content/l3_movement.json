@@ -1,0 +1,156 @@
+{
+  "node": "L3",
+  "realm": "life",
+  "title": "Movement in & out of cells",
+  "items": [
+    {
+      "id": "bio_osmosis_def",
+      "mode": "recall",
+      "realm": "life",
+      "node": "L3",
+      "ao": "AO1",
+      "command": "define",
+      "marks": 2,
+      "difficulty": 1,
+      "stem": "Type the definition of osmosis.",
+      "front": "Osmosis",
+      "back": "the net movement of water molecules from a region of higher water potential to a region of lower water potential through a partially permeable membrane",
+      "keywords": ["water molecules", "higher water potential", "lower water potential", "partially permeable membrane"],
+      "nexus": "N3_transport",
+      "frontier": "The same gradient principle drives water up a 100 m redwood tree — osmotic pressure in root cells.",
+      "reward": { "xp": 20, "credits": 4 }
+    },
+    {
+      "id": "bio_diffusion_def",
+      "mode": "recall",
+      "realm": "life",
+      "node": "L3",
+      "ao": "AO1",
+      "command": "define",
+      "marks": 2,
+      "difficulty": 1,
+      "stem": "Define diffusion.",
+      "front": "Diffusion",
+      "back": "the net movement of particles from a region of higher concentration to a region of lower concentration",
+      "keywords": ["net movement", "particles", "higher concentration", "lower concentration"],
+      "nexus": "N1_particles",
+      "frontier": null,
+      "reward": { "xp": 20, "credits": 4 }
+    },
+    {
+      "id": "bio_active_transport_def",
+      "mode": "recall",
+      "realm": "life",
+      "node": "L3",
+      "ao": "AO1",
+      "command": "define",
+      "marks": 2,
+      "difficulty": 2,
+      "stem": "Define active transport.",
+      "front": "Active transport",
+      "back": "the movement of particles against a concentration gradient using energy from respiration",
+      "keywords": ["against concentration gradient", "energy", "respiration"],
+      "nexus": null,
+      "frontier": null,
+      "reward": { "xp": 20, "credits": 4 }
+    },
+    {
+      "id": "bio_osmosis_explain_01",
+      "mode": "apply",
+      "realm": "life",
+      "node": "L3",
+      "ao": "AO2",
+      "command": "explain",
+      "marks": 3,
+      "difficulty": 3,
+      "stem": "A potato chip is placed in a concentrated salt solution. The chip loses mass. Explain why.",
+      "mark_scheme": [
+        "water potential inside potato cells is higher than in salt solution",
+        "water moves by osmosis from potato cells to solution",
+        "through partially permeable cell membrane"
+      ],
+      "keywords": ["water potential", "higher inside", "osmosis", "partially permeable"],
+      "nexus": "N3_transport",
+      "frontier": null,
+      "reward": { "xp": 35, "credits": 7 }
+    },
+    {
+      "id": "bio_osmosis_data_01",
+      "mode": "apply",
+      "realm": "life",
+      "node": "L3",
+      "ao": "AO2",
+      "command": "describe",
+      "marks": 2,
+      "difficulty": 2,
+      "stem": "The table shows the change in mass of potato chips placed in different sucrose solutions. Describe the trend.",
+      "dataset": {
+        "type": "line_chart",
+        "x_label": "Sucrose concentration (mol/dm³)",
+        "y_label": "Change in mass (%)",
+        "points": [
+          {"x": 0.0, "y": 12},
+          {"x": 0.2, "y": 6},
+          {"x": 0.4, "y": 0},
+          {"x": 0.6, "y": -6},
+          {"x": 0.8, "y": -13}
+        ],
+        "note": "At ~0.4 mol/dm³ the chip mass does not change — water potential matches."
+      },
+      "mark_scheme": [
+        "as concentration increases, change in mass decreases",
+        "chip gains mass in dilute solution / loses mass in concentrated solution",
+        "0.4 mol/dm³: no change in mass (isotonic point)"
+      ],
+      "keywords": ["decreases", "gains mass", "loses mass", "isotonic"],
+      "nexus": "N3_transport",
+      "frontier": "The concentration of human blood plasma is ≈ 0.3 mol/dm³ — which way would water move if you drank seawater (≈ 0.6 mol/dm³)?",
+      "reward": { "xp": 35, "credits": 7 }
+    },
+    {
+      "id": "bio_crack_osmosis",
+      "mode": "crack",
+      "realm": "life",
+      "node": "L3",
+      "ao": "AO2",
+      "command": "explain",
+      "marks": 6,
+      "difficulty": 4,
+      "stem": "Explain why a red blood cell placed in distilled water will burst, while one placed in a concentrated salt solution will shrink. [6]",
+      "mark_scheme": [
+        "distilled water has higher water potential than cell contents",
+        "water enters cell by osmosis",
+        "through partially permeable membrane",
+        "cell swells and bursts (haemolysis)",
+        "salt solution has lower water potential than cell contents",
+        "water leaves cell by osmosis",
+        "cell shrinks/crenates"
+      ],
+      "keywords": ["water potential", "osmosis", "partially permeable", "enters", "bursts", "leaves", "shrinks"],
+      "nexus": "N3_transport",
+      "frontier": null,
+      "reward": { "xp": 80, "credits": 15 }
+    },
+    {
+      "id": "bio_l3_learn",
+      "mode": "learn",
+      "realm": "life",
+      "node": "L3",
+      "ao": "AO1",
+      "command": "describe",
+      "marks": 0,
+      "difficulty": 1,
+      "stem": "Discover how particles move across cell membranes.",
+      "learn_content": "Three ways particles cross cell membranes: **diffusion** (particles move down concentration gradient — no energy), **osmosis** (water specifically, through a partially permeable membrane, down water potential gradient), and **active transport** (against the gradient — needs energy from respiration).",
+      "learn_steps": [
+        "If sugar particles are concentrated inside a cell, which way would they diffuse?",
+        "Does diffusion need energy from the cell? Why not?",
+        "Osmosis is just diffusion of water. What makes it special? (Hint: the membrane)",
+        "Name the ONE thing that active transport needs that diffusion doesn't."
+      ],
+      "nexus": "N1_particles",
+      "frontier": null,
+      "reward": { "xp": 20, "credits": 4 }
+    }
+  ]
+}

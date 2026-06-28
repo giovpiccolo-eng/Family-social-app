@@ -1,0 +1,160 @@
+{
+  "node": "M1",
+  "realm": "matter",
+  "title": "Kinetic particle theory & states of matter",
+  "items": [
+    {
+      "id": "chem_kpt_def",
+      "mode": "recall",
+      "realm": "matter",
+      "node": "M1",
+      "ao": "AO1",
+      "command": "state",
+      "marks": 3,
+      "difficulty": 1,
+      "stem": "State three assumptions of the kinetic particle theory.",
+      "front": "Kinetic particle theory (3 key assumptions)",
+      "back": "1. All matter is made of tiny particles\n2. Particles are always moving\n3. Particles collide elastically (no kinetic energy lost overall)",
+      "keywords": ["tiny particles", "always moving", "collisions", "kinetic energy"],
+      "nexus": "N1_particles",
+      "frontier": "Brownian motion — the random jiggling of pollen grains in water — was the first visible proof that liquid is made of moving particles (1827).",
+      "reward": { "xp": 20, "credits": 4 }
+    },
+    {
+      "id": "chem_states_def",
+      "mode": "recall",
+      "realm": "matter",
+      "node": "M1",
+      "ao": "AO1",
+      "command": "state",
+      "marks": 2,
+      "difficulty": 1,
+      "stem": "State the arrangement and movement of particles in a solid.",
+      "front": "Particles in a solid",
+      "back": "close together in a regular arrangement; vibrate about fixed positions",
+      "keywords": ["close together", "regular", "vibrate", "fixed positions"],
+      "nexus": null,
+      "frontier": null,
+      "reward": { "xp": 15, "credits": 3 }
+    },
+    {
+      "id": "chem_gas_pressure_explain",
+      "mode": "apply",
+      "realm": "matter",
+      "node": "M1",
+      "ao": "AO2",
+      "command": "explain",
+      "marks": 3,
+      "difficulty": 3,
+      "stem": "A gas is heated in a sealed container. Explain, using particle theory, why the pressure increases.",
+      "mark_scheme": [
+        "particles gain kinetic energy / move faster",
+        "particles collide more frequently with walls",
+        "greater force per collision / harder collisions",
+        "therefore pressure increases"
+      ],
+      "keywords": ["kinetic energy", "faster", "more frequent", "collisions", "walls", "force", "pressure"],
+      "nexus": "N1_particles",
+      "frontier": "Inside a car engine, gas pressure from combustion can exceed 100 atm — same principle.",
+      "reward": { "xp": 35, "credits": 7 }
+    },
+    {
+      "id": "chem_temp_particle",
+      "mode": "apply",
+      "realm": "matter",
+      "node": "M1",
+      "ao": "AO2",
+      "command": "explain",
+      "marks": 3,
+      "difficulty": 2,
+      "stem": "A drop of food colouring spreads faster in hot water than cold water. Explain this observation using the kinetic particle theory.",
+      "mark_scheme": [
+        "in hot water, particles have more kinetic energy",
+        "particles move faster / collide more frequently",
+        "dye particles spread (diffuse) faster"
+      ],
+      "keywords": ["kinetic energy", "faster", "diffuse", "spread"],
+      "nexus": "N1_particles",
+      "frontier": null,
+      "reward": { "xp": 35, "credits": 7 }
+    },
+    {
+      "id": "chem_state_change_data",
+      "mode": "apply",
+      "realm": "matter",
+      "node": "M1",
+      "ao": "AO2",
+      "command": "describe",
+      "marks": 3,
+      "difficulty": 2,
+      "stem": "The graph shows temperature vs time as a substance is heated continuously. Describe what is happening at region B.",
+      "dataset": {
+        "type": "line_chart",
+        "x_label": "Time (min)",
+        "y_label": "Temperature (°C)",
+        "points": [
+          {"x": 0, "y": 20},
+          {"x": 2, "y": 60},
+          {"x": 4, "y": 100, "label": "B start"},
+          {"x": 7, "y": 100, "label": "B end"},
+          {"x": 9, "y": 140}
+        ],
+        "note": "Region B: 4–7 min at 100°C"
+      },
+      "mark_scheme": [
+        "temperature stays constant",
+        "substance is changing state (boiling/vaporising)",
+        "energy is used to break intermolecular forces/bonds, not raise temperature"
+      ],
+      "keywords": ["constant temperature", "changing state", "boiling", "energy", "bonds"],
+      "nexus": null,
+      "frontier": null,
+      "reward": { "xp": 35, "credits": 7 }
+    },
+    {
+      "id": "chem_crack_particles",
+      "mode": "crack",
+      "realm": "matter",
+      "node": "M1",
+      "ao": "AO2",
+      "command": "explain",
+      "marks": 6,
+      "difficulty": 4,
+      "stem": "A student inflates a balloon and then places it in a bowl of ice. The balloon shrinks. Use kinetic particle theory to explain this observation. [6]",
+      "mark_scheme": [
+        "ice cools the gas inside the balloon",
+        "gas particles lose kinetic energy",
+        "particles move more slowly",
+        "fewer collisions per second with the inside of the balloon",
+        "collisions are less forceful",
+        "pressure inside decreases",
+        "external air pressure causes balloon to shrink"
+      ],
+      "keywords": ["cools", "kinetic energy", "slowly", "fewer collisions", "less force", "pressure decreases", "shrink"],
+      "nexus": "N1_particles",
+      "frontier": "This is how liquid nitrogen (−196°C) can instantly shrink a balloon to a tiny fraction of its size.",
+      "reward": { "xp": 80, "credits": 15 }
+    },
+    {
+      "id": "chem_m1_learn",
+      "mode": "learn",
+      "realm": "matter",
+      "node": "M1",
+      "ao": "AO1",
+      "command": "describe",
+      "marks": 0,
+      "difficulty": 1,
+      "stem": "Discover how particle movement explains the behaviour of solids, liquids and gases.",
+      "learn_content": "Everything is made of particles. The state of matter depends on how much energy those particles have:\n\n**Solid** → low energy, vibrate in place, regular arrangement\n**Liquid** → more energy, flow past each other, irregular\n**Gas** → high energy, move randomly at speed, far apart\n\nHeat a substance → particles gain energy → eventually change state.",
+      "learn_steps": [
+        "In which state are particles closest together? Why?",
+        "If you add heat to a liquid, what happens to the particles?",
+        "Why does ice melt at exactly 0°C — why not a range?",
+        "Name the three states in order of increasing particle energy."
+      ],
+      "nexus": "N1_particles",
+      "frontier": null,
+      "reward": { "xp": 20, "credits": 4 }
+    }
+  ]
+}
