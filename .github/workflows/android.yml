@@ -25,12 +25,19 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+      - name: Build debug APKs (FamilyNest + CODEX)
+        run: ./gradlew :app:assembleDebug :codex:assembleDebug --no-daemon --stacktrace
 
-      - name: Upload debug APK
+      - name: Upload FamilyNest debug APK
         uses: actions/upload-artifact@v4
         with:
           name: FamilyNest-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Upload CODEX debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: CODEX-IlCifrarioLatino-debug-apk
+          path: codex/build/outputs/apk/debug/codex-debug.apk
           if-no-files-found: error
