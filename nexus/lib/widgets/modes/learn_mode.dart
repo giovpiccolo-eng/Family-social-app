@@ -17,9 +17,6 @@ class _LearnModeState extends State<LearnMode> {
   int _step = 0; // -1 = intro, 0..n = discovery steps, n+1 = reveal
 
   List<String> get steps => widget.item.learnSteps ?? [];
-  bool get _onReveal => _step > steps.length;
-  bool get _onIntro => _step == -1;
-
   @override
   void initState() {
     super.initState();

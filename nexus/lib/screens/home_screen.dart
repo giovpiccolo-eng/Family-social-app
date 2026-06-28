@@ -217,9 +217,6 @@ class _StreakXpRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final rank = rankForXp(xp);
-
     return Row(
       children: [
         // Streak

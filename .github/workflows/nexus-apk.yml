@@ -43,11 +43,11 @@ jobs:
 
       - name: Build debug APK
         working-directory: nexus
-        run: flutter build apk --debug --no-shrink
+        run: flutter build apk --debug
 
       - name: Build release APK
         working-directory: nexus
-        run: flutter build apk --release --no-shrink
+        run: flutter build apk --release
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4

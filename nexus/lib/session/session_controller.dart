@@ -161,7 +161,6 @@ class SessionController {
   AnswerResult markKeywordAnswer(ContentItem item, String userAnswer) {
     final answer = userAnswer.toLowerCase();
     final keywords = item.keywords.map((k) => k.toLowerCase()).toList();
-    final markScheme = item.markScheme.map((k) => k.toLowerCase()).toList();
 
     // Check which keywords are present in the answer
     final hitKeywords = keywords.where((kw) => answer.contains(kw)).toList();

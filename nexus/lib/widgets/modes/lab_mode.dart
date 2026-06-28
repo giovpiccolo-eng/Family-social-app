@@ -14,13 +14,6 @@ class LabMode extends StatefulWidget {
 }
 
 class _LabModeState extends State<LabMode> {
-  // Variable classifier selections
-  final Map<String, String?> _selections = {
-    'independent': null,
-    'dependent': null,
-    'control_1': null,
-    'control_2': null,
-  };
   final _extraController = TextEditingController();
   bool _submitted = false;
 

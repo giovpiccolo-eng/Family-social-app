@@ -30,8 +30,6 @@ class _WorldMapScreenState extends State<WorldMapScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       backgroundColor: NexusColors.background,
       appBar: AppBar(
