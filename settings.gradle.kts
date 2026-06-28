@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "FamilyNest"
 include(":app")
+include(":codex")
