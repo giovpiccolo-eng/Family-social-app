@@ -1,7 +1,6 @@
 package com.codex.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -25,9 +24,7 @@ sealed class Schermo(val route: String) {
 }
 
 @Composable
-fun CodexNavGraph(navController: NavHostController) {
-    val ctx = LocalContext.current
-    val repo = CodexRepository(ctx)
+fun CodexNavGraph(navController: NavHostController, repo: CodexRepository) {
 
     NavHost(navController = navController, startDestination = Schermo.Home.route) {
 
