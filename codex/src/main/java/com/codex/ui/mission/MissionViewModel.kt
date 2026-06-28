@@ -51,7 +51,7 @@ class MissionViewModel(
     init { carica() }
 
     private fun carica() = viewModelScope.launch {
-        val es = repo.eserciziPerGiorno(giorno)
+        val es = withContext(Dispatchers.IO) { repo.eserciziPerGiorno(giorno) }
         tuttiGli.addAll(es)
         iniziaFase(FaseMissione.RICHIAMO)
         avviaTimer()

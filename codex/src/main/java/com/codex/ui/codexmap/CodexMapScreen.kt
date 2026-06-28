@@ -20,6 +20,8 @@ import com.codex.data.repository.CodexRepository
 import com.codex.ui.common.CardPergamena
 import com.codex.ui.common.EtichettaSezione
 import com.codex.ui.theme.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +34,7 @@ fun CodexMapScreen(
     var nodoSelezionato by remember { mutableStateOf<SkillNode?>(null) }
 
     LaunchedEffect(Unit) {
-        nodi = repo.skillTree().nodes
+        nodi = withContext(Dispatchers.IO) { repo.skillTree().nodes }
     }
     LaunchedEffect(Unit) {
         repo.tuttaMaestria().collect { maestrie = it }
