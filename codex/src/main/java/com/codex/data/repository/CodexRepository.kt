@@ -99,6 +99,8 @@ class CodexRepository(private val ctx: Context) {
     suspend fun getStats(): PlayerStatsEntity =
         db.playerStatsDao().get() ?: PlayerStatsEntity()
 
+    suspend fun statsEsistono(): Boolean = db.playerStatsDao().get() != null
+
     suspend fun aggiungiXPAurei(xp: Int, aurei: Int) {
         val s = getStats()
         val nuovoXP = s.xpTotale + xp

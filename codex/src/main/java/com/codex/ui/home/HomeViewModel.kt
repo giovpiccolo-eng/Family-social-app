@@ -25,8 +25,11 @@ class HomeViewModel(private val repo: CodexRepository) : ViewModel() {
 
     init {
         viewModelScope.launch {
+            if (!repo.statsEsistono()) {
+                repo.aggiungiXPAurei(0, 0) // inizializza stats al primo avvio
+            }
             combine(
-                repo.osservaStats().filterNotNull(),
+                repo.osservaStats().map { it ?: PlayerStatsEntity() },
                 repo.tuttoIlProgresso()
             ) { stats, progresso ->
                 val giornoCorrente = (progresso.lastOrNull { it.completato }?.day ?: 0) + 1
@@ -39,12 +42,6 @@ class HomeViewModel(private val repo: CodexRepository) : ViewModel() {
                     caricamento = false
                 )
             }.collect { _state.value = it }
-        }
-
-        viewModelScope.launch {
-            if (repo.getStats().id == 0) {
-                repo.aggiungiXPAurei(0, 0) // inizializza stats
-            }
         }
     }
 
