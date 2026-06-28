@@ -15,7 +15,17 @@
       "aurei": 1
     },
     "answer": "ragazza, fanciulla",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g1_02",
@@ -33,7 +43,17 @@
       "aurei": 1
     },
     "answer": "rosa (fiore)",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g1_03",
@@ -51,7 +71,17 @@
       "aurei": 1
     },
     "answer": "amare, voler bene",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g1_01",
@@ -73,7 +103,17 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g1_02",
@@ -95,7 +135,17 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g1_03",
@@ -116,7 +166,18 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g1_01",
@@ -141,7 +202,14 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g1_02",
@@ -165,7 +233,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g1_03",
@@ -189,7 +265,15 @@
     "reward": {
       "xp": 10,
       "aurei": 2
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "raid_g1_01",
@@ -210,7 +294,18 @@
     "reward": {
       "xp": 10,
       "aurei": 2
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "raid_g1_02",
@@ -231,7 +326,18 @@
     "reward": {
       "xp": 10,
       "aurei": 2
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "raid_g1_03",
@@ -252,7 +358,18 @@
     "reward": {
       "xp": 12,
       "aurei": 3
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g2_01",
@@ -270,7 +387,17 @@
       "aurei": 1
     },
     "answer": "signore, padrone",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g2_02",
@@ -288,7 +415,17 @@
       "aurei": 1
     },
     "answer": "schiavo, servo",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g2_03",
@@ -306,7 +443,17 @@
       "aurei": 1
     },
     "answer": "guerra",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g2_01",
@@ -327,7 +474,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g2_02",
@@ -348,7 +506,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g2_01",
@@ -372,7 +541,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g2_02",
@@ -396,7 +573,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "raid_g2_01",
@@ -417,7 +602,18 @@
     "reward": {
       "xp": 10,
       "aurei": 2
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g3_01",
@@ -435,7 +631,17 @@
       "aurei": 1
     },
     "answer": "lodare, elogiare",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g3_02",
@@ -453,7 +659,17 @@
       "aurei": 1
     },
     "answer": "ammonire, avvertire",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g3_03",
@@ -471,7 +687,17 @@
       "aurei": 1
     },
     "answer": "guidare, governare",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g3_01",
@@ -492,7 +718,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g3_01",
@@ -516,7 +753,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g3_02",
@@ -540,7 +785,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "raid_g3_01",
@@ -561,7 +814,18 @@
     "reward": {
       "xp": 10,
       "aurei": 2
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g4_01",
@@ -579,7 +843,17 @@
       "aurei": 1
     },
     "answer": "re, sovrano",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g4_02",
@@ -597,7 +871,17 @@
       "aurei": 1
     },
     "answer": "soldato",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g4_03",
@@ -615,7 +899,17 @@
       "aurei": 1
     },
     "answer": "città",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g4_01",
@@ -636,7 +930,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g4_01",
@@ -661,7 +966,14 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g5_01",
@@ -679,7 +991,17 @@
       "aurei": 1
     },
     "answer": "mano",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g5_02",
@@ -697,7 +1019,17 @@
       "aurei": 1
     },
     "answer": "cosa, faccenda, realtà",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g5_01",
@@ -718,7 +1050,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g5_01",
@@ -742,7 +1085,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g6_01",
@@ -760,7 +1111,17 @@
       "aurei": 1
     },
     "answer": "vincere, sconfiggere",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g6_01",
@@ -781,7 +1142,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g6_01",
@@ -805,7 +1177,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "crack_g7_boss",
@@ -870,7 +1250,15 @@
     "reward": {
       "xp": 100,
       "aurei": 50
-    }
+    },
+    "prompt": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": ""
   },
   {
     "id": "voc_g8_01",
@@ -888,7 +1276,17 @@
       "aurei": 2
     },
     "answer": "amare — le 4 forme fondamentali (paradigma)",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g8_02",
@@ -906,7 +1304,17 @@
       "aurei": 2
     },
     "answer": "(io) amai/ho amato, (tu) amasti, (lui/lei) amò",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g8_01",
@@ -927,7 +1335,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g8_01",
@@ -951,7 +1370,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "raid_g8_01",
@@ -972,7 +1399,18 @@
     "reward": {
       "xp": 10,
       "aurei": 2
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g9_01",
@@ -990,7 +1428,17 @@
       "aurei": 2
     },
     "answer": "avevo amato, avevi amato, aveva amato (piuccheperfetto)",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g9_01",
@@ -1011,7 +1459,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g9_01",
@@ -1035,7 +1494,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g10_01",
@@ -1053,7 +1520,17 @@
       "aurei": 2
     },
     "answer": "sono amato, sei amato, è amato",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g10_01",
@@ -1074,7 +1551,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g10_01",
@@ -1098,7 +1586,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g11_01",
@@ -1116,7 +1612,17 @@
       "aurei": 2
     },
     "answer": "sono stato amato, sei stata amata, è stato amato",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g11_01",
@@ -1137,7 +1643,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g12_01",
@@ -1155,7 +1672,17 @@
       "aurei": 1
     },
     "answer": "io, tu, lui/lei/esso",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g12_01",
@@ -1176,7 +1703,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g13_01",
@@ -1194,7 +1732,17 @@
       "aurei": 1
     },
     "answer": "questo / quello",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g13_01",
@@ -1215,7 +1763,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "crack_g14_boss",
@@ -1280,7 +1839,15 @@
     "reward": {
       "xp": 150,
       "aurei": 75
-    }
+    },
+    "prompt": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": ""
   },
   {
     "id": "voc_g15_01",
@@ -1298,7 +1865,17 @@
       "aurei": 2
     },
     "answer": "amante, che ama (participio presente)",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g15_01",
@@ -1319,7 +1896,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "frg_g15_01",
@@ -1343,7 +1931,15 @@
     "reward": {
       "xp": 15,
       "aurei": 3
-    }
+    },
+    "latin": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g16_01",
@@ -1361,7 +1957,17 @@
       "aurei": 2
     },
     "answer": "mentre il sole sorge / dopo che il sole è sorto",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g16_01",
@@ -1383,7 +1989,17 @@
     "reward": {
       "xp": 25,
       "aurei": 6
-    }
+    },
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g16_02",
@@ -1404,7 +2020,18 @@
     "reward": {
       "xp": 25,
       "aurei": 6
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g17_01",
@@ -1422,7 +2049,17 @@
       "aurei": 2
     },
     "answer": "dico/penso/credo che (qualcuno faccia qualcosa)",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g17_01",
@@ -1444,7 +2081,17 @@
     "reward": {
       "xp": 25,
       "aurei": 6
-    }
+    },
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g18_01",
@@ -1462,7 +2109,17 @@
       "aurei": 2
     },
     "answer": "(che io) ami... / (che io) amassi... — congiuntivo presente e imperfetto",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g18_01",
@@ -1483,7 +2140,18 @@
     "reward": {
       "xp": 25,
       "aurei": 6
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g19_01",
@@ -1501,7 +2169,17 @@
       "aurei": 2
     },
     "answer": "più coraggioso / fortissimo, il più coraggioso",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g19_01",
@@ -1522,7 +2200,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "voc_g20_01",
@@ -1540,7 +2229,17 @@
       "aurei": 2
     },
     "answer": "di amare / amando / per amare — il gerundio",
-    "distractors": []
+    "distractors": [],
+    "prompt": "",
+    "latin": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "dec_g20_01",
@@ -1561,7 +2260,18 @@
     "reward": {
       "xp": 20,
       "aurei": 5
-    }
+    },
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": "",
+    "title": "",
+    "translation": "",
+    "sigillo": "",
+    "scaffold": []
   },
   {
     "id": "crack_g21_boss",
@@ -1626,6 +2336,14 @@
     "reward": {
       "xp": 300,
       "aurei": 150
-    }
+    },
+    "prompt": "",
+    "dive": "",
+    "front": "",
+    "back": "",
+    "lemma": "",
+    "stem": "",
+    "target": "",
+    "hint": ""
   }
 ]
