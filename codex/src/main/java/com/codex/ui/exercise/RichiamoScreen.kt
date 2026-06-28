@@ -55,8 +55,8 @@ fun RichiamoScreen(
                     targetState = mostraRetro,
                     transitionSpec = { fadeIn(tween(250)) togetherWith fadeOut(tween(200)) },
                     label = "flip"
-                ) { retro ->
-                    if (!retro) {
+                ) { lato ->
+                    if (!lato) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 fronte,
