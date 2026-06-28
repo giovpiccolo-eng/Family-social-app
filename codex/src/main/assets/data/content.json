@@ -1,95 +1,1631 @@
 [
-  {"id":"voc_g1_01","mode":"recall","skill":"intro.cifrario","day":1,"act":1,"difficulty":1,"front":"puella, -ae (f.)","back":"ragazza, fanciulla","insight":"Soggetto → nominativo puella; oggetto → accusativo puellam.","dive":"→ it. 'pùlla' (arcaico); dal PIE *pul- 'giovane'. L'italiano 'pulcino' è parente.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g1_02","mode":"recall","skill":"intro.cifrario","day":1,"act":1,"difficulty":1,"front":"rosa, -ae (f.)","back":"rosa (fiore)","insight":"I declinazione: rosa → rosam all'accusativo.","dive":"→ it. 'rosa'; dal greco ῥόδον via lat. rosa. Stesso tema in 'roseto', 'rosario'.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g1_03","mode":"recall","skill":"verbi.pres_att","day":1,"act":1,"difficulty":1,"front":"amo, amare","back":"amare, voler bene","insight":"I coniugazione: amo-amas-amat-amamus-amatis-amant.","dive":"→ it. 'amare'; forse dal PIE *h₂em- 'prendere, portare'. Inglese 'amiable' è parente.","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g1_01","mode":"decode","skill":"casi.nom_acc","day":1,"act":1,"difficulty":1,"prompt":"Trascina le parole per ricostruire la frase.","latin":"Puella rosam amat.","answer":"La ragazza ama la rosa","distractors":["La rosa ama la ragazza","La ragazza è la rosa","La rosa è amata dalla ragazza"],"insight":"Conta la desinenza, non l'ordine. puella (-a) = soggetto; rosam (-am) = oggetto.","dive":"rosa, -ae → it. 'rosa'; il tema in -a viene dall'IE *-eh₂.","reward":{"xp":20,"aurei":5}},
-  {"id":"dec_g1_02","mode":"decode","skill":"casi.nom_acc","day":1,"act":1,"difficulty":1,"prompt":"Quale frase ha lo stesso significato?","latin":"Rosam puella amat.","answer":"La ragazza ama la rosa","distractors":["La rosa ama la ragazza","Ama la ragazza la rosa?","La rosa e la ragazza amano"],"insight":"Rosam puella amat = Puella rosam amat. L'ordine cambia, il senso no: vale la desinenza!","dive":"Questa è la grande intuizione del cifrario: -a = nominativo, -am = accusativo nella I declinazione.","reward":{"xp":20,"aurei":5}},
-  {"id":"dec_g1_03","mode":"decode","skill":"verbi.sum","day":1,"act":1,"difficulty":1,"prompt":"Decifra la frase.","latin":"Puella bona est.","answer":"La ragazza è buona","distractors":["La buona ragazza ama","È una buona ragazza lei","La ragazza e la bontà"],"insight":"est = 'è' (III sing. di sum). bona concorda con puella (femminile).","reward":{"xp":15,"aurei":3}},
-  {"id":"frg_g1_01","mode":"forge","skill":"decl.i","day":1,"act":1,"difficulty":1,"prompt":"Forgia l'accusativo singolare","lemma":"puella, -ae (f.)","stem":"puell-","target":"Accusativo singolare di 'puella'","answer":"puellam","distractors":["puellae","puella","puellarum"],"hint":"I decl., acc. sg. = tema + -am","insight":"puell- + -am → puellam (oggetto diretto).","dive":"La desinenza -am marca l'oggetto come in 'personam', 'causam', 'fortunam'.","reward":{"xp":15,"aurei":3}},
-  {"id":"frg_g1_02","mode":"forge","skill":"decl.i","day":1,"act":1,"difficulty":1,"prompt":"Forgia il genitivo singolare","lemma":"rosa, -ae (f.)","stem":"ros-","target":"Genitivo singolare di 'rosa'","answer":"rosae","distractors":["rosam","rosa","rosarum"],"hint":"I decl., gen. sg. = tema + -ae","insight":"ros- + -ae → rosae ('della rosa').","reward":{"xp":15,"aurei":3}},
-  {"id":"frg_g1_03","mode":"forge","skill":"verbi.sum","day":1,"act":1,"difficulty":1,"prompt":"Forgia la forma verbale","lemma":"sum, esse (essere)","stem":"s-","target":"3ª persona singolare presente di sum","answer":"est","distractors":["sum","sunt","es"],"hint":"III sing. presente di sum = est","insight":"sum-es-est: il verbo esse è irregolare come in tutte le lingue indoeuropee.","reward":{"xp":10,"aurei":2}},
-  {"id":"raid_g1_01","mode":"raid","skill":"casi.nom_acc","day":1,"act":1,"difficulty":1,"prompt":"Che caso è 'puellam'?","latin":"Video puellam.","answer":"accusativo","distractors":["nominativo","genitivo","dativo"],"insight":"video = 'vedo' (II coniug.); puellam è l'oggetto → accusativo.","reward":{"xp":10,"aurei":2}},
-  {"id":"raid_g1_02","mode":"raid","skill":"casi.nom_acc","day":1,"act":1,"difficulty":1,"prompt":"Che caso è 'agricola'?","latin":"Agricola laborat.","answer":"nominativo","distractors":["accusativo","dativo","ablativo"],"insight":"agricola (-a) è soggetto → nominativo. laborat = 'lavora'.","reward":{"xp":10,"aurei":2}},
-  {"id":"raid_g1_03","mode":"raid","skill":"intro.cifrario","day":1,"act":1,"difficulty":1,"prompt":"Quale frase significa 'Il poeta loda la patria'?","latin":"","answer":"Poeta patriam laudat.","distractors":["Patriam poeta laudatur.","Poetam patria laudat.","Poeta laudat et patria."],"insight":"poeta (nom.) = soggetto; patriam (acc.) = oggetto; laudat = 'loda'.","reward":{"xp":12,"aurei":3}},
-
-  {"id":"voc_g2_01","mode":"recall","skill":"decl.ii","day":2,"act":1,"difficulty":1,"front":"dominus, -i (m.)","back":"signore, padrone","insight":"II declinazione: dominus → dominum (acc.) → domini (gen.).","dive":"→ it. 'don', 'dominare'; ingl. 'dominate', 'dominion'. Il 'don' spagnolo viene da qui.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g2_02","mode":"recall","skill":"decl.ii","day":2,"act":1,"difficulty":1,"front":"servus, -i (m.)","back":"schiavo, servo","insight":"II declinazione maschile: servus, servi, servo, servum.","dive":"→ it. 'servo'; ingl. 'serve', 'servant'. Dal PIE *ser- 'proteggere, custodire'.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g2_03","mode":"recall","skill":"decl.ii","day":2,"act":1,"difficulty":1,"front":"bellum, -i (n.)","back":"guerra","insight":"II declinazione neutro: nom. = acc. (-um). Plurale: bella.","dive":"→ ingl. 'bellicose', 'rebel'. Dal PIE *dwel- 'forza'. Contrapposto a 'pax'.","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g2_01","mode":"decode","skill":"decl.ii","day":2,"act":1,"difficulty":1,"prompt":"Decifra la frase.","latin":"Dominus servum videt.","answer":"Il padrone vede lo schiavo","distractors":["Lo schiavo vede il padrone","Il padrone è uno schiavo","Lo schiavo è visto dal padrone"],"insight":"dominus (-us) = nominativo (soggetto); servum (-um) = accusativo (oggetto).","reward":{"xp":20,"aurei":5}},
-  {"id":"dec_g2_02","mode":"decode","skill":"agg.i_ii","day":2,"act":1,"difficulty":1,"prompt":"Traduci la frase.","latin":"Bonus dominus servum bonum amat.","answer":"Il buon padrone ama il buon servo","distractors":["Il padrone buono ama il servo","Il servo buono ama il padrone","Un buon padrone e un buon servo"],"insight":"bonus concorda con dominus (m., nom.); bonum concorda con servum (m., acc.).","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g2_01","mode":"forge","skill":"decl.ii","day":2,"act":1,"difficulty":1,"prompt":"Forgia il genitivo singolare","lemma":"dominus, -i (m.)","stem":"domin-","target":"Genitivo singolare di 'dominus'","answer":"domini","distractors":["dominum","domino","dominorum"],"hint":"II decl., gen. sg. = tema + -i","insight":"domini = 'del padrone'. Dal tema domin-.","reward":{"xp":15,"aurei":3}},
-  {"id":"frg_g2_02","mode":"forge","skill":"agg.i_ii","day":2,"act":1,"difficulty":1,"prompt":"Forgia la forma corretta","lemma":"bonus, -a, -um","stem":"bon-","target":"Accusativo singolare femminile di 'bonus'","answer":"bonam","distractors":["bona","bonum","bonae"],"hint":"Femm. acc. sg. = I decl. → bon- + -am","insight":"bonam puellam: l'aggettivo segue la declinazione della testa nominale.","reward":{"xp":15,"aurei":3}},
-  {"id":"raid_g2_01","mode":"raid","skill":"decl.ii","day":2,"act":1,"difficulty":1,"prompt":"Qual è il nominativo plurale di 'servus'?","latin":"","answer":"servi","distractors":["servos","servum","servorum"],"insight":"II decl., nom. pl. = -i. servi = 'gli schiavi/servi'.","reward":{"xp":10,"aurei":2}},
-
-  {"id":"voc_g3_01","mode":"recall","skill":"verbi.pres_att","day":3,"act":1,"difficulty":1,"front":"laudo, laudare","back":"lodare, elogiare","insight":"I coniugazione: laudo-laudas-laudat-laudamus-laudatis-laudant.","dive":"→ it. 'lodare'; ingl. 'laud', 'laudable'. Dal PIE *leh₂w- 'guadagno, premio'.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g3_02","mode":"recall","skill":"verbi.pres_att","day":3,"act":1,"difficulty":1,"front":"moneo, monere","back":"ammonire, avvertire","insight":"II coniugazione (-ē-): moneo-mones-monet.","dive":"→ it. 'monito'; ingl. 'monitor', 'monument'. Il 'monito' è l'avvertimento di Moneta (Giunone).","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g3_03","mode":"recall","skill":"verbi.pres_att","day":3,"act":1,"difficulty":1,"front":"rego, regere","back":"guidare, governare","insight":"III coniugazione: rego-regis-regit-regimus-regitis-regunt.","dive":"→ it. 'reggere', 'regola'; ingl. 'regal', 'regent'. Rex (re) viene da qui.","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g3_01","mode":"decode","skill":"verbi.pres_att","day":3,"act":1,"difficulty":1,"prompt":"Decifra chi fa cosa.","latin":"Agricolae terram laudant et poetae patriam laudant.","answer":"I contadini lodano la terra e i poeti lodano la patria","distractors":["Il contadino loda la terra e il poeta loda la patria","I poeti lodano i contadini e la terra","La patria e la terra sono lodate"],"insight":"laudant = III plurale. agricolae/poetae = nominativo plurale I decl.","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g3_01","mode":"forge","skill":"verbi.pres_att","day":3,"act":1,"difficulty":1,"prompt":"Forgia la forma verbale","lemma":"rego, regere","stem":"reg-","target":"III persona plurale presente","answer":"regunt","distractors":["regitis","regit","regunt"],"hint":"III coniugazione, III pl. pres. = tema + -unt","insight":"reg- + -unt → regunt. Attenzione: III coniug. usa -u- prima di -nt.","reward":{"xp":15,"aurei":3}},
-  {"id":"frg_g3_02","mode":"forge","skill":"verbi.pres_att","day":3,"act":1,"difficulty":1,"prompt":"Forgia la forma verbale","lemma":"audio, audire","stem":"aud-","target":"I persona singolare presente","answer":"audio","distractors":["audis","audit","audimus"],"hint":"IV coniugazione, I sg. pres. = tema + -io","insight":"audio → audis → audit → audimus → auditis → audiunt.","reward":{"xp":15,"aurei":3}},
-  {"id":"raid_g3_01","mode":"raid","skill":"verbi.pres_att","day":3,"act":1,"difficulty":1,"prompt":"Che persona/numero è 'monent'?","latin":"Magistri discipulos monent.","answer":"III plurale","distractors":["III singolare","I plurale","II plurale"],"insight":"monent = -ent → III coniug. ma 'moneo' è II coniug. con -ent → magistri (pl.) monent.","reward":{"xp":10,"aurei":2}},
-
-  {"id":"voc_g4_01","mode":"recall","skill":"decl.iii","day":4,"act":1,"difficulty":1,"front":"rex, regis (m.)","back":"re, sovrano","insight":"III declinazione imparisillabo: rex (nom.) / regis (gen.) — il tema è reg-.","dive":"→ it. 're'; ingl. 'regal', 'royal'. Dal PIE *h₃reǵ- 'guidare in linea retta'.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g4_02","mode":"recall","skill":"decl.iii","day":4,"act":1,"difficulty":1,"front":"miles, militis (m.)","back":"soldato","insight":"III declinazione: miles (nom.) / militis (gen.), tema milit-.","dive":"→ it. 'militare', 'milizia'; ingl. 'military', 'militia'. Dal PIE *mel- 'andare insieme'.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g4_03","mode":"recall","skill":"decl.iii","day":4,"act":1,"difficulty":1,"front":"urbs, urbis (f.)","back":"città","insight":"III declinazione f.: urbs (nom.) / urbis (gen.), tema urb-.","dive":"→ it. 'urbano'; ingl. 'urban', 'suburb'. Da urbs deriva 'urbanesimo'.","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g4_01","mode":"decode","skill":"decl.iii","day":4,"act":1,"difficulty":1,"prompt":"Decifra il caso e il significato.","latin":"Miles regis urbem defendit.","answer":"Il soldato del re difende la città","distractors":["Il re del soldato difende la città","La città difende il soldato del re","Il soldato difende il re in città"],"insight":"regis = genitivo (del re); urbem = accusativo (oggetto diretto). Il genitivo è la 'chiave del tema'.","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g4_01","mode":"forge","skill":"decl.iii","day":4,"act":1,"difficulty":1,"prompt":"Forgia l'accusativo singolare","lemma":"rex, regis (m.)","stem":"reg-","target":"Accusativo singolare di 'rex'","answer":"regem","distractors":["regis","rege","reges"],"hint":"III decl., acc. sg. = tema + -em","insight":"reg- + -em → regem. Il nominativo rex è irregolare; il tema si vede dal genitivo regis.","dive":"Come 'imperatorem', 'militem', 'consulem': la III decl. usa -em all'acc. sg.","reward":{"xp":15,"aurei":3}},
-
-  {"id":"voc_g5_01","mode":"recall","skill":"decl.iv_v","day":5,"act":1,"difficulty":1,"front":"manus, -us (f.)","back":"mano","insight":"IV declinazione: manus (nom.) / manus (gen.) — gen. sg. = -us!","dive":"→ it. 'mano', 'manuale'; ingl. 'manual', 'manuscript'. Dal PIE *man- 'mano'.","reward":{"xp":5,"aurei":1}},
-  {"id":"voc_g5_02","mode":"recall","skill":"decl.iv_v","day":5,"act":1,"difficulty":1,"front":"res, rei (f.)","back":"cosa, faccenda, realtà","insight":"V declinazione: res / rei. La formula 'res publica' = repubblica.","dive":"→ it. 'reale' (=concreto); ingl. 'real', 'republic'. Dal PIE *reh₁- 'bene, cosa'.","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g5_01","mode":"decode","skill":"casi.dat_abl","day":5,"act":1,"difficulty":1,"prompt":"Decifra il caso dell'ablativo.","latin":"Milites gladiis pugnant.","answer":"I soldati combattono con le spade","distractors":["I soldati combattono contro le spade","Le spade dei soldati combattono","I soldati combattono per le spade"],"insight":"gladiis = ablativo plurale di gladius → complemento di mezzo ('con le spade').","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g5_01","mode":"forge","skill":"verbi.imperf","day":5,"act":1,"difficulty":1,"prompt":"Forgia la forma verbale","lemma":"amo, amare","stem":"ama-","target":"III sg. imperfetto indicativo di 'amo'","answer":"amabat","distractors":["amavit","amabit","amabant"],"hint":"Imperfetto I coniug.: tema + -ba- + desinenza personale","insight":"ama- + -ba- + -t = amabat. L'imperfetto esprime un'azione continua nel passato.","reward":{"xp":15,"aurei":3}},
-
-  {"id":"voc_g6_01","mode":"recall","skill":"verbi.fut","day":6,"act":1,"difficulty":1,"front":"vinco, vincere","back":"vincere, sconfiggere","insight":"III coniugazione: vinco-vincis-vincit. Futuro: vincam, vinces, vincet.","dive":"→ it. 'vincere'; ingl. 'convince' (vincere insieme). Dal PIE *weik- 'forza'.","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g6_01","mode":"decode","skill":"verbi.fut","day":6,"act":1,"difficulty":1,"prompt":"Decifra il tempo verbale.","latin":"Romani hostes vincent.","answer":"I Romani sconfiggeranno i nemici","distractors":["I Romani sconfiggono i nemici","I Romani hanno sconfitto i nemici","I nemici sconfiggeranno i Romani"],"insight":"vincent = futuro III pl. di vinco. Romani = nom. pl. (soggetto); hostes = acc. pl. (oggetto).","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g6_01","mode":"forge","skill":"verbi.fut","day":6,"act":1,"difficulty":1,"prompt":"Forgia il futuro","lemma":"moneo, monere","stem":"mone-","target":"I sg. futuro semplice di 'moneo'","answer":"monebo","distractors":["monebam","monui","moneam"],"hint":"II coniugazione, futuro I sg. = tema + -bo","insight":"mone- + -bo = monebo. La II coniug. usa -bo/-bis/-bit per il futuro.","reward":{"xp":15,"aurei":3}},
-
-  {"id":"crack_g7_boss","mode":"crack","skill":"boss.atto1","day":7,"act":1,"difficulty":2,"title":"Boss Atto I — L'Iscrizione Romana","latin":"Agricola et poeta terram patriamque amant; milites autem urbem servant.","scaffold":[{"question":"Caso di 'agricola'?","answer":"nominativo (soggetto)","options":["nominativo (soggetto)","accusativo (oggetto)","genitivo","ablativo"]},{"question":"Cosa significa '-que' in 'patriamque'?","answer":"'e' (enclitica: si appende alla parola precedente)","options":["'e' (enclitica: si appende alla parola precedente)","'ma', 'però'","'della patria'","'nella patria'"]},{"question":"Caso di 'urbem'?","answer":"accusativo (oggetto di servant)","options":["accusativo (oggetto di servant)","nominativo","genitivo","dativo"]},{"question":"Tempo di 'servant'?","answer":"presente indicativo","options":["presente indicativo","futuro","imperfetto","perfetto"]}],"translation":"Il contadino e il poeta amano la terra e la patria; i soldati invece proteggono la città.","answer":"Il contadino e il poeta amano la terra e la patria; i soldati invece proteggono la città.","distractors":["Il poeta ama il contadino e i soldati proteggono la patria","I soldati amano la città e il contadino ama la terra","La patria e la città sono amate dai soldati"],"insight":"autem = 'però, invece' (avverbio); -que = 'e' enclitico. servant = III pl. pres. di servo.","sigillo":"Primo Codice Decifrato","reward":{"xp":100,"aurei":50}},
-
-  {"id":"voc_g8_01","mode":"recall","skill":"verbi.paradigma","day":8,"act":2,"difficulty":2,"front":"amo, amare, amavi, amatum","back":"amare — le 4 forme fondamentali (paradigma)","insight":"Le 4 voci del vocabolario. La 3ª (amavi) dà il tema del perfetto; la 4ª il participio perfetto.","dive":"Il paradigma è il 'codice di accesso' al verbo. Conoscerlo significa conoscere tutti i suoi tempi.","reward":{"xp":8,"aurei":2}},
-  {"id":"voc_g8_02","mode":"recall","skill":"verbi.perf_att","day":8,"act":2,"difficulty":2,"front":"amavi, amavisti, amavit","back":"(io) amai/ho amato, (tu) amasti, (lui/lei) amò","insight":"Perfetto indicativo attivo: tema del perfetto (amav-) + desinenze -i, -isti, -it, -imus, -istis, -erunt.","dive":"Il perfetto latino è più ricco dell'italiano: copre sia il passato remoto che il passato prossimo.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g8_01","mode":"decode","skill":"verbi.perf_att","day":8,"act":2,"difficulty":2,"prompt":"Decifra il tempo e il significato.","latin":"Caesar hostes vicit et milites laudavit.","answer":"Cesare sconfisse i nemici e lodò i soldati","distractors":["Cesare sconfigge i nemici e loda i soldati","I nemici di Cesare vinsero e lodarono i soldati","Cesare fu sconfitto dai nemici"],"insight":"vicit = perfetto di vinco (tema vic-); laudavit = perfetto di laudo (tema laudav-).","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g8_01","mode":"forge","skill":"verbi.perf_att","day":8,"act":2,"difficulty":2,"prompt":"Forgia il perfetto","lemma":"rego, regere, rexi, rectum","stem":"rex-","target":"III sg. perfetto indicativo attivo di 'rego'","answer":"rexit","distractors":["regit","rexerat","reget"],"hint":"Tema del perfetto (rex-) + -it per la III singolare","insight":"rex- + -it = rexit. Il tema del perfetto di 'rego' è 'rex-' (consultare il paradigma!).","reward":{"xp":15,"aurei":3}},
-  {"id":"raid_g8_01","mode":"raid","skill":"verbi.perf_att","day":8,"act":2,"difficulty":2,"prompt":"Che tempo è 'audivimus'?","latin":"","answer":"perfetto indicativo attivo, I plurale","distractors":["presente indicativo, I plurale","futuro anteriore, I plurale","imperfetto, I plurale"],"insight":"audiv- = tema del perfetto di audio; -imus = I plurale.","reward":{"xp":10,"aurei":2}},
-
-  {"id":"voc_g9_01","mode":"recall","skill":"verbi.piuq_fut_ant","day":9,"act":2,"difficulty":2,"front":"amaveram, amaveras, amaverat","back":"avevo amato, avevi amato, aveva amato (piuccheperfetto)","insight":"Piuccheperfetto = tema perfetto + -eram/-eras/-erat. Un'azione completata prima di un'altra nel passato.","dive":"Come l'inglese 'had loved'. Il piuccheperfetto è il 'passato del passato'.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g9_01","mode":"decode","skill":"verbi.piuq_fut_ant","day":9,"act":2,"difficulty":2,"prompt":"Decifra la sequenza temporale.","latin":"Milites, postquam hostes vicerant, domum redierunt.","answer":"I soldati, dopo aver sconfitto i nemici, tornarono a casa","distractors":["I soldati tornano a casa dopo sconfiggere i nemici","Dopo che i soldati tornarono, i nemici vinsero","I nemici, dopo aver vinto, tornarono a casa"],"insight":"vicerant = piuccheperfetto (azione anteriore); redierunt = perfetto (azione successiva).","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g9_01","mode":"forge","skill":"verbi.piuq_fut_ant","day":9,"act":2,"difficulty":2,"prompt":"Forgia il futuro anteriore","lemma":"laudo, laudare, laudavi, laudatum","stem":"laudav-","target":"I sg. futuro anteriore di 'laudo'","answer":"laudavero","distractors":["laudabo","laudaveram","laudavi"],"hint":"Futuro ant. = tema perfetto + -ero/-eris/-erit","insight":"laudav- + -ero = laudavero. 'Avrò lodato' — un'azione futura che sarà completata.","reward":{"xp":15,"aurei":3}},
-
-  {"id":"voc_g10_01","mode":"recall","skill":"verbi.pres_pass","day":10,"act":2,"difficulty":2,"front":"amor, amaris, amatur","back":"sono amato, sei amato, è amato","insight":"Passivo presente: si sostituiscono le desinenze attive (-o/-s/-t) con quelle passive (-or/-ris/-tur).","dive":"La diatesi passiva è una chiave del latino: il soggetto 'subisce' l'azione invece di compierla.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g10_01","mode":"decode","skill":"verbi.pres_pass","day":10,"act":2,"difficulty":2,"prompt":"Attenzione alla diatesi!","latin":"Laudatur a magistro discipulus bonus.","answer":"Il buon allievo è lodato dal maestro","distractors":["Il buon maestro loda l'allievo","L'allievo loda il buon maestro","Il maestro e l'allievo si lodano"],"insight":"laudatur = III sg. passivo; a magistro = complemento d'agente (abl. + a/ab); discipulus = soggetto.","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g10_01","mode":"forge","skill":"verbi.pres_pass","day":10,"act":2,"difficulty":2,"prompt":"Forgia il passivo","lemma":"moneo, monere","stem":"mone-","target":"II sg. presente passivo di 'moneo'","answer":"moneris","distractors":["monet","moneor","monetur"],"hint":"II sg. presente passivo = tema + -ris","insight":"mone- + -ris = moneris. 'Sei ammonito/avvertito'.","reward":{"xp":15,"aurei":3}},
-
-  {"id":"voc_g11_01","mode":"recall","skill":"verbi.perf_pass","day":11,"act":2,"difficulty":2,"front":"amatus sum, amata es, amatum est","back":"sono stato amato, sei stata amata, è stato amato","insight":"Perfetto passivo = participio perfetto (4ª voce del paradigma) + presente di sum.","dive":"Il participio concorda con il soggetto. amata es (f.) / amatus sum (m.) / amatum est (n.)","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g11_01","mode":"decode","skill":"verbi.perf_pass","day":11,"act":2,"difficulty":2,"prompt":"Riconosci la perifrasi passiva.","latin":"Urbs a militibus capta est.","answer":"La città fu presa dai soldati","distractors":["La città prende i soldati","I soldati furono presi dalla città","La città è presa adesso dai soldati"],"insight":"capta est = perfetto passivo (capta = f., concorda con urbs); a militibus = agente.","reward":{"xp":20,"aurei":5}},
-
-  {"id":"voc_g12_01","mode":"recall","skill":"pron.personali","day":12,"act":2,"difficulty":2,"front":"ego, tu, is/ea/id","back":"io, tu, lui/lei/esso","insight":"Pronomi personali di I, II, III persona. 'Is' è anche pronome dimostrativo debole.","dive":"Ego → it. 'ego' (psicol.); tu → stesso in italiano! PIE *eg₂- / *tū.","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g12_01","mode":"decode","skill":"pron.personali","day":12,"act":2,"difficulty":2,"prompt":"Identifica i pronomi.","latin":"Is Romam amat; ego autem patriam meam amo.","answer":"Lui ama Roma; io invece amo la mia patria","distractors":["Io amo Roma; lui invece ama la sua patria","Lui e io amiamo Roma e la patria","Roma ama lui; la patria ama me"],"insight":"Is = lui (pronome soggetto m. sg.); ego = io; meam = mio (f., acc., concorda con patriam).","reward":{"xp":20,"aurei":5}},
-
-  {"id":"voc_g13_01","mode":"recall","skill":"pron.dim_rel","day":13,"act":2,"difficulty":2,"front":"hic, haec, hoc / ille, illa, illud","back":"questo / quello","insight":"hic = vicino a chi parla; ille = lontano (spesso con valore letterario/grandioso).","dive":"→ it. 'il' (art.) viene da ille/illa; 'ci/vi' vengono da hic. L'articolo italiano nasce da un pronome latino!","reward":{"xp":5,"aurei":1}},
-  {"id":"dec_g13_01","mode":"decode","skill":"pron.dim_rel","day":13,"act":2,"difficulty":2,"prompt":"Decifra il pronome relativo.","latin":"Miles qui patriam defendit, a civibus laudatur.","answer":"Il soldato che difende la patria è lodato dai cittadini","distractors":["Il soldato che i cittadini difendono loda la patria","Il soldato che è lodato difende i cittadini","I cittadini che lodano il soldato difendono la patria"],"insight":"qui = pronome relativo (m., nom., sg.) che introduce una proposizione relativa. Concorda con miles.","reward":{"xp":20,"aurei":5}},
-
-  {"id":"crack_g14_boss","mode":"crack","skill":"boss.atto2","day":14,"act":2,"difficulty":3,"title":"Boss Atto II — Il Forziere di Fedro","latin":"Ad rivum eundem lupus et agnus venerant, siti compulsi. Superior stabat lupus, longeque inferior agnus.","scaffold":[{"question":"Caso di 'lupus' e 'agnus' in 'lupus et agnus venerant'?","answer":"nominativo (soggetti)","options":["nominativo (soggetti)","accusativo","ablativo","genitivo"]},{"question":"Tempo di 'venerant'?","answer":"piuccheperfetto — azione passata anteriore","options":["piuccheperfetto — azione passata anteriore","perfetto indicativo","imperfetto","futuro anteriore"]},{"question":"Cosa significa 'ad rivum'?","answer":"moto a luogo verso il ruscello (acc. + ad)","options":["moto a luogo verso il ruscello (acc. + ad)","stato in luogo presso il ruscello","moto da luogo dal ruscello","specificazione del ruscello"]},{"question":"'siti compulsi' — che costruzione è?","answer":"ablativo assoluto (anticipo!) — spinti dalla sete","options":["ablativo assoluto (anticipo!) — spinti dalla sete","accusativo assoluto","nominativo predicativo","infinitiva implicita"]}],"translation":"Un lupo e un agnello erano venuti allo stesso ruscello, spinti dalla sete. Il lupo stava in posizione superiore, l'agnello molto più in basso.","answer":"Un lupo e un agnello erano venuti allo stesso ruscello, spinti dalla sete. Il lupo stava in posizione superiore, l'agnello molto più in basso.","distractors":["Il lupo e l'agnello bevevano allo stesso ruscello nel passato","Un agnello superiore e un lupo inferiore vennero al ruscello","Il lupo mandò l'agnello al ruscello per la sete"],"insight":"Fedro (I sec. d.C.) scrive favole in versi senari. Testo autentico adattato. siti compulsi = ablativo assoluto.","sigillo":"Decifratore di Fedro","reward":{"xp":150,"aurei":75}},
-
-  {"id":"voc_g15_01","mode":"recall","skill":"part.pres_perf","day":15,"act":3,"difficulty":3,"front":"amans, amantis","back":"amante, che ama (participio presente)","insight":"Participio presente attivo: tema pres. + -ns, genitivo -ntis. Terza declinazione.","dive":"→ it. 'amante'; ingl. 'lover'. Il participio presente è come un aggettivo verbale al presente.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g15_01","mode":"decode","skill":"part.pres_perf","day":15,"act":3,"difficulty":3,"prompt":"Identifica la funzione del participio.","latin":"Miles urbem defendens laudatur.","answer":"Il soldato che difende la città è lodato","distractors":["Il soldato lodato difende la città","Il soldato è lodato mentre la città lo difende","La città che si difende loda il soldato"],"insight":"defendens = participio presente (m., nom., sg.) → funzione attributiva (= 'che difende').","reward":{"xp":20,"aurei":5}},
-  {"id":"frg_g15_01","mode":"forge","skill":"part.pres_perf","day":15,"act":3,"difficulty":3,"prompt":"Forgia il participio","lemma":"vinco, vincere","stem":"vinc-","target":"Participio perfetto di 'vinco' — nominativo maschile singolare","answer":"victus","distractors":["vincens","vincitus","victum"],"hint":"Participio perfetto = 4ª voce del paradigma: victum → victus (m.), victa (f.), victum (n.)","insight":"victus miles = 'il soldato sconfitto'. Il participio perfetto passivo concorda col sostantivo.","reward":{"xp":15,"aurei":3}},
-
-  {"id":"voc_g16_01","mode":"recall","skill":"sint.abl_ass","day":16,"act":3,"difficulty":3,"front":"sole oriente / sole orto","back":"mentre il sole sorge / dopo che il sole è sorto","insight":"Ablativo assoluto: nome + participio entrambi in ablativo. Esprime circostanza (tempo, causa, concessione).","dive":"La costruzione-firma del biennio. In italiano si traduce con una subordinata o un gerundio assoluto.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g16_01","mode":"decode","skill":"sint.abl_ass","day":16,"act":3,"difficulty":3,"prompt":"Decifra il blocco in ablativo assoluto.","latin":"Caesare imperante, Romani multas terras vicerunt.","answer":"Sotto il comando di Cesare, i Romani conquistarono molte terre","distractors":["Cesare comandò i Romani che conquistarono le terre","I Romani comandarono Cesare nelle molte terre","Cesare, conquistate le terre, comandò i Romani"],"insight":"Caesare imperante = 'con Cesare che comanda' → ablativo assoluto con participio presente. Indica circostanza temporale/causale.","dive":"L'ablativo assoluto è la costruzione più densa del latino: sostituisce un'intera proposizione subordinata.","reward":{"xp":25,"aurei":6}},
-  {"id":"dec_g16_02","mode":"decode","skill":"sint.abl_ass","day":16,"act":3,"difficulty":3,"prompt":"Decifra questo ablativo assoluto con participio perfetto.","latin":"Hostibus victis, milites domum redierunt.","answer":"Dopo aver sconfitto i nemici, i soldati tornarono a casa","distractors":["I soldati tornarono mentre i nemici vincevano","Prima di sconfiggere i nemici, i soldati tornarono","I nemici, tornati a casa, sconfissero i soldati"],"insight":"Hostibus victis = 'con i nemici sconfitti' → ablativo assoluto con participio perfetto (vittoria già avvenuta).","reward":{"xp":25,"aurei":6}},
-
-  {"id":"voc_g17_01","mode":"recall","skill":"sint.infinitiva","day":17,"act":3,"difficulty":3,"front":"dico / puto / credo + acc. + infinito","back":"dico/penso/credo che (qualcuno faccia qualcosa)","insight":"Proposizione infinitiva: il soggetto della subordinata è in accusativo, il verbo all'infinito.","dive":"'Dico Caesarem venire' = 'Dico che Cesare viene'. Il soggetto accusativo è la svolta della sintassi latina.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g17_01","mode":"decode","skill":"sint.infinitiva","day":17,"act":3,"difficulty":3,"prompt":"Decifra la proposizione infinitiva.","latin":"Cives credunt milites fortes esse.","answer":"I cittadini credono che i soldati siano coraggiosi","distractors":["I forti soldati credono di essere cittadini","I cittadini coraggiosi credono nei soldati","I soldati credono di essere forti cittadini"],"insight":"credunt → reggente; milites (acc.) = soggetto della infinitiva; fortes esse = predicato all'infinito.","dive":"Il latino usa l'infinitiva dove l'italiano usa 'che + congiuntivo'. È più compatta e densa.","reward":{"xp":25,"aurei":6}},
-
-  {"id":"voc_g18_01","mode":"recall","skill":"verbi.cong","day":18,"act":3,"difficulty":3,"front":"amem, ames, amet / amarem, amares, amaret","back":"(che io) ami... / (che io) amassi... — congiuntivo presente e imperfetto","insight":"Congiuntivo presente I coniug.: tema + -e- + desinenze. Congiuntivo imperfetto: infinito + desinenze.","dive":"Il congiuntivo esprime eventualità, desiderio, subordinazione logica. In inglese corrisponde al 'subjunctive'.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g18_01","mode":"decode","skill":"verbi.cong","day":18,"act":3,"difficulty":3,"prompt":"Decifra il cum narrativo.","latin":"Cum Caesar in Galliam venisset, multas gentes invenit.","answer":"Quando Cesare giunse in Gallia, trovò molte popolazioni","distractors":["Cesare trovò molte genti mentre viene in Gallia","Poiché le genti vengono, Cesare giunse in Gallia","Cesare che giunse trovò molte genti galliche"],"insight":"cum + congiuntivo piuccheperfetto (venisset) = cum narrativo (quando/poiché/sebbene — dipende dal contesto).","reward":{"xp":25,"aurei":6}},
-
-  {"id":"voc_g19_01","mode":"recall","skill":"comp.sup","day":19,"act":3,"difficulty":3,"front":"fortior / fortissimus","back":"più coraggioso / fortissimo, il più coraggioso","insight":"Comparativo: -ior (m./f.) / -ius (n.). Superlativo: -issimus/-a/-um. Secondo termine: quam + nom.","dive":"→ 'fortissimo' italiano. Il superlativo latino è diretto in italiano: 'bellissimo' = lat. bellissimus.","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g19_01","mode":"decode","skill":"comp.sup","day":19,"act":3,"difficulty":3,"prompt":"Decifra il comparativo.","latin":"Romani fortissimi erant, sed Galli fortiores quam Germani.","answer":"I Romani erano fortissimi, ma i Galli erano più coraggiosi dei Germani","distractors":["I Romani e i Galli erano più forti dei Germani","I Germani erano più coraggiosi dei Galli e dei Romani","I Romani erano coraggiosi come i Galli e i Germani"],"insight":"fortissimi = superlativo; fortiores = comparativo (più coraggiosi); quam = 'di' (secondo termine).","reward":{"xp":20,"aurei":5}},
-
-  {"id":"voc_g20_01","mode":"recall","skill":"gerundio","day":20,"act":3,"difficulty":3,"front":"amandi / amando / amandum","back":"di amare / amando / per amare — il gerundio","insight":"Il gerundio è il sostantivo verbale. Usato nei casi obliqui (gen., dat., acc., abl.).","dive":"→ it. 'amando' (gerundio italiano viene dall'ablativo del gerundio latino!).","reward":{"xp":8,"aurei":2}},
-  {"id":"dec_g20_01","mode":"decode","skill":"gerundio","day":20,"act":3,"difficulty":3,"prompt":"Decifra la proposizione finale.","latin":"Milites ad urbem veniunt ut eam defendant.","answer":"I soldati vengono in città per difenderla","distractors":["I soldati vengono in città e la difendono","La città viene difesa dai soldati che vengono","I soldati difendono la città da cui vengono"],"insight":"ut + congiuntivo = proposizione finale ('per, affinché'). eam = pronome acc. f. ('la/lei').","reward":{"xp":20,"aurei":5}},
-
-  {"id":"crack_g21_boss","mode":"crack","skill":"boss.finale","day":21,"act":3,"difficulty":5,"title":"Boss Finale — Cesare · De Bello Gallico","latin":"Gallia est omnis divisa in partes tres, quarum unam incolunt Belgae, aliam Aquitani, tertiam qui ipsorum lingua Celtae, nostra Galli appellantur.","scaffold":[{"question":"Caso e funzione di 'Gallia'?","answer":"nominativo — soggetto della proposizione","options":["nominativo — soggetto della proposizione","accusativo — oggetto di divisa","ablativo — complemento di luogo","genitivo — specificazione"]},{"question":"'divisa' — che costruzione è?","answer":"participio perfetto passivo concordato con Gallia","options":["participio perfetto passivo concordato con Gallia","ablativo assoluto","infinitiva","predicativo del soggetto"]},{"question":"'quarum unam incolunt Belgae' — decifra 'quarum'?","answer":"genitivo plurale del relativo quae — 'di queste (parti)'","options":["genitivo plurale del relativo quae — 'di queste (parti)'","accusativo plurale","dativo plurale","nominativo plurale"]},{"question":"'qui ipsorum lingua Celtae appellantur' — cosa significa 'appellantur'?","answer":"sono chiamati (III pl. presente passivo di appello)","options":["sono chiamati (III pl. presente passivo di appello)","chiamano (attivo)","saranno chiamati (futuro)","erano chiamati (imperfetto)"]}],"translation":"La Gallia nel suo insieme è divisa in tre parti, delle quali una la abitano i Belgi, un'altra gli Aquitani, la terza coloro che nella loro lingua si chiamano Celti, nella nostra Galli.","answer":"La Gallia nel suo insieme è divisa in tre parti, delle quali una la abitano i Belgi, un'altra gli Aquitani, la terza coloro che nella loro lingua si chiamano Celti, nella nostra Galli.","distractors":["La Gallia è divisa in due parti: i Belgi e i Galli","I tre popoli della Gallia chiamano la propria lingua Celtica","I Galli, i Belgi e gli Aquitani dividono tre lingue"],"insight":"Cesare, De Bello Gallico, I,1. Testo originale del 58-49 a.C. — il codice è decifrato. L'Archivio di Roma è ricostruito.","sigillo":"Imperator — L'Archivio è Ricostruito","reward":{"xp":300,"aurei":150}}
+  {
+    "id": "voc_g1_01",
+    "mode": "recall",
+    "skill": "intro.cifrario",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "front": "puella, -ae (f.)",
+    "back": "ragazza, fanciulla",
+    "insight": "Soggetto → nominativo puella; oggetto → accusativo puellam.",
+    "dive": "→ it. 'pùlla' (arcaico); dal PIE *pul- 'giovane'. L'italiano 'pulcino' è parente.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "ragazza, fanciulla",
+    "distractors": []
+  },
+  {
+    "id": "voc_g1_02",
+    "mode": "recall",
+    "skill": "intro.cifrario",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "front": "rosa, -ae (f.)",
+    "back": "rosa (fiore)",
+    "insight": "I declinazione: rosa → rosam all'accusativo.",
+    "dive": "→ it. 'rosa'; dal greco ῥόδον via lat. rosa. Stesso tema in 'roseto', 'rosario'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "rosa (fiore)",
+    "distractors": []
+  },
+  {
+    "id": "voc_g1_03",
+    "mode": "recall",
+    "skill": "verbi.pres_att",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "front": "amo, amare",
+    "back": "amare, voler bene",
+    "insight": "I coniugazione: amo-amas-amat-amamus-amatis-amant.",
+    "dive": "→ it. 'amare'; forse dal PIE *h₂em- 'prendere, portare'. Inglese 'amiable' è parente.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "amare, voler bene",
+    "distractors": []
+  },
+  {
+    "id": "dec_g1_01",
+    "mode": "decode",
+    "skill": "casi.nom_acc",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Trascina le parole per ricostruire la frase.",
+    "latin": "Puella rosam amat.",
+    "answer": "La ragazza ama la rosa",
+    "distractors": [
+      "La rosa ama la ragazza",
+      "La ragazza è la rosa",
+      "La rosa è amata dalla ragazza"
+    ],
+    "insight": "Conta la desinenza, non l'ordine. puella (-a) = soggetto; rosam (-am) = oggetto.",
+    "dive": "rosa, -ae → it. 'rosa'; il tema in -a viene dall'IE *-eh₂.",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "dec_g1_02",
+    "mode": "decode",
+    "skill": "casi.nom_acc",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Quale frase ha lo stesso significato?",
+    "latin": "Rosam puella amat.",
+    "answer": "La ragazza ama la rosa",
+    "distractors": [
+      "La rosa ama la ragazza",
+      "Ama la ragazza la rosa?",
+      "La rosa e la ragazza amano"
+    ],
+    "insight": "Rosam puella amat = Puella rosam amat. L'ordine cambia, il senso no: vale la desinenza!",
+    "dive": "Questa è la grande intuizione del cifrario: -a = nominativo, -am = accusativo nella I declinazione.",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "dec_g1_03",
+    "mode": "decode",
+    "skill": "verbi.sum",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Decifra la frase.",
+    "latin": "Puella bona est.",
+    "answer": "La ragazza è buona",
+    "distractors": [
+      "La buona ragazza ama",
+      "È una buona ragazza lei",
+      "La ragazza e la bontà"
+    ],
+    "insight": "est = 'è' (III sing. di sum). bona concorda con puella (femminile).",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "frg_g1_01",
+    "mode": "forge",
+    "skill": "decl.i",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia l'accusativo singolare",
+    "lemma": "puella, -ae (f.)",
+    "stem": "puell-",
+    "target": "Accusativo singolare di 'puella'",
+    "answer": "puellam",
+    "distractors": [
+      "puellae",
+      "puella",
+      "puellarum"
+    ],
+    "hint": "I decl., acc. sg. = tema + -am",
+    "insight": "puell- + -am → puellam (oggetto diretto).",
+    "dive": "La desinenza -am marca l'oggetto come in 'personam', 'causam', 'fortunam'.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "frg_g1_02",
+    "mode": "forge",
+    "skill": "decl.i",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia il genitivo singolare",
+    "lemma": "rosa, -ae (f.)",
+    "stem": "ros-",
+    "target": "Genitivo singolare di 'rosa'",
+    "answer": "rosae",
+    "distractors": [
+      "rosam",
+      "rosa",
+      "rosarum"
+    ],
+    "hint": "I decl., gen. sg. = tema + -ae",
+    "insight": "ros- + -ae → rosae ('della rosa').",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "frg_g1_03",
+    "mode": "forge",
+    "skill": "verbi.sum",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia la forma verbale",
+    "lemma": "sum, esse (essere)",
+    "stem": "s-",
+    "target": "3ª persona singolare presente di sum",
+    "answer": "est",
+    "distractors": [
+      "sum",
+      "sunt",
+      "es"
+    ],
+    "hint": "III sing. presente di sum = est",
+    "insight": "sum-es-est: il verbo esse è irregolare come in tutte le lingue indoeuropee.",
+    "reward": {
+      "xp": 10,
+      "aurei": 2
+    }
+  },
+  {
+    "id": "raid_g1_01",
+    "mode": "raid",
+    "skill": "casi.nom_acc",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Che caso è 'puellam'?",
+    "latin": "Video puellam.",
+    "answer": "accusativo",
+    "distractors": [
+      "nominativo",
+      "genitivo",
+      "dativo"
+    ],
+    "insight": "video = 'vedo' (II coniug.); puellam è l'oggetto → accusativo.",
+    "reward": {
+      "xp": 10,
+      "aurei": 2
+    }
+  },
+  {
+    "id": "raid_g1_02",
+    "mode": "raid",
+    "skill": "casi.nom_acc",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Che caso è 'agricola'?",
+    "latin": "Agricola laborat.",
+    "answer": "nominativo",
+    "distractors": [
+      "accusativo",
+      "dativo",
+      "ablativo"
+    ],
+    "insight": "agricola (-a) è soggetto → nominativo. laborat = 'lavora'.",
+    "reward": {
+      "xp": 10,
+      "aurei": 2
+    }
+  },
+  {
+    "id": "raid_g1_03",
+    "mode": "raid",
+    "skill": "intro.cifrario",
+    "day": 1,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Quale frase significa 'Il poeta loda la patria'?",
+    "latin": "",
+    "answer": "Poeta patriam laudat.",
+    "distractors": [
+      "Patriam poeta laudatur.",
+      "Poetam patria laudat.",
+      "Poeta laudat et patria."
+    ],
+    "insight": "poeta (nom.) = soggetto; patriam (acc.) = oggetto; laudat = 'loda'.",
+    "reward": {
+      "xp": 12,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "voc_g2_01",
+    "mode": "recall",
+    "skill": "decl.ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "front": "dominus, -i (m.)",
+    "back": "signore, padrone",
+    "insight": "II declinazione: dominus → dominum (acc.) → domini (gen.).",
+    "dive": "→ it. 'don', 'dominare'; ingl. 'dominate', 'dominion'. Il 'don' spagnolo viene da qui.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "signore, padrone",
+    "distractors": []
+  },
+  {
+    "id": "voc_g2_02",
+    "mode": "recall",
+    "skill": "decl.ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "front": "servus, -i (m.)",
+    "back": "schiavo, servo",
+    "insight": "II declinazione maschile: servus, servi, servo, servum.",
+    "dive": "→ it. 'servo'; ingl. 'serve', 'servant'. Dal PIE *ser- 'proteggere, custodire'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "schiavo, servo",
+    "distractors": []
+  },
+  {
+    "id": "voc_g2_03",
+    "mode": "recall",
+    "skill": "decl.ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "front": "bellum, -i (n.)",
+    "back": "guerra",
+    "insight": "II declinazione neutro: nom. = acc. (-um). Plurale: bella.",
+    "dive": "→ ingl. 'bellicose', 'rebel'. Dal PIE *dwel- 'forza'. Contrapposto a 'pax'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "guerra",
+    "distractors": []
+  },
+  {
+    "id": "dec_g2_01",
+    "mode": "decode",
+    "skill": "decl.ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Decifra la frase.",
+    "latin": "Dominus servum videt.",
+    "answer": "Il padrone vede lo schiavo",
+    "distractors": [
+      "Lo schiavo vede il padrone",
+      "Il padrone è uno schiavo",
+      "Lo schiavo è visto dal padrone"
+    ],
+    "insight": "dominus (-us) = nominativo (soggetto); servum (-um) = accusativo (oggetto).",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "dec_g2_02",
+    "mode": "decode",
+    "skill": "agg.i_ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Traduci la frase.",
+    "latin": "Bonus dominus servum bonum amat.",
+    "answer": "Il buon padrone ama il buon servo",
+    "distractors": [
+      "Il padrone buono ama il servo",
+      "Il servo buono ama il padrone",
+      "Un buon padrone e un buon servo"
+    ],
+    "insight": "bonus concorda con dominus (m., nom.); bonum concorda con servum (m., acc.).",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g2_01",
+    "mode": "forge",
+    "skill": "decl.ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia il genitivo singolare",
+    "lemma": "dominus, -i (m.)",
+    "stem": "domin-",
+    "target": "Genitivo singolare di 'dominus'",
+    "answer": "domini",
+    "distractors": [
+      "dominum",
+      "domino",
+      "dominorum"
+    ],
+    "hint": "II decl., gen. sg. = tema + -i",
+    "insight": "domini = 'del padrone'. Dal tema domin-.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "frg_g2_02",
+    "mode": "forge",
+    "skill": "agg.i_ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia la forma corretta",
+    "lemma": "bonus, -a, -um",
+    "stem": "bon-",
+    "target": "Accusativo singolare femminile di 'bonus'",
+    "answer": "bonam",
+    "distractors": [
+      "bona",
+      "bonum",
+      "bonae"
+    ],
+    "hint": "Femm. acc. sg. = I decl. → bon- + -am",
+    "insight": "bonam puellam: l'aggettivo segue la declinazione della testa nominale.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "raid_g2_01",
+    "mode": "raid",
+    "skill": "decl.ii",
+    "day": 2,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Qual è il nominativo plurale di 'servus'?",
+    "latin": "",
+    "answer": "servi",
+    "distractors": [
+      "servos",
+      "servum",
+      "servorum"
+    ],
+    "insight": "II decl., nom. pl. = -i. servi = 'gli schiavi/servi'.",
+    "reward": {
+      "xp": 10,
+      "aurei": 2
+    }
+  },
+  {
+    "id": "voc_g3_01",
+    "mode": "recall",
+    "skill": "verbi.pres_att",
+    "day": 3,
+    "act": 1,
+    "difficulty": 1,
+    "front": "laudo, laudare",
+    "back": "lodare, elogiare",
+    "insight": "I coniugazione: laudo-laudas-laudat-laudamus-laudatis-laudant.",
+    "dive": "→ it. 'lodare'; ingl. 'laud', 'laudable'. Dal PIE *leh₂w- 'guadagno, premio'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "lodare, elogiare",
+    "distractors": []
+  },
+  {
+    "id": "voc_g3_02",
+    "mode": "recall",
+    "skill": "verbi.pres_att",
+    "day": 3,
+    "act": 1,
+    "difficulty": 1,
+    "front": "moneo, monere",
+    "back": "ammonire, avvertire",
+    "insight": "II coniugazione (-ē-): moneo-mones-monet.",
+    "dive": "→ it. 'monito'; ingl. 'monitor', 'monument'. Il 'monito' è l'avvertimento di Moneta (Giunone).",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "ammonire, avvertire",
+    "distractors": []
+  },
+  {
+    "id": "voc_g3_03",
+    "mode": "recall",
+    "skill": "verbi.pres_att",
+    "day": 3,
+    "act": 1,
+    "difficulty": 1,
+    "front": "rego, regere",
+    "back": "guidare, governare",
+    "insight": "III coniugazione: rego-regis-regit-regimus-regitis-regunt.",
+    "dive": "→ it. 'reggere', 'regola'; ingl. 'regal', 'regent'. Rex (re) viene da qui.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "guidare, governare",
+    "distractors": []
+  },
+  {
+    "id": "dec_g3_01",
+    "mode": "decode",
+    "skill": "verbi.pres_att",
+    "day": 3,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Decifra chi fa cosa.",
+    "latin": "Agricolae terram laudant et poetae patriam laudant.",
+    "answer": "I contadini lodano la terra e i poeti lodano la patria",
+    "distractors": [
+      "Il contadino loda la terra e il poeta loda la patria",
+      "I poeti lodano i contadini e la terra",
+      "La patria e la terra sono lodate"
+    ],
+    "insight": "laudant = III plurale. agricolae/poetae = nominativo plurale I decl.",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g3_01",
+    "mode": "forge",
+    "skill": "verbi.pres_att",
+    "day": 3,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia la forma verbale",
+    "lemma": "rego, regere",
+    "stem": "reg-",
+    "target": "III persona plurale presente",
+    "answer": "regunt",
+    "distractors": [
+      "regitis",
+      "regit",
+      "regunt"
+    ],
+    "hint": "III coniugazione, III pl. pres. = tema + -unt",
+    "insight": "reg- + -unt → regunt. Attenzione: III coniug. usa -u- prima di -nt.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "frg_g3_02",
+    "mode": "forge",
+    "skill": "verbi.pres_att",
+    "day": 3,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia la forma verbale",
+    "lemma": "audio, audire",
+    "stem": "aud-",
+    "target": "I persona singolare presente",
+    "answer": "audio",
+    "distractors": [
+      "audis",
+      "audit",
+      "audimus"
+    ],
+    "hint": "IV coniugazione, I sg. pres. = tema + -io",
+    "insight": "audio → audis → audit → audimus → auditis → audiunt.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "raid_g3_01",
+    "mode": "raid",
+    "skill": "verbi.pres_att",
+    "day": 3,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Che persona/numero è 'monent'?",
+    "latin": "Magistri discipulos monent.",
+    "answer": "III plurale",
+    "distractors": [
+      "III singolare",
+      "I plurale",
+      "II plurale"
+    ],
+    "insight": "monent = -ent → III coniug. ma 'moneo' è II coniug. con -ent → magistri (pl.) monent.",
+    "reward": {
+      "xp": 10,
+      "aurei": 2
+    }
+  },
+  {
+    "id": "voc_g4_01",
+    "mode": "recall",
+    "skill": "decl.iii",
+    "day": 4,
+    "act": 1,
+    "difficulty": 1,
+    "front": "rex, regis (m.)",
+    "back": "re, sovrano",
+    "insight": "III declinazione imparisillabo: rex (nom.) / regis (gen.) — il tema è reg-.",
+    "dive": "→ it. 're'; ingl. 'regal', 'royal'. Dal PIE *h₃reǵ- 'guidare in linea retta'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "re, sovrano",
+    "distractors": []
+  },
+  {
+    "id": "voc_g4_02",
+    "mode": "recall",
+    "skill": "decl.iii",
+    "day": 4,
+    "act": 1,
+    "difficulty": 1,
+    "front": "miles, militis (m.)",
+    "back": "soldato",
+    "insight": "III declinazione: miles (nom.) / militis (gen.), tema milit-.",
+    "dive": "→ it. 'militare', 'milizia'; ingl. 'military', 'militia'. Dal PIE *mel- 'andare insieme'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "soldato",
+    "distractors": []
+  },
+  {
+    "id": "voc_g4_03",
+    "mode": "recall",
+    "skill": "decl.iii",
+    "day": 4,
+    "act": 1,
+    "difficulty": 1,
+    "front": "urbs, urbis (f.)",
+    "back": "città",
+    "insight": "III declinazione f.: urbs (nom.) / urbis (gen.), tema urb-.",
+    "dive": "→ it. 'urbano'; ingl. 'urban', 'suburb'. Da urbs deriva 'urbanesimo'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "città",
+    "distractors": []
+  },
+  {
+    "id": "dec_g4_01",
+    "mode": "decode",
+    "skill": "decl.iii",
+    "day": 4,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Decifra il caso e il significato.",
+    "latin": "Miles regis urbem defendit.",
+    "answer": "Il soldato del re difende la città",
+    "distractors": [
+      "Il re del soldato difende la città",
+      "La città difende il soldato del re",
+      "Il soldato difende il re in città"
+    ],
+    "insight": "regis = genitivo (del re); urbem = accusativo (oggetto diretto). Il genitivo è la 'chiave del tema'.",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g4_01",
+    "mode": "forge",
+    "skill": "decl.iii",
+    "day": 4,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia l'accusativo singolare",
+    "lemma": "rex, regis (m.)",
+    "stem": "reg-",
+    "target": "Accusativo singolare di 'rex'",
+    "answer": "regem",
+    "distractors": [
+      "regis",
+      "rege",
+      "reges"
+    ],
+    "hint": "III decl., acc. sg. = tema + -em",
+    "insight": "reg- + -em → regem. Il nominativo rex è irregolare; il tema si vede dal genitivo regis.",
+    "dive": "Come 'imperatorem', 'militem', 'consulem': la III decl. usa -em all'acc. sg.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "voc_g5_01",
+    "mode": "recall",
+    "skill": "decl.iv_v",
+    "day": 5,
+    "act": 1,
+    "difficulty": 1,
+    "front": "manus, -us (f.)",
+    "back": "mano",
+    "insight": "IV declinazione: manus (nom.) / manus (gen.) — gen. sg. = -us!",
+    "dive": "→ it. 'mano', 'manuale'; ingl. 'manual', 'manuscript'. Dal PIE *man- 'mano'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "mano",
+    "distractors": []
+  },
+  {
+    "id": "voc_g5_02",
+    "mode": "recall",
+    "skill": "decl.iv_v",
+    "day": 5,
+    "act": 1,
+    "difficulty": 1,
+    "front": "res, rei (f.)",
+    "back": "cosa, faccenda, realtà",
+    "insight": "V declinazione: res / rei. La formula 'res publica' = repubblica.",
+    "dive": "→ it. 'reale' (=concreto); ingl. 'real', 'republic'. Dal PIE *reh₁- 'bene, cosa'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "cosa, faccenda, realtà",
+    "distractors": []
+  },
+  {
+    "id": "dec_g5_01",
+    "mode": "decode",
+    "skill": "casi.dat_abl",
+    "day": 5,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Decifra il caso dell'ablativo.",
+    "latin": "Milites gladiis pugnant.",
+    "answer": "I soldati combattono con le spade",
+    "distractors": [
+      "I soldati combattono contro le spade",
+      "Le spade dei soldati combattono",
+      "I soldati combattono per le spade"
+    ],
+    "insight": "gladiis = ablativo plurale di gladius → complemento di mezzo ('con le spade').",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g5_01",
+    "mode": "forge",
+    "skill": "verbi.imperf",
+    "day": 5,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia la forma verbale",
+    "lemma": "amo, amare",
+    "stem": "ama-",
+    "target": "III sg. imperfetto indicativo di 'amo'",
+    "answer": "amabat",
+    "distractors": [
+      "amavit",
+      "amabit",
+      "amabant"
+    ],
+    "hint": "Imperfetto I coniug.: tema + -ba- + desinenza personale",
+    "insight": "ama- + -ba- + -t = amabat. L'imperfetto esprime un'azione continua nel passato.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "voc_g6_01",
+    "mode": "recall",
+    "skill": "verbi.fut",
+    "day": 6,
+    "act": 1,
+    "difficulty": 1,
+    "front": "vinco, vincere",
+    "back": "vincere, sconfiggere",
+    "insight": "III coniugazione: vinco-vincis-vincit. Futuro: vincam, vinces, vincet.",
+    "dive": "→ it. 'vincere'; ingl. 'convince' (vincere insieme). Dal PIE *weik- 'forza'.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "vincere, sconfiggere",
+    "distractors": []
+  },
+  {
+    "id": "dec_g6_01",
+    "mode": "decode",
+    "skill": "verbi.fut",
+    "day": 6,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Decifra il tempo verbale.",
+    "latin": "Romani hostes vincent.",
+    "answer": "I Romani sconfiggeranno i nemici",
+    "distractors": [
+      "I Romani sconfiggono i nemici",
+      "I Romani hanno sconfitto i nemici",
+      "I nemici sconfiggeranno i Romani"
+    ],
+    "insight": "vincent = futuro III pl. di vinco. Romani = nom. pl. (soggetto); hostes = acc. pl. (oggetto).",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g6_01",
+    "mode": "forge",
+    "skill": "verbi.fut",
+    "day": 6,
+    "act": 1,
+    "difficulty": 1,
+    "prompt": "Forgia il futuro",
+    "lemma": "moneo, monere",
+    "stem": "mone-",
+    "target": "I sg. futuro semplice di 'moneo'",
+    "answer": "monebo",
+    "distractors": [
+      "monebam",
+      "monui",
+      "moneam"
+    ],
+    "hint": "II coniugazione, futuro I sg. = tema + -bo",
+    "insight": "mone- + -bo = monebo. La II coniug. usa -bo/-bis/-bit per il futuro.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "crack_g7_boss",
+    "mode": "crack",
+    "skill": "boss.atto1",
+    "day": 7,
+    "act": 1,
+    "difficulty": 2,
+    "title": "Boss Atto I — L'Iscrizione Romana",
+    "latin": "Agricola et poeta terram patriamque amant; milites autem urbem servant.",
+    "scaffold": [
+      {
+        "question": "Caso di 'agricola'?",
+        "answer": "nominativo (soggetto)",
+        "options": [
+          "nominativo (soggetto)",
+          "accusativo (oggetto)",
+          "genitivo",
+          "ablativo"
+        ]
+      },
+      {
+        "question": "Cosa significa '-que' in 'patriamque'?",
+        "answer": "'e' (enclitica: si appende alla parola precedente)",
+        "options": [
+          "'e' (enclitica: si appende alla parola precedente)",
+          "'ma', 'però'",
+          "'della patria'",
+          "'nella patria'"
+        ]
+      },
+      {
+        "question": "Caso di 'urbem'?",
+        "answer": "accusativo (oggetto di servant)",
+        "options": [
+          "accusativo (oggetto di servant)",
+          "nominativo",
+          "genitivo",
+          "dativo"
+        ]
+      },
+      {
+        "question": "Tempo di 'servant'?",
+        "answer": "presente indicativo",
+        "options": [
+          "presente indicativo",
+          "futuro",
+          "imperfetto",
+          "perfetto"
+        ]
+      }
+    ],
+    "translation": "Il contadino e il poeta amano la terra e la patria; i soldati invece proteggono la città.",
+    "answer": "Il contadino e il poeta amano la terra e la patria; i soldati invece proteggono la città.",
+    "distractors": [
+      "Il poeta ama il contadino e i soldati proteggono la patria",
+      "I soldati amano la città e il contadino ama la terra",
+      "La patria e la città sono amate dai soldati"
+    ],
+    "insight": "autem = 'però, invece' (avverbio); -que = 'e' enclitico. servant = III pl. pres. di servo.",
+    "sigillo": "Primo Codice Decifrato",
+    "reward": {
+      "xp": 100,
+      "aurei": 50
+    }
+  },
+  {
+    "id": "voc_g8_01",
+    "mode": "recall",
+    "skill": "verbi.paradigma",
+    "day": 8,
+    "act": 2,
+    "difficulty": 2,
+    "front": "amo, amare, amavi, amatum",
+    "back": "amare — le 4 forme fondamentali (paradigma)",
+    "insight": "Le 4 voci del vocabolario. La 3ª (amavi) dà il tema del perfetto; la 4ª il participio perfetto.",
+    "dive": "Il paradigma è il 'codice di accesso' al verbo. Conoscerlo significa conoscere tutti i suoi tempi.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "amare — le 4 forme fondamentali (paradigma)",
+    "distractors": []
+  },
+  {
+    "id": "voc_g8_02",
+    "mode": "recall",
+    "skill": "verbi.perf_att",
+    "day": 8,
+    "act": 2,
+    "difficulty": 2,
+    "front": "amavi, amavisti, amavit",
+    "back": "(io) amai/ho amato, (tu) amasti, (lui/lei) amò",
+    "insight": "Perfetto indicativo attivo: tema del perfetto (amav-) + desinenze -i, -isti, -it, -imus, -istis, -erunt.",
+    "dive": "Il perfetto latino è più ricco dell'italiano: copre sia il passato remoto che il passato prossimo.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "(io) amai/ho amato, (tu) amasti, (lui/lei) amò",
+    "distractors": []
+  },
+  {
+    "id": "dec_g8_01",
+    "mode": "decode",
+    "skill": "verbi.perf_att",
+    "day": 8,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Decifra il tempo e il significato.",
+    "latin": "Caesar hostes vicit et milites laudavit.",
+    "answer": "Cesare sconfisse i nemici e lodò i soldati",
+    "distractors": [
+      "Cesare sconfigge i nemici e loda i soldati",
+      "I nemici di Cesare vinsero e lodarono i soldati",
+      "Cesare fu sconfitto dai nemici"
+    ],
+    "insight": "vicit = perfetto di vinco (tema vic-); laudavit = perfetto di laudo (tema laudav-).",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g8_01",
+    "mode": "forge",
+    "skill": "verbi.perf_att",
+    "day": 8,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Forgia il perfetto",
+    "lemma": "rego, regere, rexi, rectum",
+    "stem": "rex-",
+    "target": "III sg. perfetto indicativo attivo di 'rego'",
+    "answer": "rexit",
+    "distractors": [
+      "regit",
+      "rexerat",
+      "reget"
+    ],
+    "hint": "Tema del perfetto (rex-) + -it per la III singolare",
+    "insight": "rex- + -it = rexit. Il tema del perfetto di 'rego' è 'rex-' (consultare il paradigma!).",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "raid_g8_01",
+    "mode": "raid",
+    "skill": "verbi.perf_att",
+    "day": 8,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Che tempo è 'audivimus'?",
+    "latin": "",
+    "answer": "perfetto indicativo attivo, I plurale",
+    "distractors": [
+      "presente indicativo, I plurale",
+      "futuro anteriore, I plurale",
+      "imperfetto, I plurale"
+    ],
+    "insight": "audiv- = tema del perfetto di audio; -imus = I plurale.",
+    "reward": {
+      "xp": 10,
+      "aurei": 2
+    }
+  },
+  {
+    "id": "voc_g9_01",
+    "mode": "recall",
+    "skill": "verbi.piuq_fut_ant",
+    "day": 9,
+    "act": 2,
+    "difficulty": 2,
+    "front": "amaveram, amaveras, amaverat",
+    "back": "avevo amato, avevi amato, aveva amato (piuccheperfetto)",
+    "insight": "Piuccheperfetto = tema perfetto + -eram/-eras/-erat. Un'azione completata prima di un'altra nel passato.",
+    "dive": "Come l'inglese 'had loved'. Il piuccheperfetto è il 'passato del passato'.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "avevo amato, avevi amato, aveva amato (piuccheperfetto)",
+    "distractors": []
+  },
+  {
+    "id": "dec_g9_01",
+    "mode": "decode",
+    "skill": "verbi.piuq_fut_ant",
+    "day": 9,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Decifra la sequenza temporale.",
+    "latin": "Milites, postquam hostes vicerant, domum redierunt.",
+    "answer": "I soldati, dopo aver sconfitto i nemici, tornarono a casa",
+    "distractors": [
+      "I soldati tornano a casa dopo sconfiggere i nemici",
+      "Dopo che i soldati tornarono, i nemici vinsero",
+      "I nemici, dopo aver vinto, tornarono a casa"
+    ],
+    "insight": "vicerant = piuccheperfetto (azione anteriore); redierunt = perfetto (azione successiva).",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g9_01",
+    "mode": "forge",
+    "skill": "verbi.piuq_fut_ant",
+    "day": 9,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Forgia il futuro anteriore",
+    "lemma": "laudo, laudare, laudavi, laudatum",
+    "stem": "laudav-",
+    "target": "I sg. futuro anteriore di 'laudo'",
+    "answer": "laudavero",
+    "distractors": [
+      "laudabo",
+      "laudaveram",
+      "laudavi"
+    ],
+    "hint": "Futuro ant. = tema perfetto + -ero/-eris/-erit",
+    "insight": "laudav- + -ero = laudavero. 'Avrò lodato' — un'azione futura che sarà completata.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "voc_g10_01",
+    "mode": "recall",
+    "skill": "verbi.pres_pass",
+    "day": 10,
+    "act": 2,
+    "difficulty": 2,
+    "front": "amor, amaris, amatur",
+    "back": "sono amato, sei amato, è amato",
+    "insight": "Passivo presente: si sostituiscono le desinenze attive (-o/-s/-t) con quelle passive (-or/-ris/-tur).",
+    "dive": "La diatesi passiva è una chiave del latino: il soggetto 'subisce' l'azione invece di compierla.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "sono amato, sei amato, è amato",
+    "distractors": []
+  },
+  {
+    "id": "dec_g10_01",
+    "mode": "decode",
+    "skill": "verbi.pres_pass",
+    "day": 10,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Attenzione alla diatesi!",
+    "latin": "Laudatur a magistro discipulus bonus.",
+    "answer": "Il buon allievo è lodato dal maestro",
+    "distractors": [
+      "Il buon maestro loda l'allievo",
+      "L'allievo loda il buon maestro",
+      "Il maestro e l'allievo si lodano"
+    ],
+    "insight": "laudatur = III sg. passivo; a magistro = complemento d'agente (abl. + a/ab); discipulus = soggetto.",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g10_01",
+    "mode": "forge",
+    "skill": "verbi.pres_pass",
+    "day": 10,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Forgia il passivo",
+    "lemma": "moneo, monere",
+    "stem": "mone-",
+    "target": "II sg. presente passivo di 'moneo'",
+    "answer": "moneris",
+    "distractors": [
+      "monet",
+      "moneor",
+      "monetur"
+    ],
+    "hint": "II sg. presente passivo = tema + -ris",
+    "insight": "mone- + -ris = moneris. 'Sei ammonito/avvertito'.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "voc_g11_01",
+    "mode": "recall",
+    "skill": "verbi.perf_pass",
+    "day": 11,
+    "act": 2,
+    "difficulty": 2,
+    "front": "amatus sum, amata es, amatum est",
+    "back": "sono stato amato, sei stata amata, è stato amato",
+    "insight": "Perfetto passivo = participio perfetto (4ª voce del paradigma) + presente di sum.",
+    "dive": "Il participio concorda con il soggetto. amata es (f.) / amatus sum (m.) / amatum est (n.)",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "sono stato amato, sei stata amata, è stato amato",
+    "distractors": []
+  },
+  {
+    "id": "dec_g11_01",
+    "mode": "decode",
+    "skill": "verbi.perf_pass",
+    "day": 11,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Riconosci la perifrasi passiva.",
+    "latin": "Urbs a militibus capta est.",
+    "answer": "La città fu presa dai soldati",
+    "distractors": [
+      "La città prende i soldati",
+      "I soldati furono presi dalla città",
+      "La città è presa adesso dai soldati"
+    ],
+    "insight": "capta est = perfetto passivo (capta = f., concorda con urbs); a militibus = agente.",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "voc_g12_01",
+    "mode": "recall",
+    "skill": "pron.personali",
+    "day": 12,
+    "act": 2,
+    "difficulty": 2,
+    "front": "ego, tu, is/ea/id",
+    "back": "io, tu, lui/lei/esso",
+    "insight": "Pronomi personali di I, II, III persona. 'Is' è anche pronome dimostrativo debole.",
+    "dive": "Ego → it. 'ego' (psicol.); tu → stesso in italiano! PIE *eg₂- / *tū.",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "io, tu, lui/lei/esso",
+    "distractors": []
+  },
+  {
+    "id": "dec_g12_01",
+    "mode": "decode",
+    "skill": "pron.personali",
+    "day": 12,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Identifica i pronomi.",
+    "latin": "Is Romam amat; ego autem patriam meam amo.",
+    "answer": "Lui ama Roma; io invece amo la mia patria",
+    "distractors": [
+      "Io amo Roma; lui invece ama la sua patria",
+      "Lui e io amiamo Roma e la patria",
+      "Roma ama lui; la patria ama me"
+    ],
+    "insight": "Is = lui (pronome soggetto m. sg.); ego = io; meam = mio (f., acc., concorda con patriam).",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "voc_g13_01",
+    "mode": "recall",
+    "skill": "pron.dim_rel",
+    "day": 13,
+    "act": 2,
+    "difficulty": 2,
+    "front": "hic, haec, hoc / ille, illa, illud",
+    "back": "questo / quello",
+    "insight": "hic = vicino a chi parla; ille = lontano (spesso con valore letterario/grandioso).",
+    "dive": "→ it. 'il' (art.) viene da ille/illa; 'ci/vi' vengono da hic. L'articolo italiano nasce da un pronome latino!",
+    "reward": {
+      "xp": 5,
+      "aurei": 1
+    },
+    "answer": "questo / quello",
+    "distractors": []
+  },
+  {
+    "id": "dec_g13_01",
+    "mode": "decode",
+    "skill": "pron.dim_rel",
+    "day": 13,
+    "act": 2,
+    "difficulty": 2,
+    "prompt": "Decifra il pronome relativo.",
+    "latin": "Miles qui patriam defendit, a civibus laudatur.",
+    "answer": "Il soldato che difende la patria è lodato dai cittadini",
+    "distractors": [
+      "Il soldato che i cittadini difendono loda la patria",
+      "Il soldato che è lodato difende i cittadini",
+      "I cittadini che lodano il soldato difendono la patria"
+    ],
+    "insight": "qui = pronome relativo (m., nom., sg.) che introduce una proposizione relativa. Concorda con miles.",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "crack_g14_boss",
+    "mode": "crack",
+    "skill": "boss.atto2",
+    "day": 14,
+    "act": 2,
+    "difficulty": 3,
+    "title": "Boss Atto II — Il Forziere di Fedro",
+    "latin": "Ad rivum eundem lupus et agnus venerant, siti compulsi. Superior stabat lupus, longeque inferior agnus.",
+    "scaffold": [
+      {
+        "question": "Caso di 'lupus' e 'agnus' in 'lupus et agnus venerant'?",
+        "answer": "nominativo (soggetti)",
+        "options": [
+          "nominativo (soggetti)",
+          "accusativo",
+          "ablativo",
+          "genitivo"
+        ]
+      },
+      {
+        "question": "Tempo di 'venerant'?",
+        "answer": "piuccheperfetto — azione passata anteriore",
+        "options": [
+          "piuccheperfetto — azione passata anteriore",
+          "perfetto indicativo",
+          "imperfetto",
+          "futuro anteriore"
+        ]
+      },
+      {
+        "question": "Cosa significa 'ad rivum'?",
+        "answer": "moto a luogo verso il ruscello (acc. + ad)",
+        "options": [
+          "moto a luogo verso il ruscello (acc. + ad)",
+          "stato in luogo presso il ruscello",
+          "moto da luogo dal ruscello",
+          "specificazione del ruscello"
+        ]
+      },
+      {
+        "question": "'siti compulsi' — che costruzione è?",
+        "answer": "ablativo assoluto (anticipo!) — spinti dalla sete",
+        "options": [
+          "ablativo assoluto (anticipo!) — spinti dalla sete",
+          "accusativo assoluto",
+          "nominativo predicativo",
+          "infinitiva implicita"
+        ]
+      }
+    ],
+    "translation": "Un lupo e un agnello erano venuti allo stesso ruscello, spinti dalla sete. Il lupo stava in posizione superiore, l'agnello molto più in basso.",
+    "answer": "Un lupo e un agnello erano venuti allo stesso ruscello, spinti dalla sete. Il lupo stava in posizione superiore, l'agnello molto più in basso.",
+    "distractors": [
+      "Il lupo e l'agnello bevevano allo stesso ruscello nel passato",
+      "Un agnello superiore e un lupo inferiore vennero al ruscello",
+      "Il lupo mandò l'agnello al ruscello per la sete"
+    ],
+    "insight": "Fedro (I sec. d.C.) scrive favole in versi senari. Testo autentico adattato. siti compulsi = ablativo assoluto.",
+    "sigillo": "Decifratore di Fedro",
+    "reward": {
+      "xp": 150,
+      "aurei": 75
+    }
+  },
+  {
+    "id": "voc_g15_01",
+    "mode": "recall",
+    "skill": "part.pres_perf",
+    "day": 15,
+    "act": 3,
+    "difficulty": 3,
+    "front": "amans, amantis",
+    "back": "amante, che ama (participio presente)",
+    "insight": "Participio presente attivo: tema pres. + -ns, genitivo -ntis. Terza declinazione.",
+    "dive": "→ it. 'amante'; ingl. 'lover'. Il participio presente è come un aggettivo verbale al presente.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "amante, che ama (participio presente)",
+    "distractors": []
+  },
+  {
+    "id": "dec_g15_01",
+    "mode": "decode",
+    "skill": "part.pres_perf",
+    "day": 15,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Identifica la funzione del participio.",
+    "latin": "Miles urbem defendens laudatur.",
+    "answer": "Il soldato che difende la città è lodato",
+    "distractors": [
+      "Il soldato lodato difende la città",
+      "Il soldato è lodato mentre la città lo difende",
+      "La città che si difende loda il soldato"
+    ],
+    "insight": "defendens = participio presente (m., nom., sg.) → funzione attributiva (= 'che difende').",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "frg_g15_01",
+    "mode": "forge",
+    "skill": "part.pres_perf",
+    "day": 15,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Forgia il participio",
+    "lemma": "vinco, vincere",
+    "stem": "vinc-",
+    "target": "Participio perfetto di 'vinco' — nominativo maschile singolare",
+    "answer": "victus",
+    "distractors": [
+      "vincens",
+      "vincitus",
+      "victum"
+    ],
+    "hint": "Participio perfetto = 4ª voce del paradigma: victum → victus (m.), victa (f.), victum (n.)",
+    "insight": "victus miles = 'il soldato sconfitto'. Il participio perfetto passivo concorda col sostantivo.",
+    "reward": {
+      "xp": 15,
+      "aurei": 3
+    }
+  },
+  {
+    "id": "voc_g16_01",
+    "mode": "recall",
+    "skill": "sint.abl_ass",
+    "day": 16,
+    "act": 3,
+    "difficulty": 3,
+    "front": "sole oriente / sole orto",
+    "back": "mentre il sole sorge / dopo che il sole è sorto",
+    "insight": "Ablativo assoluto: nome + participio entrambi in ablativo. Esprime circostanza (tempo, causa, concessione).",
+    "dive": "La costruzione-firma del biennio. In italiano si traduce con una subordinata o un gerundio assoluto.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "mentre il sole sorge / dopo che il sole è sorto",
+    "distractors": []
+  },
+  {
+    "id": "dec_g16_01",
+    "mode": "decode",
+    "skill": "sint.abl_ass",
+    "day": 16,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Decifra il blocco in ablativo assoluto.",
+    "latin": "Caesare imperante, Romani multas terras vicerunt.",
+    "answer": "Sotto il comando di Cesare, i Romani conquistarono molte terre",
+    "distractors": [
+      "Cesare comandò i Romani che conquistarono le terre",
+      "I Romani comandarono Cesare nelle molte terre",
+      "Cesare, conquistate le terre, comandò i Romani"
+    ],
+    "insight": "Caesare imperante = 'con Cesare che comanda' → ablativo assoluto con participio presente. Indica circostanza temporale/causale.",
+    "dive": "L'ablativo assoluto è la costruzione più densa del latino: sostituisce un'intera proposizione subordinata.",
+    "reward": {
+      "xp": 25,
+      "aurei": 6
+    }
+  },
+  {
+    "id": "dec_g16_02",
+    "mode": "decode",
+    "skill": "sint.abl_ass",
+    "day": 16,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Decifra questo ablativo assoluto con participio perfetto.",
+    "latin": "Hostibus victis, milites domum redierunt.",
+    "answer": "Dopo aver sconfitto i nemici, i soldati tornarono a casa",
+    "distractors": [
+      "I soldati tornarono mentre i nemici vincevano",
+      "Prima di sconfiggere i nemici, i soldati tornarono",
+      "I nemici, tornati a casa, sconfissero i soldati"
+    ],
+    "insight": "Hostibus victis = 'con i nemici sconfitti' → ablativo assoluto con participio perfetto (vittoria già avvenuta).",
+    "reward": {
+      "xp": 25,
+      "aurei": 6
+    }
+  },
+  {
+    "id": "voc_g17_01",
+    "mode": "recall",
+    "skill": "sint.infinitiva",
+    "day": 17,
+    "act": 3,
+    "difficulty": 3,
+    "front": "dico / puto / credo + acc. + infinito",
+    "back": "dico/penso/credo che (qualcuno faccia qualcosa)",
+    "insight": "Proposizione infinitiva: il soggetto della subordinata è in accusativo, il verbo all'infinito.",
+    "dive": "'Dico Caesarem venire' = 'Dico che Cesare viene'. Il soggetto accusativo è la svolta della sintassi latina.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "dico/penso/credo che (qualcuno faccia qualcosa)",
+    "distractors": []
+  },
+  {
+    "id": "dec_g17_01",
+    "mode": "decode",
+    "skill": "sint.infinitiva",
+    "day": 17,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Decifra la proposizione infinitiva.",
+    "latin": "Cives credunt milites fortes esse.",
+    "answer": "I cittadini credono che i soldati siano coraggiosi",
+    "distractors": [
+      "I forti soldati credono di essere cittadini",
+      "I cittadini coraggiosi credono nei soldati",
+      "I soldati credono di essere forti cittadini"
+    ],
+    "insight": "credunt → reggente; milites (acc.) = soggetto della infinitiva; fortes esse = predicato all'infinito.",
+    "dive": "Il latino usa l'infinitiva dove l'italiano usa 'che + congiuntivo'. È più compatta e densa.",
+    "reward": {
+      "xp": 25,
+      "aurei": 6
+    }
+  },
+  {
+    "id": "voc_g18_01",
+    "mode": "recall",
+    "skill": "verbi.cong",
+    "day": 18,
+    "act": 3,
+    "difficulty": 3,
+    "front": "amem, ames, amet / amarem, amares, amaret",
+    "back": "(che io) ami... / (che io) amassi... — congiuntivo presente e imperfetto",
+    "insight": "Congiuntivo presente I coniug.: tema + -e- + desinenze. Congiuntivo imperfetto: infinito + desinenze.",
+    "dive": "Il congiuntivo esprime eventualità, desiderio, subordinazione logica. In inglese corrisponde al 'subjunctive'.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "(che io) ami... / (che io) amassi... — congiuntivo presente e imperfetto",
+    "distractors": []
+  },
+  {
+    "id": "dec_g18_01",
+    "mode": "decode",
+    "skill": "verbi.cong",
+    "day": 18,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Decifra il cum narrativo.",
+    "latin": "Cum Caesar in Galliam venisset, multas gentes invenit.",
+    "answer": "Quando Cesare giunse in Gallia, trovò molte popolazioni",
+    "distractors": [
+      "Cesare trovò molte genti mentre viene in Gallia",
+      "Poiché le genti vengono, Cesare giunse in Gallia",
+      "Cesare che giunse trovò molte genti galliche"
+    ],
+    "insight": "cum + congiuntivo piuccheperfetto (venisset) = cum narrativo (quando/poiché/sebbene — dipende dal contesto).",
+    "reward": {
+      "xp": 25,
+      "aurei": 6
+    }
+  },
+  {
+    "id": "voc_g19_01",
+    "mode": "recall",
+    "skill": "comp.sup",
+    "day": 19,
+    "act": 3,
+    "difficulty": 3,
+    "front": "fortior / fortissimus",
+    "back": "più coraggioso / fortissimo, il più coraggioso",
+    "insight": "Comparativo: -ior (m./f.) / -ius (n.). Superlativo: -issimus/-a/-um. Secondo termine: quam + nom.",
+    "dive": "→ 'fortissimo' italiano. Il superlativo latino è diretto in italiano: 'bellissimo' = lat. bellissimus.",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "più coraggioso / fortissimo, il più coraggioso",
+    "distractors": []
+  },
+  {
+    "id": "dec_g19_01",
+    "mode": "decode",
+    "skill": "comp.sup",
+    "day": 19,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Decifra il comparativo.",
+    "latin": "Romani fortissimi erant, sed Galli fortiores quam Germani.",
+    "answer": "I Romani erano fortissimi, ma i Galli erano più coraggiosi dei Germani",
+    "distractors": [
+      "I Romani e i Galli erano più forti dei Germani",
+      "I Germani erano più coraggiosi dei Galli e dei Romani",
+      "I Romani erano coraggiosi come i Galli e i Germani"
+    ],
+    "insight": "fortissimi = superlativo; fortiores = comparativo (più coraggiosi); quam = 'di' (secondo termine).",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "voc_g20_01",
+    "mode": "recall",
+    "skill": "gerundio",
+    "day": 20,
+    "act": 3,
+    "difficulty": 3,
+    "front": "amandi / amando / amandum",
+    "back": "di amare / amando / per amare — il gerundio",
+    "insight": "Il gerundio è il sostantivo verbale. Usato nei casi obliqui (gen., dat., acc., abl.).",
+    "dive": "→ it. 'amando' (gerundio italiano viene dall'ablativo del gerundio latino!).",
+    "reward": {
+      "xp": 8,
+      "aurei": 2
+    },
+    "answer": "di amare / amando / per amare — il gerundio",
+    "distractors": []
+  },
+  {
+    "id": "dec_g20_01",
+    "mode": "decode",
+    "skill": "gerundio",
+    "day": 20,
+    "act": 3,
+    "difficulty": 3,
+    "prompt": "Decifra la proposizione finale.",
+    "latin": "Milites ad urbem veniunt ut eam defendant.",
+    "answer": "I soldati vengono in città per difenderla",
+    "distractors": [
+      "I soldati vengono in città e la difendono",
+      "La città viene difesa dai soldati che vengono",
+      "I soldati difendono la città da cui vengono"
+    ],
+    "insight": "ut + congiuntivo = proposizione finale ('per, affinché'). eam = pronome acc. f. ('la/lei').",
+    "reward": {
+      "xp": 20,
+      "aurei": 5
+    }
+  },
+  {
+    "id": "crack_g21_boss",
+    "mode": "crack",
+    "skill": "boss.finale",
+    "day": 21,
+    "act": 3,
+    "difficulty": 5,
+    "title": "Boss Finale — Cesare · De Bello Gallico",
+    "latin": "Gallia est omnis divisa in partes tres, quarum unam incolunt Belgae, aliam Aquitani, tertiam qui ipsorum lingua Celtae, nostra Galli appellantur.",
+    "scaffold": [
+      {
+        "question": "Caso e funzione di 'Gallia'?",
+        "answer": "nominativo — soggetto della proposizione",
+        "options": [
+          "nominativo — soggetto della proposizione",
+          "accusativo — oggetto di divisa",
+          "ablativo — complemento di luogo",
+          "genitivo — specificazione"
+        ]
+      },
+      {
+        "question": "'divisa' — che costruzione è?",
+        "answer": "participio perfetto passivo concordato con Gallia",
+        "options": [
+          "participio perfetto passivo concordato con Gallia",
+          "ablativo assoluto",
+          "infinitiva",
+          "predicativo del soggetto"
+        ]
+      },
+      {
+        "question": "'quarum unam incolunt Belgae' — decifra 'quarum'?",
+        "answer": "genitivo plurale del relativo quae — 'di queste (parti)'",
+        "options": [
+          "genitivo plurale del relativo quae — 'di queste (parti)'",
+          "accusativo plurale",
+          "dativo plurale",
+          "nominativo plurale"
+        ]
+      },
+      {
+        "question": "'qui ipsorum lingua Celtae appellantur' — cosa significa 'appellantur'?",
+        "answer": "sono chiamati (III pl. presente passivo di appello)",
+        "options": [
+          "sono chiamati (III pl. presente passivo di appello)",
+          "chiamano (attivo)",
+          "saranno chiamati (futuro)",
+          "erano chiamati (imperfetto)"
+        ]
+      }
+    ],
+    "translation": "La Gallia nel suo insieme è divisa in tre parti, delle quali una la abitano i Belgi, un'altra gli Aquitani, la terza coloro che nella loro lingua si chiamano Celti, nella nostra Galli.",
+    "answer": "La Gallia nel suo insieme è divisa in tre parti, delle quali una la abitano i Belgi, un'altra gli Aquitani, la terza coloro che nella loro lingua si chiamano Celti, nella nostra Galli.",
+    "distractors": [
+      "La Gallia è divisa in due parti: i Belgi e i Galli",
+      "I tre popoli della Gallia chiamano la propria lingua Celtica",
+      "I Galli, i Belgi e gli Aquitani dividono tre lingue"
+    ],
+    "insight": "Cesare, De Bello Gallico, I,1. Testo originale del 58-49 a.C. — il codice è decifrato. L'Archivio di Roma è ricostruito.",
+    "sigillo": "Imperator — L'Archivio è Ricostruito",
+    "reward": {
+      "xp": 300,
+      "aurei": 150
+    }
+  }
 ]
