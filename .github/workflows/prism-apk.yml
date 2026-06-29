@@ -1,0 +1,96 @@
+name: PRISM APK Build
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "prism/**"
+      - ".github/workflows/prism-apk.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build PRISM APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.5"
+          channel: "stable"
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Install dependencies
+        working-directory: prism
+        run: flutter pub get
+
+      - name: Analyse (non-blocking)
+        working-directory: prism
+        run: flutter analyze --no-fatal-infos || true
+
+      - name: Build debug APK
+        working-directory: prism
+        run: flutter build apk --debug
+
+      - name: Build release APK
+        working-directory: prism
+        run: flutter build apk --release
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PRISM-debug-apk
+          path: prism/build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PRISM-release-apk
+          path: prism/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/claude/build-this-q234sk' || github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: prism-v1.0.0-${{ github.run_number }}
+          name: "PRISM v1.0.0 (build ${{ github.run_number }})"
+          body: |
+            ## PRISM — Cognitive ability, refracted.
+
+            An adaptive cognitive-assessment app using real psychometrics (IRT 3PL + CAT).
+            Phase 0 + 1: fluid reasoning screener with on-device θ estimation and 95% CI.
+
+            ### What's in this build
+            - On-device IRT engine: 3PL probability, EAP θ estimation, Fisher-information item selection, SEM stopping rule
+            - 20 calibrated fluid reasoning items across 5 paradigms (number series, matrix completion, odd-one-out, figural series, logical deduction)
+            - Adaptive CAT loop: selects the most informative next item given current θ
+            - Results with 95% confidence interval, percentile, and honest interpretation framing
+            - Mandatory disclaimer: not a clinical IQ test; routes consequential decisions to qualified professionals
+            - Offline-first, no login, no data leaves the device
+
+            ### Install
+            Download `PRISM-release-apk`, enable *Install from unknown sources* on your Android device, and install.
+
+            > Not a clinical or diagnostic IQ test · IRT + CAT · six domains planned · Phase 0+1
+          files: |
+            prism/build/app/outputs/flutter-apk/app-release.apk
+            prism/build/app/outputs/flutter-apk/app-debug.apk
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
